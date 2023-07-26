@@ -1,0 +1,327 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+body {
+    background-image: url(images/background.jpg);
+    background-repeat: repeat;
+    background-size: cover;
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+.navbar {
+    width: 100%;
+    margin: auto;
+    padding: 5px 35px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #ffffff;
+    box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.navbar ul li {
+    list-style: none;
+    display: inline-block;
+    margin: 0 20px;
+    position: relative;
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 400;
+    color: black;
+    text-transform: uppercase;
+}
+
+.navbar ul li::after {
+    content: '';
+    height: 3px;
+    width: 0;
+    background: #009688;
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    transition: 0.5s;
+}
+
+
+.navbar ul li:hover::after {
+    width: 100%;
+}
+
+
+.dropdown-user-window {
+    position: absolute;
+    right: 40px;
+    background-color: white;
+    border-radius: 20px;
+    /* padding: 10px 20px; */
+    margin-top: 5px;
+    box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.25);
+    display: none;
+    visibility: hidden;
+}
+
+.dropdown-user-window.active {
+    display: block;
+    visibility: visible;
+}
+
+.dropdown-user-window div {
+    padding: 7px 0px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.dropdown-user-window div:first-child:hover {
+    background-color: #ededed;
+    border-radius: 20px 20px 0 0;
+}
+
+.dropdown-user-window div:last-child:hover {
+    background-color: #ededed;
+    border-radius: 0 0 20px 20px;
+}
+
+.dropdown-user-window div:hover {
+    background-color: #ededed;
+    /* font-weight: bold; */
+}
+
+.dropdown-user-window div a {
+    text-decoration: none;
+    color: black;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.title-page {
+    padding: 20px 40px;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    color: var(--bs-nav-pills-link-active-color);
+    background-color: #0043AB
+}
+
+.gift-item {
+    border-inline: 3px solid #0043AB;
+    border-radius: 20px;
+    width: 100%;
+    padding: 30px;
+    background-color: #ffffff;
+    box-shadow: 0px 1px 4px 0px #ababab;
+    cursor: pointer;
+}
+
+.img-gift {
+    max-width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.gift-name {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #0043AB;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.pointrequired {
+    color: orange;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.quantity {
+    font-size: 16px;
+    color: black;
+}
+
+.gift-category {
+    background-color: #0080004d;
+    color: green;
+    border-radius: 25px;
+    padding: 5px 10px;
+}
+
+.gift-discount {
+    font-weight: bold;
+    color: red;
+    font-weight: bold;
+    /* background-color: red; */
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+}
+
+.user-total-coin {
+    font-size: 30px;
+    font-weight: bold;
+    color: orange;
+}
+
+.headgift {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    min-height: 32px;
+    font-size: 14px;
+}
+
+
+/* GIFTCARD CSS */
+.giftlist {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    grid-gap: 4rem;
+    padding-top: 2rem;
+    /* background: #f5f7fa; */
+}
+
+.giftlist .card {
+    --background: #ffffff;
+    --text: black;
+    position: relative;
+    height: 24rem;
+    box-shadow: 0 0 2rem -1rem rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+}
+
+.giftlist .card .multi-button {
+    z-index: 0;
+    position: absolute;
+    top: 1.25rem;
+    left: 1.25rem;
+    border-radius: 100%;
+    width: 0rem;
+    height: 0rem;
+    transform: translate(-50%, -50%);
+    transition: 0.25s cubic-bezier(0.25, 0, 0, 1);
+}
+
+.giftlist .card .button-exchange {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    max-width: calc(100% - 3rem);
+    width: 100%;
+    padding: 0.75rem 0.7rem;
+    opacity: 0;
+    pointer-events: none;
+    visibility: visible;
+    transform: translate3d(-50%,20px,0);
+    transition: all .3s;
+    z-index: 2;
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    background: linear-gradient(0deg,rgba(0,0,0,.1),rgba(0,0,0,.1)),hsla(0,0%,100%,.4);
+    border-radius: 8px;
+}
+
+.giftlist .card .multi-button button {
+    display: grid;
+    place-items: center;
+    position: absolute;
+    width: 2rem;
+    height: 2rem;
+    border: none;
+    border-radius: 100%;
+    background: var(--background);
+    color: var(--text);
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    transition: 0.25s cubic-bezier(0.25, 0, 0, 1);
+    box-shadow: 0 0 0rem -0.25rem var(--background);
+    border: 1px solid black;
+}
+
+.giftlist .card .multi-button button:hover {
+    background: var(--text);
+    color: var(--background);
+    box-shadow: 0 0 1rem -0.25rem var(--background);
+}
+
+.giftlist .card .multi-button button:first-child:nth-last-child(1) {
+    left: 25%;
+    top: 25%;
+}
+
+.giftlist .card .multi-button button:first-child:nth-last-child(2):nth-child(1), .giftlist .card .multi-button button:first-child:nth-last-child(2)~*:nth-child(1) {
+    left: 37.5%;
+    top: 18.75%;
+}
+
+.giftlist .card .multi-button button:first-child:nth-last-child(2):nth-child(2), .giftlist .card .multi-button button:first-child:nth-last-child(2)~*:nth-child(2) {
+    left: 18.75%;
+    top: 37.5%;
+}
+
+.giftlist .card .multi-button button:first-child:nth-last-child(3):nth-child(1), .giftlist .card .multi-button button:first-child:nth-last-child(3)~*:nth-child(1) {
+    left: 50%;
+    top: 15.625%;
+}
+
+.giftlist .card .multi-button button:first-child:nth-last-child(3):nth-child(2), .giftlist .card .multi-button button:first-child:nth-last-child(3)~*:nth-child(2) {
+    left: 25%;
+    top: 25%;
+}
+
+.giftlist .card .multi-button button:first-child:nth-last-child(3):nth-child(3), .giftlist .card .multi-button button:first-child:nth-last-child(3)~*:nth-child(3) {
+    left: 15.625%;
+    top: 50%;
+}
+
+.giftlist .card .multi-button button:first-child:nth-last-child(4):nth-child(1), .giftlist .card .multi-button button:first-child:nth-last-child(4)~*:nth-child(1) {
+    left: 62.5%;
+    top: 18.75%;
+}
+
+.giftlist .card .multi-button button:first-child:nth-last-child(4):nth-child(2), .giftlist .card .multi-button button:first-child:nth-last-child(4)~*:nth-child(2) {
+    left: 37.5%;
+    top: 18.75%;
+}
+
+.giftlist .card .multi-button button:first-child:nth-last-child(4):nth-child(3), .giftlist .card .multi-button button:first-child:nth-last-child(4)~*:nth-child(3) {
+    left: 18.75%;
+    top: 37.5%;
+}
+
+.giftlist .card .multi-button button:first-child:nth-last-child(4):nth-child(4), .giftlist .card .multi-button button:first-child:nth-last-child(4)~*:nth-child(4) {
+    left: 18.75%;
+    top: 62.5%;
+}
+
+.giftlist .card .container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    background: var(--background);
+    color: var(--text);
+    padding: 20px;
+}
+
+.giftlist .card:hover .multi-button,
+.giftlist .card .multi-button:focus-within {
+    width: 10rem;
+    height: 10rem;
+}
+
+.giftlist .card:hover .button-exchange {
+    opacity: 1;
+    pointer-events: visible;
+    visibility: visible;
+    transform: translate3d(-50%,0,0);
+}
+
+/* GIFTCARD CSS */

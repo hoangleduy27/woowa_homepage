@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+body {
+    background-image:  url(images/background.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+.main-article {
+    margin: 20px;
+}
+
+.member-basic-info {
+    display: flex;
+    
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.avt-img {
+    border-radius: 30px;
+    border: 0px;
+    
+}
+
+.member-info {
+    background-color: #f8f8f8;
+    width: 100%;
+    padding: 20px 30px;
+    border-radius: 20px;
+}
+
+.member-name {
+    font-size: 35px;
+}
+
+.fa, .fab, .far, .fas {
+    font-size: 25px !important;
+    padding-right: 10px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.info-item-list {
+    padding-bottom: 15px;
+}
+
+.color-orange {
+    color: orange;
+}
+
+.below {
+    padding: 20px;
+    min-height: 400px;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #f8f8f8;
+    border-radius: 20px;
+    padding: 20px 25px;
+}
+
+.content-member {
+    width: 100%;
+    background-color: #f8f8f8;
+    border-radius: 20px;
+    padding: 20px 25px;
+}
+
+.list-items {
+    width: 250px;
+}
+
+.list-items div {
+    padding-bottom: 15px;
+    cursor: pointer;
+}
+
+.list-items div.active {
+    font-weight: bold;
+}
+
+.list-items div:hover:not(.active) {
+    font-weight: 600;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
