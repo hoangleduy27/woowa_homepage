@@ -1,0 +1,93 @@
+
+<%- include('headerPartial')%>
+
+<head>
+    <title></title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/styles/update-profile.css" />
+</head>
+<section class="register_form" id="register_form">
+    <div class="">
+        <form class="registration-form" method="post" action="/update-profile" >
+            <div class="d-flex justify-content-end fs-5 cursor-pointer" id="close1">
+            </div>
+            <h2>Update Profile</h2>
+                <div class="error-message" style="color: red;">
+                </div>
+            
+            
+            <!-- Your form inputs go here -->
+            <div class="text_field">
+
+                <input type="text" id="username" name="username" value="<%= user.username %>" >
+                <label class="non-empty">Họ và tên*</label>
+            </div>
+            <div class="text_field">
+
+                <input type="email" id="email" name="email" value="<%= user.email %>" required readonly>
+                <label>Email*</label>
+
+            </div>
+
+            <div class="text_field">
+                <input type="text" id="phonenumber" name="phonenumber" value="<%= user.phonenumber %>" >
+                <label class="non-empty">Phone Numeber*</label>
+            </div>
+            <div class="text_field">
+                <input type="date" id="birthday" value="<%= user.birthday  %>" name="birthday">
+                <!-- <input type="date" id="birthday" value="<%= user.birthday instanceof Date ? user.birthday.toISOString().substr(0, 10) : user.birthday %>" name="birthday"> -->
+
+                <label class="non-empty">Birthday*</label>
+
+            </div>
+  
+
+            <button class="btn btn-primary" type="submit">Cập nhật</button>
+           
+           
+        </form>
+    </div>
+</section>
+
+<script>
+    const inputs = document.querySelectorAll('.text_field input');
+
+    inputs.forEach(input => {
+        const label = input.nextElementSibling;
+
+        input.addEventListener('input', () => {
+            if (input.value) {
+                label.classList.add('non-empty');
+            } else {
+                label.classList.remove('non-empty');
+            }
+        });
+    });
+
+
+    // $(document).ready(function () {
+    //     // When the document is ready, check if the date input field has a value
+    //     const birthdayValue = $('#birthday').val();
+    //     if (birthdayValue !== '') {
+    //         // If the date input field has a value, convert the date string to a Date object
+    //         const date = new Date(birthdayValue);
+
+    //         // Get the year, month, and day components of the date
+    //         const year = date.getFullYear();
+    //         const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based, so we add 1 and pad with '0' if necessary
+    //         const day = String(date.getDate()).padStart(2, '0');
+
+    //         // Format the date as "YYYY-MM-DD"
+    //         const formattedDate = `${year}-${month}-${day}`;
+
+    //         // Set the formatted date as the value of the date input field
+    //         $('#birthday').val(formattedDate);
+    //     }
+    // });
+</script>
