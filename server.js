@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const moment = require('moment');
+const async = require('async');
 
 const path = require('path');
 const mysql = require('mysql');
@@ -9,6 +10,7 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const config = require('./config'); // Đường dẫn đến file config.js
 const randomstring = require('randomstring'); // Import the 'randomstring' library for generating random strings
+const { render } = require('ejs');
 
 
 
@@ -16,6 +18,7 @@ const port = 3000;
 
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -60,42 +63,112 @@ app.get('/about', function (req, res) {
 
 });
 
-app.get('/events', function (req, res) {
+app.get('/events', (req, res) => {
     const userId = req.query.userId;
-
+  
     if (userId) {
-        req.session.userId = userId;
+      req.session.userId = userId;
     }
+  
+    const user = req.session.userId ? { id: req.session.userId } : null;
+  
+    // const sql = 'SELECT * FROM events'; 
+    const sql = 'SELECT e.event_id, e.event_name, e.event_date, e.event_location, e.content, CASE WHEN EXISTS (SELECT 1 FROM event_participants ep WHERE e.event_id = ep.event_id AND ep.user_id = ?) THEN 1 ELSE 0 END AS hasRegistered FROM events e;';
+        connection.query(sql, [userId], (err, events) => {
+      if (err) {
+        console.error('Error querying the database:', err);
+        return res.status(500).json({ message: 'Lỗi khi truy vấn cơ sở dữ liệu' });
+      }
+    
 
-    // Check if the user is logged in (user ID exists in the session)
-    const user = req.session.userId ? { id: req.session.userId } : null;  
+      const sql = 'SELECT * FROM event_participants WHERE user_id = ?';
+      connection.query(sql, [userId], (error, results) => {
+        if (error) {
+          console.error('Lỗi truy vấn cơ sở dữ liệu: ' + error.stack);
+          return res.status(500).json({ error: 'Lỗi truy vấn cơ sở dữ liệu' });
+        }
+      
+        // Kiểm tra xem user đã đăng ký sự kiện nào hay chưa
+        const hasRegistered = results.length > 0;
+      
+        // Tiếp tục xử lý với biến hasRegistered ở đây
+      
+        res.render('events', { user, events, hasRegistered });
+      });
+  });
 
-    return res.render('events', { user });
 });
 
 
+app.post('/register', (req, res) => {
+    const eventId = req.body.eventId; // Get eventId from the client
+    const userId = req.session.userId; // Get userId from the session
+  
+    // Check if the user is already registered for the event
+    const checkQuery = 'SELECT * FROM event_participants WHERE event_id = ? AND user_id = ?';
+    connection.query(checkQuery, [eventId, userId], (err, rows) => {
+        if (err) {
+            return res.status(500).json({ message: 'Lỗi khi truy vấn dữ liệu' });
+        }
+
+        // If the user is already registered, respond with the appropriate message
+        if (rows.length > 0) {
+            return res.json({ message: 'Người dùng đã đăng ký sự kiện này trước đó' });
+            
+        }
 
 
+        // If the user is not registered, proceed with inserting the registration record
+        const insertQuery = 'INSERT INTO event_participants (event_id, user_id) VALUES (?, ?)';
+        connection.query(insertQuery, [eventId, userId], (err, result) => {
+            if (err) {
+                return res.status(500).json({ message: 'Lỗi khi thêm dữ liệu vào bảng event_participants' });
+            }
+
+            // Check the affectedRows to determine if the insertion was successful
+            if (result.affectedRows === 1) {
+                // If the affectedRows is 1, it means a new registration was added successfully
+                // Update the event's registration status in the server-side data
+                const sqlUpdate = 'UPDATE events SET hasRegistered = 1 WHERE event_id = ?';
+                connection.query(sqlUpdate, [eventId], (err, updateResult) => {
+                    if (err) {
+                        console.error('Error updating event registration status:', err);
+                    }
+
+                    // Send the success message back to the client
+                    return res.json({ message: 'Đăng ký tham gia sự kiện thành công' });
+                });
+            } else {
+                // If the affectedRows is 0, it means the insertion was ignored (duplicate registration)
+                return res.json({ message: 'Người dùng đã đăng ký sự kiện này trước đó' });
+                // res.redirect('/events');
+            }
+        });
+    });
+});
+
+
+app.get('/signup', (req, res) => {
+    // Check if the user is logged in (user ID exists in the session)
+    const user = req.session.userId ? { id: req.session.userId } : null;
+
+    return res.render('signup', { user });
+});
 
 app.post('/signup', (req, res) => {
-    const { username, email, password, confirmPassword } = req.body;
+    const { username, phonenumber, email, password, confirmPassword } = req.body;
     if (password.length < 8) {
         return res.render('homepage', { errorMessageSignup: 'Passwords at least 8 characters', user: null });
     }
 
-    // if (password !== confirmPassword) {
-    //     return res.render('homepage', { user: null });
-    // }
-
-    // Check if the email is already registered
-    connection.query('SELECT * FROM users WHERE email = ?', [email], (err, rows) => {
+    connection.query('SELECT * FROM users WHERE phonenumber = ?', [phonenumber], (err, rows) => {
         if (err) {
             return res.status(500).json({ error: 'Error fetching user' });
         }
 
         if (rows.length > 0) {
             // An account with this email already exists
-            return res.render('homepage', { errorMessageSignup: 'Email is already registered', user: null });
+            return res.render('signup', { errorMessageSignup: 'Phone is already registered', user: null });
         }
 
         const referralCode = randomstring.generate({
@@ -109,103 +182,64 @@ app.post('/signup', (req, res) => {
                 return res.status(500).json({ error: 'Error hashing password' });
             }
 
-            const user = { username, email, password: hashedPassword, referral_code: referralCode };
+            const user = { username, phonenumber, email, password: hashedPassword, referral_code: referralCode };
             connection.query('INSERT INTO users SET ?', user, (err, result) => {
                 if (err) {
                     return res.status(500).json({ error: 'Error register user' });
                 }
                 // req.session.userId = result.insertId;
 
-                // // Pass signupError as false since there is no signup error
-                // res.render('homepage', { user, registrationSuccess: true });
                 res.render('homepage', {user: null, registrationSuccess: true,  showLoginForm: true });
 
-                // return res.render('homepage', { user, signupError: false });
             });
         });
     });
 });
 
 
-// Handle POST request for user login
+app.get('/login', (req, res) => {
+    res.render('login'); // Assuming you have a login.ejs file for the login form
+});
+
 app.post('/login', (req, res) => {
-    const { email, password } = req.body;
+    const { phonenumber, password } = req.body;
 
-
-    connection.query('SELECT * FROM users WHERE email = ?', [email], (err, rows) => {
+    connection.query('SELECT * FROM users WHERE phonenumber = ?', [phonenumber], (err, rows) => {
         if (err) {
-            return res.status(500).json({ error: 'Error fetching user' });
+            return res.render('login', { errorMessage: 'Error fetching user', user: null });
         }
 
         if (rows.length === 0) {
-            // return res.status(404).json({ error: 'User not found' });
-            return res.render('homepage', { errorMessage: 'User not found', user: null });
-
+            return res.render('login', { errorMessage: 'User not found', user: null });
         }
 
         const user = rows[0];
         bcrypt.compare(password, user.password, (error, result) => {
             if (error) {
-                return res.status(500).json({ error: 'Error comparing passwords', user: null });
+                return res.render('login', { errorMessage: 'Error comparing passwords', user: null });
             }
             if (!result) {
-                // return res.render('homepage', { loginError: true, user: null });
-                // return res.status(401).json({ error: 'Incorrect username or password' });
-                return res.render('homepage', { errorMessage: 'Incorrect username or password', user: null });
-                // return res.status(401).json({ success: false, errorMessage: 'Incorrect username or password' });
-
-                // return res.render('homepage', { errorMessage: 'Incorret username or password', user: null });
-
-                // return res.redirect('/?loginError=true');
+                return res.render('login', { errorMessage: 'Incorret phone or password', user: null });
             }
+
+            // Đăng nhập thành công, lưu userId vào session
+
             req.session.userId = user.id;
-            // return res.render('homepage');
-            // return res.render('homepage', { user, errorMessage: false });
-            // return res.redirect('/');
-            
-            return res.render('homepage', { user,});
 
-
-
-
+            // Chuyển hướng người dùng đến trang "homepage" sau khi đăng nhập thành công
+            res.render('homepage', {user, loginSuccess: true, errorMessage: null });
         });
     });
 });
 
-// app.post('/login', (req, res) => {
-//     const { email, password } = req.body;
 
-//     connection.query('SELECT * FROM users WHERE email = ?', [email], (err, rows) => {
-//         if (err) {
-//             return res.status(500).json({ success: false, errorMessage: 'Error fetching user' });
-//         }
-
-//         if (rows.length === 0) {
-//             return res.status(401).json({ success: false, errorMessage: 'User not found' });
-//         }
-
-//         const user = rows[0];
-//         bcrypt.compare(password, user.password, (error, result) => {
-//             if (error) {
-//                 return res.status(500).json({ success: false, errorMessage: 'Error comparing passwords' });
-//             }
-
-//             if (!result) {
-//                 return res.status(401).json({ success: false, errorMessage: 'Incorrect username or password' });
-//             }
-
-//             req.session.userId = user.id;
-//             return res.status(200).json({ success: true }); // Login successful
-//         });
-//     });
-// });
 
 
 app.get('/profile', function (req, res) {
     const userId = req.session.userId;
 
     if (!userId) {
-        return res.redirect('/');
+        return res.redirect('/login');
     }
 
     connection.query('SELECT * FROM users WHERE id = ?', [userId], (err, rows) => {
@@ -247,14 +281,7 @@ app.get('/update-profile', function (req, res) {
         }
 
         const user = rows[0];
-        // if (user.birthday) {
-        //     user.birthday = moment(user.birthday).format('YYYY-MM-DD');
-        // } else {
-        //     // If user.birthday is not set or invalid, set it to null to avoid the default "1/1/1970" value
-        //     user.birthday = null;
-        // }
-        // Render the profile page with user information
-        // res.render('update-profile', { user });
+
         res.render('update-profile', { user });
 
     });
@@ -282,31 +309,75 @@ app.post('/update-profile', function (req, res) {
 });
 
 
-app.post('/register-for-event', (req, res) => {
-    // Kiểm tra xem người dùng đã đăng nhập hay chưa bằng cách kiểm tra session
+app.get('/change-password', function (req, res) {
     const userId = req.session.userId;
-  
     if (!userId) {
-      // Nếu người dùng chưa đăng nhập, trả về thông báo lỗi
-      return res.status(401).json({ error: 'Unauthorized. Please log in to register for the event.' });
+      return res.redirect('/');
     }
   
-    const { event_id } = req.body;
+    res.render('change-password', { user: { id: userId } });
+  });
+
+// Route to handle the password change form submission
+// Route to handle the password change form submission
+
+app.post('/changepassword', function (req, res) {
+    // Check if the user is logged in (user ID exists in the session)
+    const userId = req.session.userId;
+    if (!userId) {
+        return res.redirect('/');    
+    }
   
-    // Thực hiện thêm thông tin tham gia vào bảng event_participants
-    connection.query(
-      'INSERT INTO event_participants (event_id, user_id) VALUES (?, ?)',
-      [event_id, userId],
-      (err, result) => {
-        if (err) {
-          return res.status(500).json({ error: 'Error registering for the event' });
+    const { oldPassword, newPassword, confirmPassword } = req.body;
+  
+    // Check if the new password and confirm password match
+    if (newPassword !== confirmPassword) {
+      return res.render('change-password', { errorMessage: 'Password not match ' });
+
+    }
+  
+    // Fetch the user's information from the database
+    connection.query('SELECT * FROM users WHERE id = ?', [userId], (err, rows) => {
+      if (err) {
+        return res.status(500).json({ error: 'Error fetching user' });
+      }
+  
+      if (rows.length === 0) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
+      const user = rows[0];
+  
+      // Compare the old password provided with the one in the database
+      bcrypt.compare(oldPassword, user.password, (error, result) => {
+        if (error) {
+          return res.status(500).json({ error: 'Error comparing passwords' });
         }
   
-        // Trả về kết quả thành công
-        return res.status(200).json({ success: true });
-      }
-    );
+        if (!result) {
+            return res.render('change-password', { errorMessage: 'Old Password not correct ' });
+        }
+  
+        // Hash the new password before storing it in the database
+        bcrypt.hash(newPassword, 10, (err, hashedPassword) => {
+          if (err) {
+            return res.status(500).json({ error: 'Error hashing password' });
+          }
+  
+          // Update the user's password in the database
+          connection.query('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, userId], (err, result) => {
+            if (err) {
+              return res.status(500).json({ error: 'Error changing password' });
+            }
+  
+            // Redirect the user back to the profile page after successful password change
+            res.redirect('/profile');
+        });
+        });
+      });
+    });
   });
+  
 
 
 

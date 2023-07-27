@@ -8,7 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS v5.2.1 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,100 +17,203 @@
     <link rel="stylesheet" href="/styles/events.css">
     <link rel="stylesheet" href="/src/scss/custom-boostrap.scss">
 
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
+        integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
 </head>
 
 <body>
 
 
-        <%- include('headerPartial') %>    
+    <%- include('headerPartial') %>
 
 
 
-    <main class="main-article ">
-        <div class="d-flex justify-content-center align-items-center mt-5">
-            <span class="icon-search"><i class="fas fa-search"></i></span>
-            <input type="text" class="form-control input-search" placeholder="Tìm kiếm sự kiện">
-        </div>
-        <ul class="tabs-nav nav nav-pills mb-5 mt-5 justify-content-center" id="pills-tab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Tất cả</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Đang diễn ra</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Sắp diễn ra</button>
-            </li>
-        </ul>
-        <div class="tab-content" id="pills-tabContent">
-            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                <div class="card-events card mb-3">
-                    <div class="row g-0">
-                        <div class="col-md">
-                            <img src="/image//blackpinkconcert.jpg" class="img-fluid rounded-start" alt="BlackPink-concept" style="height: 300px;">
-                        </div>
-                        <div class="col-md-9">
-                            <div class="card-body">
-                                <div class="card-title d-flex justify-content-between">
-                                    <img src="/image//logoblackpink.png" alt="" height="50">
-                                    <div>
-                                        <span class="free-pill-title badge rounded-pill text-bg-success">FREE</span>
-                                    </div>
+        <main class="main-article ">
+            <div class="d-flex justify-content-center align-items-center mt-5">
+                <span class="icon-search"><i class="fas fa-search"></i></span>
+                <input type="text" class="form-control input-search" placeholder="Tìm kiếm sự kiện">
+            </div>
+            <ul class="tabs-nav nav nav-pills mb-5 mt-5 justify-content-center" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
+                        aria-selected="true">Tất cả</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
+                        aria-selected="false">Đang diễn ra</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact"
+                        aria-selected="false">Sắp diễn ra</button>
+                </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+
+                    <% events.forEach(event=> { %>
+
+                        <div class="card-events card mb-3">
+                            <div class="row g-0">
+                                <div class="col-md">
+                                    <img src="/image//blackpinkconcert.jpg" class="img-fluid rounded-start"
+                                        alt="BlackPink-concept" style="height: 300px;">
                                 </div>
-                                <div class="d-flex flex-column justify-content-between content-events">
-                                    <p class="card-text">YG Entertainment chính thức thông báo điểm đến tiếp theo trong tour diễn vòng quanh thế giới Born Pink của nhóm nhạc BLACKPINK chính là sân vận động quốc gia Mỹ Đình, Hà Nội vào hai ngày 29 và 30/7</p>
-                                    <div class="card-text d-flex justify-content-between">
-                                        <div>
+                                <div class="col-md-9">
+                                    <div class="card-body">
+                                        <div class="card-title d-flex justify-content-between">
+                                            <img src="/image//logoblackpink.png" alt="" height="50">
                                             <div>
-                                                <small class="text-muted">
-                                                    <i class="fas fa-map-marker-alt pe-1"></i>
-                                                    Việt Nam
-                                                </small>
-                                            </div>
-                                            <div>
-                                                <small class="text-muted">
-                                                    <i class="fas fa-calendar pe-1"></i>
-                                                    Thứ 7, 23/9/2023 19:00
-                                                </small>
+                                                <% if (event.status==='Đang diễn ra' ) { %>
+                                                    <span
+                                                        class="free-pill-title badge rounded-pill text-bg-success">FREE</span>
+                                                    <% } else { %>
+                                                        <span
+                                                            class="free-pill-title badge rounded-pill text-bg-warning">WAIT</span>
+                                                        <% } %>
                                             </div>
                                         </div>
+                                        <div class="d-flex flex-column justify-content-between content-events">
+                                            <p class="card-text">
+                                                <%= event.content %>
+                                            </p>
+                                            <div class="card-text d-flex justify-content-between">
+                                                <div>
+                                                    <div>
+                                                        <small class="text-muted">
+                                                            <i class="fas fa-map-marker-alt pe-1"></i>
+                                                            Location: <%= event.event_location %>
+                                                        </small>
+                                                    </div>
+                                                    <div>
+                                                        <small class="text-muted">
+                                                            <i class="fas fa-calendar pe-1"></i>
+                                                            <%= new Date(event.event_date).toLocaleDateString() %>
 
-                                        <div class="d-flex align-items-end">
-                                            <% if (user) { %>
-                                                <button class="btn btn-lg btn-outline-primary btn-maincolor" id="signupButton" onclick="registerForEvent('')">Đăng ký tham gia</button>
-                                                <p id="errorMessage" class="text-danger"></p>
+                                                        </small>
+                                                    </div>
+                                                </div>
 
-                                                <% } else { %>
-                                                <a href="/" class="btn btn-lg btn-outline-primary btn-maincolor">Đăng nhập để đăng ký</a>
-                                              <% } %>
+                                                <div class="d-flex align-items-end">
+                                                    <% if (user) { %>
 
+                                                        <% if (event.hasRegistered) { %>                                                            <!-- If the user is registered, show "Đã đăng ký" button -->
+                                                            <button class="btn btn-lg btn-primary" disabled>Đã đăng ký</button>
+                                                          <% } else { %>
+                                                            <!-- If the user is not registered, show "Đăng ký tham gia" button -->
+                                                            <button class="btn btn-lg btn-outline-primary btn-maincolor" onclick="registerForEvent('<%= event.event_id %>')">Đăng ký tham gia</button>
+                                                          <% } %>
+                                                        <% } else { %>
+                                                          <a href="/"> <button class="btn btn-lg btn-outline-primary btn-maincolor">Đăng nhập để tham gia</button></a>
+                                                        <% } %>
+                
+                                                     
 
+                                                </div>
+
+                                            </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        <% }); %>
+
+                </div>
+                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">...
+                </div>
+                <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...
                 </div>
             </div>
-            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">...</div>
-            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
-        </div>
-    </main>
-    <footer>
-        <!-- place footer here -->
-    </footer>
-    <!-- Bootstrap JavaScript Libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
-    </script>
+        </main>
+        <footer>
+            <!-- place footer here -->
+        </footer>
+        <!-- Bootstrap JavaScript Libraries -->
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+            integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
+            </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js" integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
-    </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+            integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
+            </script>
 </body>
 <script>
+    // function registerForEvent(eventId) {
+    //     const registerButton = document.getElementById('registerButton');
 
+    //     // Gửi yêu cầu POST để đăng ký tham gia sự kiện
+    //     fetch('/register', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify({ eventId })
+    //     })
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             // console.log(data.message);
+
+    //             if (data.message === 'Người dùng đã đăng ký sự kiện này trước đó' || data.message === 'Đăng ký tham gia sự kiện thành công') {
+    //                 buttonElement.textContent = 'Đã đăng ký';
+    //                 buttonElement.disabled = true;
+    //             } else {
+    //                 // Nếu chưa đăng ký trước đó, hiển thị thông báo đăng ký thành công (tùy chọn)
+    //                 console.log(data.message); // Optional: Log the success message from the server
+    //             }
+    //         })
+    //         .catch(error => {
+    //             // Xử lý lỗi (nếu cần)
+    //             console.error(error);
+    //         });
+    // }
+
+    function registerForEvent(eventId) {
+        const registerButton = document.getElementById('registerButton');
+
+        // Gửi yêu cầu POST để đăng ký tham gia sự kiện
+        fetch('/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ eventId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Log the success message from the server (optional)
+            console.log(data.message);
+
+            // If the registration was successful, update the button text and disable it
+            if (data.message === 'Đăng ký tham gia sự kiện thành công') {
+                const buttonElement = document.querySelector(`[onclick="registerForEvent('${eventId}')"]`);
+                buttonElement.textContent = 'Đã đăng ký';
+                buttonElement.disabled = true;
+            }
+            const isActivated = data.isActivated;
+          if (isActivated) {
+            alert('Nút đã kích hoạt!');
+          } else {
+            alert('Nút chưa kích hoạt.');
+          }
+        })
+        .catch(error => {
+            // Xử lý lỗi (nếu cần)
+            console.error(error);
+        });
+    }
+
+
+
+
+    document.getElementById('registerButton').addEventListener('click', function() {
+      // Gọi hàm để thực hiện truy vấn SQL khi nhấp vào nút
+      performSQLQuery();
+    });
+
+ 
 </script>
 
 </html>

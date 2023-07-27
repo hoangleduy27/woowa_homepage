@@ -1,0 +1,104 @@
+  <section class="register_form" id="register_form">
+        <div class="">
+            <form class="registration-form" method="" action="" onsubmit="return validateForm()">
+                <div class="d-flex justify-content-end fs-5 cursor-pointer" id="close1">
+                    <i class="fas fa-times"></i>
+                </div>
+                <h2>Đăng ký</h2>
+
+
+                <!-- Your form inputs go here -->
+                <div class="text_field">
+                    <input type="text" id="username" name="username">
+                    <span></span>
+                    <label>Họ và tên*</label>
+                </div>
+                <div class="text_field">
+                    <input type="number" id="phonenumber" name="phonenumber">
+                    <span></span>
+                    <label>Phone number*</label>
+                </div>
+
+                <div class="text_field">
+                    <input type="password" id="password" name="password" required>
+                    <span></span>
+                    <label>Mật khẩu*</label>
+                </div>
+                <div class="text_field">
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                    <span></span>
+                    <label>Nhập lại mật khẩu</label>
+
+                </div>
+                <% if (typeof errorMessageSignup !=='undefined' && errorMessageSignup) { %>
+                    <p style="color: red;" class="error-message">
+                        <%= errorMessageSignup %>
+                    </p>
+                    <% } %>
+                        <div class="error-message" style="color: red;">
+                        </div>
+
+                        <button class="btn btn-primary" type="submit" id="register_btn">Đăng ký</button>
+                        <ul class="social-icons">
+                            <li><img class="icon-socialmedias" src="/image/facebook.png" /></li>
+                            <li><img class="icon-socialmedias" src="/image/google.png" /></li>
+                            <li><img class="icon-socialmedias" src="/image/zalo.png" /></li>
+                        </ul>
+                        <div class="signup_link">
+                            Bạn đã có tài khoản? <a href="" class="return_login">Đăng nhập ngay</a>
+                        </div>
+            </form>
+        </div>
+    </section>
+    <!-- <div class="overlay hidden"></div> -->
+
+<div class="popuplogin" id="popuplogin">
+    <section class="login_form" id="login_form"   >
+        <div class="">
+            <form id="loginForm" class="login-form"  onsubmit="handleSubmit(event)">
+                <!-- <form class="login-form" onsubmit="handleSubmit(event)"> -->
+
+                <div class="d-flex justify-content-end fs-5 cursor-pointer" id="close2">
+                    <i class="fas fa-times"></i>
+                </div>
+                <h2>Login</h2>
+                <div id="loginError"></div>
+
+                <!-- Your form inputs go here -->
+                <div class="text_field">
+                    <input type="number" id="phonenumber" name="phonenumber"  >
+                    <span></span>
+                    <label id="lb_email">Phone number*</label>
+                    <span id="Error_email"></span>
+                </div>
+                <div class="text_field">
+                    <input type="password" id="password" name="password">
+                    <label id="lb_password">Mật khẩu</label>
+                </div>
+                <% if (typeof errorMessage !=='undefined' && errorMessage) { %>
+                    <p style="color: red;" class="error-message">
+                        <%= errorMessage %>
+                    </p>
+                    <% } %>
+                        <div style="display: flex; justify-content: space-between">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck1" />
+                                <label class="form-check-label" for="exampleCheck1">Giữ đăng nhập</label>
+                            </div>
+                            <a class="forgot-password" style="text-align: left; color: #2691d9">Quên mật khẩu?</a>
+                        </div>
+
+                        <button class="btn btn-primary" id="loginButton" type="submit" >Đăng nhập</button>
+                        <ul class="social-icons">
+                            <li><img class="icon-socialmedias" src="/image/facebook.png" /></li>
+                            <li><img class="icon-socialmedias" src="/image/google.png" /></li>
+                            <li><img class="icon-socialmedias" src="/image/zalo.png" /></li>
+                        </ul>
+                        <div class="signup_link">
+                            Bạn chưa có tài khoản?
+                            <a href="" class="fw-bold text-decoration-underline return_register">Đăng ký ngay</a>
+                        </div>
+            </form>
+        </div>
+
+    </section>

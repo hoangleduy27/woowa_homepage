@@ -54,7 +54,11 @@
                       </span>                    </p>
                 </div>
                 <div>
-                    <i class="fab fa-bitcoin color-orange"></i> <span class="color-orange fw-bold fs-4">20.000</span>
+                    <i class="fab fa-bitcoin color-orange"></i> <span class="color-orange fw-bold fs-4"><%= user.user_point.toLocaleString() %></span>
+
+
+
+
                 </div>
             </div>
         </div>
@@ -62,7 +66,7 @@
             <div class="sidebar  me-4">
                 <div class="list-items">
                     <div><a style="color: black; text-decoration: none;" href="/update-profile">Thông tin của tôi</a></div>
-                    <div>Đổi mật khẩu</div>
+                    <div><a style="color: black; text-decoration: none;" href="/change-password">Đổi mật khẩu</a></div>
                     <div>Điểm thưởng</div>
                     <div class="active">Mời bạn bè</div>
                     <div> <a style="color: red;" href="/logout"> Đăng xuất</a></div>

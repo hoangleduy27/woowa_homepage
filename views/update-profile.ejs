@@ -30,13 +30,13 @@
             </div>
             <div class="text_field">
 
-                <input type="email" id="email" name="email" value="<%= user.email %>" required readonly>
+                <input type="email" id="email" name="email" value="<%= user.email %>" >
                 <label>Email*</label>
 
             </div>
 
             <div class="text_field">
-                <input type="text" id="phonenumber" name="phonenumber" value="<%= user.phonenumber %>" >
+                <input type="text" id="phonenumber" name="phonenumber" value="<%= user.phonenumber %>" required readonly >
                 <label class="non-empty">Phone Numeber*</label>
             </div>
             <div class="text_field">
@@ -70,24 +70,4 @@
         });
     });
 
-
-    // $(document).ready(function () {
-    //     // When the document is ready, check if the date input field has a value
-    //     const birthdayValue = $('#birthday').val();
-    //     if (birthdayValue !== '') {
-    //         // If the date input field has a value, convert the date string to a Date object
-    //         const date = new Date(birthdayValue);
-
-    //         // Get the year, month, and day components of the date
-    //         const year = date.getFullYear();
-    //         const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based, so we add 1 and pad with '0' if necessary
-    //         const day = String(date.getDate()).padStart(2, '0');
-
-    //         // Format the date as "YYYY-MM-DD"
-    //         const formattedDate = `${year}-${month}-${day}`;
-
-    //         // Set the formatted date as the value of the date input field
-    //         $('#birthday').val(formattedDate);
-    //     }
-    // });
 </script>

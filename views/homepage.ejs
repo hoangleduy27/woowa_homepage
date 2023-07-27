@@ -43,6 +43,9 @@
                                         <a href="/profile"><i class="fas fa-user"></i> Thông tin cá nhân</a>
                                     </div>
                                     <div>
+                                        <a href="/change-password"><i class="fas fa-lock"></i> Đổi mật khẩu</a>
+                                    </div>
+                                    <div>
                                         <a href="/logout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
                                     </div>
                                 </div>
@@ -64,122 +67,20 @@
                 <h2>Kết nối nền tảng công nghệ quảng cáo mới</h2>
                 <h2>Đăng nhập hoặc đăng ký để tìm hiểu thêm thông tin</h2>
                 <% if (!user) { %>
-                    <button class="button_register" id="popup_register">
+                    <a href="/signup"><button class="button_register" id="popup_register">
                         <span></span> Đăng ký
-                    </button>
-                    <button class="button_login" id="popup_login"><span></span>Đăng nhập</button>
+                    </button></a>
+                    <a href="/login"> <button class="button_login" id="popup_login"><span></span>Đăng nhập</button></a>
                     <% } else{%>
                         <% } %>
             </div>
         </div>
     </div>
     <!-- <section class="container modal hidden" id = "register_form"> -->
-    <section class="register_form" id="register_form">
-        <div class="">
-            <form class="registration-form" method="post" action="/signup" onsubmit="return validateForm()">
-                <div class="d-flex justify-content-end fs-5 cursor-pointer" id="close1">
-                    <i class="fas fa-times"></i>
-                </div>
-                <h2>Đăng ký</h2>
-
-
-                <!-- Your form inputs go here -->
-                <div class="text_field">
-                    <input type="text" id="username" name="username" id="name">
-                    <span></span>
-                    <label>Họ và tên*</label>
-                </div>
-                <div class="text_field">
-                    <input type="email" id="email" name="email" id="phone">
-                    <span></span>
-                    <label>Email*</label>
-                </div>
-
-                <div class="text_field">
-                    <input type="password" id="password" name="password" required>
-                    <span></span>
-                    <label>Mật khẩu*</label>
-                </div>
-                <div class="text_field">
-                    <input type="password" id="confirmPassword" name="confirmPassword" required>
-                    <span></span>
-                    <label>Nhập lại mật khẩu</label>
-
-                </div>
-                <% if (typeof errorMessageSignup !=='undefined' && errorMessageSignup) { %>
-                    <p style="color: red;" class="error-message">
-                        <%= errorMessageSignup %>
-                    </p>
-                    <% } %>
-                        <div class="error-message" style="color: red;">
-                        </div>
-
-                        <button class="btn btn-primary" type="submit" id="register_btn">Đăng ký</button>
-                        <ul class="social-icons">
-                            <li><img class="icon-socialmedias" src="/image/facebook.png" /></li>
-                            <li><img class="icon-socialmedias" src="/image/google.png" /></li>
-                            <li><img class="icon-socialmedias" src="/image/zalo.png" /></li>
-                        </ul>
-                        <div class="signup_link">
-                            Bạn đã có tài khoản? <a href="" class="return_login">Đăng nhập ngay</a>
-                        </div>
-            </form>
-        </div>
-    </section>
-    <!-- <div class="overlay hidden"></div> -->
-
-<div class="popuplogin" id="popuplogin">
-    <section class="login_form" id="login_form"   >
-        <div class="">
-            <form id="loginForm" class="login-form" method="post" action="/login" onsubmit="handleSubmit(event)">
-                <!-- <form class="login-form" onsubmit="handleSubmit(event)"> -->
-
-                <div class="d-flex justify-content-end fs-5 cursor-pointer" id="close2">
-                    <i class="fas fa-times"></i>
-                </div>
-                <h2>Login</h2>
-                <div id="loginError"></div>
-
-                <!-- Your form inputs go here -->
-                <div class="text_field">
-                    <input type="email" id="email" name="email" required >
-                    <span></span>
-                    <label id="lb_email">Email*</label>
-                    <span id="Error_email"></span>
-                </div>
-                <div class="text_field">
-                    <input type="password" id="password" name="password">
-                    <label id="lb_password">Mật khẩu</label>
-                </div>
-                <% if (typeof errorMessage !=='undefined' && errorMessage) { %>
-                    <p style="color: red;" class="error-message">
-                        <%= errorMessage %>
-                    </p>
-                    <% } %>
-                        <div style="display: flex; justify-content: space-between">
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-                                <label class="form-check-label" for="exampleCheck1">Giữ đăng nhập</label>
-                            </div>
-                            <a class="forgot-password" style="text-align: left; color: #2691d9">Quên mật khẩu?</a>
-                        </div>
-
-                        <button class="btn btn-primary" id="loginButton" type="submit" >Đăng nhập</button>
-                        <ul class="social-icons">
-                            <li><img class="icon-socialmedias" src="/image/facebook.png" /></li>
-                            <li><img class="icon-socialmedias" src="/image/google.png" /></li>
-                            <li><img class="icon-socialmedias" src="/image/zalo.png" /></li>
-                        </ul>
-                        <div class="signup_link">
-                            Bạn chưa có tài khoản?
-                            <a href="" class="fw-bold text-decoration-underline return_register">Đăng ký ngay</a>
-                        </div>
-            </form>
-        </div>
-
-    </section>
+  
 
 </div>
+
       
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
@@ -265,10 +166,6 @@
 
 
 
-
-
-
-
         function validateForm() {
             const passwordField = document.getElementById('password');
             const confirmPasswordField = document.getElementById('confirmPassword');
@@ -288,258 +185,99 @@
             return true;
         }
 
-       $('#loginButton').submit(function(event){
-        event.preventDefault();
-
-        $.post("/login",  $('#loginButton').serialize(), function(data){
-            if(data.successs){
-                // line code
-            }else{
-                $("#Error_email").text("Dang nhap that bai")
-            }
-        })
-
-       });
-        
-
-        $("#name").on('keyup',function(){
-                var name = $("#name").val();
-                if (name.length == 0){
-                    $("#label_name").text("Xin vui lòng nhập tên !");
-                    // $("#label_name").css('font-color',);
-                    
-                    // $("#name").css('color', 'red');
-                    // $("#name").val("Xin vui lòng nhập tên !").css('color', 'red');
-                    // $('#name').focus();
-                    return false;
-                }else if ((name.length > 0) && (name.length < 3) ){
-                    $("#label_name").text("Độ dài tên phải tối thiểu 3 kí tự").css('color','red');
-                }else{
-                    $("#label_name").text("Tên hợp lệ").css('color','green');
-
-                }
-            });
-
-            $("#phone").on('keyup',function(){
-                var phone = $("#phone").val();
-                // var number = /(((\+|)84)|0)(3|5|7|8|9)+([0-9]{8})\b/ ;
-                const validateEmailRegex = /^\S+@\S+\.\S+$/;
-                if (phone.length == 0){
-                    $("#label_phone").text("Xin vui lòng nhập email !");
-                    return false;
-                }  
-                // if ((phone.length < 10) ||  (phone.length > 11)){
-                //     $("#label_phone").text("Số điện thoại không hợp lệ !").css('color', 'red');
-                // } 
-                if(!phone.match(validateEmailRegex)){
-                    $("#label_phone").text("Email không hợp lệ !").css('color', 'red');
-
-                }
-                
-                else{
-                    $("#label_phone").text("Email hợp lệ").css('color', 'green');
-
-                }
-            });
-            $("#password").on('keyup',function(){
-                var password = $("#password").val();
-                var number = /([0-9])/;
-                var alphabets = /([a-zA-Z])/;
-                var special_characters = /([~,!,@,#,$,%,^,&,*,-,_,+,=,?,>,<])/;
-                console.log(password);
-                if (password.length == 0){
-                    $("#label_password").text("Xin vui lòng nhập mật khẩu !").css('color', 'red');
-                    return false;
-                }if ((password.length < 8)){
-                    $("#label_password").text("Mật khẩu phải có tối thiểu 8 kí tự !").css('color', 'red');
-                }else{
-                    if (password.match(number) && password.match(alphabets) && password.match(alphabets)){
-                    $("#label_password").text("Bảo mật: mạnh").css('color','green')
-                    }
-                    else{
-                        $("#label_password").text("Bảo mật: trung bình. Mật khẩu nên bao gồm cả chữ cái, số và kí tự đặc biệt").css('color', 'orange').css('text-align', 'left');
-                    }
-                }
-                
-                
-            });
-
-            $("#email").on('keyup', function(){
-                var text = $("#email").val();
-                const re = /^\S+@\S+\.\S+$/;
-                // var phone = /(((\+|)84)|0)(3|5|7|8|9)+([0-9]{8})\b/
-                var phone = /^(0|84)(2(0[3-9]|1[0-6|8|9]|2[0-2|5-9]|3[2-9]|4[0-9]|5[1|2|4-9]|6[0-3|9]|7[0-7]|8[0-9]|9[0-4|6|7|9])|3[2-9]|5[5|6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])([0-9]{7})$/mg;
-                if (text.length == ""){
-                    $("#lb_email").text("Xin vui lòng nhập email hoặc số điện thoại !");
-
-                }
-                // if (text.match(phone)){
-                //     if (text.length > 11){
-                //         $("#lb_email").text("Số điện thoại chỉ từ 10 tới 11 số !").css('color','red');
-
-                //     }
-
-                // }
-                if (!text.match(re) && (!isVietnamesePhoneNumber(text))){
-                    $("#lb_email").text("Số điện thoại hoặc email không hợp lệ !").css('color','red');
-                }
-                if (text.match(re) || (isVietnamesePhoneNumber(text))){
-                    if (text.match(re)){
-                        $("#lb_email").text("Email hoặc số điện thoại hợp lệ").css('color','green');
-
-                    }
-                    if (isVietnamesePhoneNumber(text)){
-                       if (text.length > 11){
-                        $("#lb_email").text("Số điện thoại không được vượt quá 11 số !").css('color','red');
-
-                       }
-                        else{
-                    $("#lb_email").text("Email hoặc số điện thoại hợp lệ").css('color','green');
-                    }
-                    }
-                }
-            });
-
-            $("#password").on("keyup", function(){
-                var password = $("#password").val();
-                var number = /([0-9])/;
-                var alphabets = /([a-zA-Z])/;
-                var special_characters = /([~,!,@,#,$,%,^,&,*,-,_,+,=,?,>,<])/;
-                if (password.length == 0){
-                    $("#lb_password").text("Mật khẩu không được để trống").css('color', 'red');
-                }
-                if (password.length < 8){
-                    $("#lb_password").text("Mật khẩu phải có tối thiểu 8 kí tự !").css('color', 'red');
-                }
-                if (password.length > 8){
-                    $("#lb_password").text('');
-                }
-                // else{
-                //     if (password.match(number) && password.match(alphabets) && password.match(alphabets)){
-                //     $("#lb_password").text("Bảo mật: mạnh").css('color','green')
-                //     }
-                //     else{
-                //         $("#lb_password").text("Bảo mật: trung bình. Mật khẩu nên bao gồm cả chữ cái, số và kí tự đặc biệt").css('color', 'orange').css('font-size', '12px').css('text-align', 'left');
-                //     }
-                // }
-
-            });
-
-            $('#register_btn').click(function (){
-                var name = $("#name").val();
-                var phone = $("#phone").val();
-                var password = $("#password").val();
-                var invite_code = $("#invite_code").val();
-                var lb = $('#label_name').text();
-                console.log(lb);
-                if (name.length == ""){
-                    $("#label_name").text("Xin vui lòng nhập tên !").css('color','red');
-                    // $("#name").val("Xin vui lòng nhập tên !").css('color', 'red');
-                    $('#name').focus();
-                    return false;
-                }
-                if (phone.length == ""){
-                    $("#label_phone").text("Xin vui lòng nhập email !").css('color','red');
-                    // $("#label_name").css('font-color',);
-                    
-                    // $("#name").css('color', 'red');
-                    // $("#phone").val("Xin vui lòng nhập email !").css('color', 'red');
-                    $('#phone').focus();
-                    return false;
-                }
-                if (password.length == ""){
-                    $("#label_password").text("Xin vui lòng nhập mật khẩu !").css('color','red');
-                    // $("#label_name").css('font-color',);
-                    
-                    // $("#name").css('color', 'red');
-                    $("#label_password").val("Xin vui lòng nhập mật khẩu !").css('color', 'red');
-                    $('#password').focus();
-                    return false;
-                }
-
-                
-                
-                
-            });
-            
-            $("#login_btn").click(function(){
-                text = $("#email").val();
-                password = $("#password").val();
-
-                if ((text.length == "")){
-                    $("#lb_email").text("Email hoặc số điện thoại không được để trống !").css('color','red');
-                }
-                if (password.length == 0){
-                    $("#lb_password").text("Mật khẩu không được để trống !").css('color', 'red');
-
-                }
-                if (password.length < 8){
-                    $("#lb_password").text("Mật khẩu phải có tối thiểu 8 kí tự !").css('color', 'red');
-
-                }
-                // if (!text.match(re) && (!isVietnamesePhoneNumber(text))){
-                //     $("#lb_email").text("Email hoặc số điện thoại không hợp lệ !").css('color','red');
-                // }
-                // if (text.match(re) || (isVietnamesePhoneNumber(text))){
-                //     $("#lb_email").text("Email hoặc số điện thoại hợp lệ").css('color','green');
-                // }
-                    
-                    
-            });
-
-
-            function isVietnamesePhoneNumber(number) {
-                    return /^(0|84)(2(0[3-9]|1[0-6|8|9]|2[0-2|5-9]|3[2-9]|4[0-9]|5[1|2|4-9]|6[0-3|9]|7[0-7]|8[0-9]|9[0-4|6|7|9])|3[2-9]|5[5|6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])([0-9]{7})$/mg.test(number);
-                }
-
-                function validateEmail(email) {
-                    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                    return re.match(email);
-                }
-     
-
 
 
 
     </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <% if (typeof registrationSuccess !=='undefined' && registrationSuccess) { %>
+    <!-- Add this script to display the registration alert -->
+    <% if (typeof registrationSuccess !== 'undefined' && registrationSuccess) { %>
         <script>
-            $(document).ready(function () {
-                function showLoginForm() {
-                    $(".login_form").css("transform", "scale(1)");
-                    $(".register_form").css("transform", "scale(0)");
-                }
-
-                // Show the login form after a short delay (you can adjust the delay as needed)
-                setTimeout(showLoginForm, 1000);
-
-                // Reset the data attribute to false on the client-side after showing the login form
-                document.getElementById('registrationSuccess').setAttribute('data-registration-success', 'false');
+            // Wait for the DOM to be ready
+            document.addEventListener("DOMContentLoaded", function() {
+                // Show the modal alert after a short delay (you can adjust the delay as needed)
+                setTimeout(function() {
+                    $('#registrationModal').modal('show');
+                }, 1000);
             });
         </script>
         <% } %>
+    
+        <!-- Add this script to display the login alert -->
+        <% if (typeof loginSuccess !== 'undefined' && loginSuccess) { %>
+        <script>
+            // Wait for the DOM to be ready
+            document.addEventListener("DOMContentLoaded", function() {
+                // Show the modal alert after a short delay (you can adjust the delay as needed)
+                setTimeout(function() {
+                    $('#loginModal').modal('show');
+                }, 1000);
+            });
+        </script>
+        <% } %>
+ <!-- Modal for Registration Success -->
+<div class="modal fade" id="registrationModal" tabindex="-1" aria-labelledby="registrationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="registrationModalLabel">Registration Successful</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="lead">Congratulations! Your registration has been successful.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- Modal for Login Success -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="loginModalLabel">Login Successful</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="lead">Welcome back! You have successfully logged in.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Custom styles for the modals */
+    .modal-content {
+        border-radius: 10px;
+    }
+
+    .modal-header {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    .modal-footer {
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+
+    /* Fade-in animation for the modals */
+    .modal.fade .modal-dialog {
+        transform: translate(0, -50%);
+        opacity: 0;
+    }
+
+    .modal.fade.show .modal-dialog {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+</style>
 
             <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
                 integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
