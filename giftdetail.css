@@ -1,0 +1,407 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+body {
+    /* background-image: url(images/background.jpg);
+    background-repeat: repeat;
+    background-size: cover; */
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+
+.navbar {
+    width: 100%;
+    margin: auto;
+    padding: 5px 35px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #ffffff;
+    box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.navbar ul li {
+    list-style: none;
+    display: inline-block;
+    margin: 0 20px;
+    position: relative;
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 400;
+    color: black;
+    text-transform: uppercase;
+}
+
+.navbar ul li::after {
+    content: '';
+    height: 3px;
+    width: 0;
+    background: #009688;
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    transition: 0.5s;
+}
+
+
+.navbar ul li:hover::after {
+    width: 100%;
+}
+
+
+.dropdown-user-window {
+    position: absolute;
+    right: 40px;
+    background-color: white;
+    border-radius: 20px;
+    /* padding: 10px 20px; */
+    margin-top: 5px;
+    box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.25);
+    display: none;
+    visibility: hidden;
+}
+
+.dropdown-user-window.active {
+    display: block;
+    visibility: visible;
+}
+
+.dropdown-user-window div {
+    padding: 7px 0px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.dropdown-user-window div:first-child:hover {
+    background-color: #ededed;
+    border-radius: 20px 20px 0 0;
+}
+
+.dropdown-user-window div:last-child:hover {
+    background-color: #ededed;
+    border-radius: 0 0 20px 20px;
+}
+
+.dropdown-user-window div:hover {
+    background-color: #ededed;
+    /* font-weight: bold; */
+}
+
+.dropdown-user-window div a {
+    text-decoration: none;
+    color: black;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.giftdetail {
+    margin: 25px 50px 20px 50px
+}
+
+.grid-image {
+    display: flex;
+    justify-content: space-between;
+    height: 500px;
+}
+
+.grid-image .main-image, .grid-image .sub-image {
+    width: 49%;
+}
+
+.first-image {
+    height: 500px;
+    width: 100%;
+    border-radius: 20px;
+    object-fit: cover;
+}
+
+.grid-image .sub-image .firstsub-image,
+.grid-image .sub-image .secondsub-image {
+    height: 240px;
+}
+
+.sub-image {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.firstsub-image {
+    display: flex;
+    justify-content: space-between;
+}
+
+.firstsub-image img {
+    width: 49%;
+    height: 240px;
+    border-radius: 20px;
+    object-fit: cover;
+}
+
+.secondsub-image img {
+    width: 100%;
+    height: 240px;
+    border-radius: 20px;
+    object-fit: cover;
+}
+
+.grid-giftinfo {
+    display: flex;
+    justify-content: space-between;
+}
+
+.grid-giftinfo .sub-giftinfo {
+    width: 49%;
+}
+
+.grid-giftinfo .sub-giftinfo .giftinfo-subtab {
+    background-color: #efefef;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.grid-giftinfo .sub-giftinfo .price-tab {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    background-color: #dce9ff;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.grid-giftinfo .sub-giftinfo .price-tab .price {
+    font-size: 40px;
+    font-weight: bold;
+    height: 60px;
+    line-height: 70px;
+}
+
+.gift-name {
+    font-size: 35px;
+    text-transform: capitalize;
+    font-weight: bold;
+}
+
+.giftinfo {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.text-orange {
+    color: orange;
+}
+
+.ulityitem {
+    display: flex;
+    align-items: center;
+}
+
+.ulityitem div {
+    padding-right: 10px;
+}
+
+.ulityitem .review-tab i {
+    font-size: 25px;
+}
+
+.ulityitem .bordered-right {
+    border-right: 1px solid #c3c3c3;
+}
+
+.ulityitem .ulitytext {
+    height: 24px;
+    line-height: 29px;
+}
+
+.btn-love {
+    border: 1px solid #c3c3c3;
+    border-radius: 40px;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+}
+
+.btn-love:hover {
+    border: 1px solid red;
+}
+
+.btn-love:hover>* {
+    color: red;
+}
+
+.info-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1d1d1d;
+    margin-bottom: 10px;
+}
+
+.gifttype {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.gifttype>div {
+    width: 46%;
+}
+
+.giftinfo-2>div:not(:last-child) {
+    margin-bottom: 20px;
+}
+
+/* CSS of Plus and Minus Quantity */
+input,
+textarea {
+    border: none;
+    box-sizing: border-box;
+    margin: 0;
+    outline: none;
+    padding: 10px;
+}
+
+.button-plus, .button-minus {
+    -webkit-appearance: button;
+    cursor: pointer;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.group-input-button {
+    clear: both;
+    /* margin: 15px 0; */
+    position: relative;
+}
+
+.group-input-button input[type='button'] {
+    background-color: #cccccc;
+    min-width: 38px;
+    width: auto;
+    transition: all 300ms ease;
+}
+
+.group-input-button .button-minus,
+.group-input-button .button-plus {
+    font-weight: bold;
+    height: 38px;
+    padding: 0;
+    width: 38px;
+    position: relative;
+}
+
+.group-input-button .quantity-field {
+    position: relative;
+    height: 38px;
+    left: -6px;
+    text-align: center;
+    width: 62px;
+    display: inline-block;
+    font-size: 14px;
+    /* margin: 0 0 5px; */
+    resize: vertical;
+}
+
+.button-plus {
+    left: -13px;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+    -webkit-appearance: none;
+}
+
+/* CSS of Plus and Minus Quantity */
+
+/* CSS of Show Image Popup */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    opacity: 0;
+}
+
+.modal.show {
+    display: block;
+    animation: showModal 0.4s forwards;
+}
+
+.modal.rotate .modal__content {
+    animation: modalRotate 1s forwards;
+}
+
+.modal__content {
+    margin: 5px auto;
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
+    position: relative;
+}
+
+.modal__img-auto {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.modal__close {
+    font-size: 20px;
+    line-height: 1;
+    border-radius: 50%;
+    color: white;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    text-align: center;
+    cursor: pointer;
+    z-index: 10000;
+}
+
+@keyframes showModal {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes modalRotate {
+    0% {
+        transform: rotate(0);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+/* CSS of Show Image Popup */
+
+.giftdescription ul li::marker {
+    color: #0043AB;
+}
+
+.avt-review {
+    height: 50px;
+    width: 50px;
+    border-radius: 40px;
+}

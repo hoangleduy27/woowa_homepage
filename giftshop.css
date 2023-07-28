@@ -183,7 +183,7 @@ body {
 .giftlist {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
-    grid-gap: 4rem;
+    grid-gap: 2rem;
     padding-top: 2rem;
     /* background: #f5f7fa; */
 }
@@ -200,8 +200,8 @@ body {
 .giftlist .card .multi-button {
     z-index: 0;
     position: absolute;
-    top: 1.25rem;
-    left: 1.25rem;
+    top: 5.25rem;
+    left: 6.25rem;
     border-radius: 100%;
     width: 0rem;
     height: 0rem;
@@ -315,6 +315,7 @@ body {
 .giftlist .card .multi-button:focus-within {
     width: 10rem;
     height: 10rem;
+    z-index: 1;
 }
 
 .giftlist .card:hover .button-exchange {

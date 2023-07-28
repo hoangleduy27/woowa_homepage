@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>ÁO MƯA CHỮ A</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
+        integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.20/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="giftdetail.css" />
+</head>
+
+<body>
+    <div>
+        <nav class="navbar">
+            <img src="images/woowa_logo.png" class="lg" height="50" />
+            <div class="d-flex align-items-center">
+                <ul class="p-0 m-0">
+                    <li class="active"><a href="#">Trang chủ</a></li>
+                    <li><a href="#">Sự Kiện</a></li>
+                    <li><a href="#">Cửa Hàng đổi thưởng</a></li>
+                    <li><a href="#">Về chúng tôi</a></li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <div class="position-relative pe-4">
+                        <i class="far fa-bell fs-5"></i>
+                    </div>
+                    <div>
+                        <div class="cursor-pointer user-info-dropdown" tabindex="0">
+                            <img class="rounded-circle" src="images/istockphoto-1371797889-612x612.jpg" height="50px"
+                                srcset="" />
+                            <div class="dropdown-user-window" id="dropdown-user">
+                                <div>
+                                    <a href=""><i class="fas fa-user"></i> Thông tin cá nhân</a>
+                                </div>
+                                <div>
+                                    <a href=""><i class="fas fa-lock"></i> Đổi mật khẩu</a>
+                                </div>
+                                <div>
+                                    <a href=""><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div class="giftdetail">
+            <div class="grid-image">
+                <div class="main-image">
+                    <img class="first-image" onclick="image_preview(this)" src="images/giftrewards/aomua1.jpg" alt="">
+                </div>
+                <div class="sub-image">
+                    <div class="firstsub-image">
+                        <img class="second-image" onclick="image_preview(this)" src="images/giftrewards/aomuamatsau.jpg" height="" alt="">
+                        <img class="third-image" onclick="image_preview(this)" src="images/giftrewards/aomuamattruoc.jpg" alt="">
+                    </div>
+                    <div class="secondsub-image">
+                        <img class="fourth-image" onclick="image_preview(this)" src="images/giftrewards/aomuatrungtam.jpg" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="grid-giftinfo mt-3">
+                <div class="sub-giftinfo">
+                    <div class="giftinfo-subtab">
+                        <div class="giftinfo">
+                            <div>
+                                <div class="gift-name">Áo mưa chữ A</div>
+                                <div class="ulityitem">
+                                    <div class="review-tab bordered-right pe-3 d-flex align-items-center">
+                                        <i class="fas fa-star fs-4 text-orange me-lg-1"></i>
+                                        <span class="ulitytext">4.5 <b>(422 đánh giá)</b></span>
+                                    </div>
+                                    <div class="ps-3 pe-3 bordered-right ulitytext">105 <b>Đã đổi</b></div>
+                                    <div class="ps-3 pe-3 ulitytext">229 <b>Còn lại</b></div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center"><button class="btn-love"><i
+                                        class="far fa-heart fs-2"></i></button></div>
+                        </div>
+                        <div class="giftinfo-2">
+                            <div class="gifttype">
+                                <div>
+                                    <div class="info-title">Loại quà</div>
+                                    <div>
+                                        <select class="form-select">
+                                            <option selected>Loại loại quà cần đổi</option>
+                                            <option value="1">Màu xanh - size M</option>
+                                            <option value="2">Màu vàng - size L</option>
+                                            <option value="3">Màu cam - size L</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="info-title">Số lượng</div>
+                                    <div>
+                                        <div class="group-input-button">
+                                            <input type="button" value="-" class="button-minus" data-field="quantity">
+                                            <input type="number" step="1" max="" value="1" name="quantity"
+                                                class="quantity-field">
+                                            <input type="button" value="+" class="button-plus" data-field="quantity">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="giftdescription">
+                                <div class="info-title">Mô tả</div>
+                                <div>Áo mưa chữ A có hình dáng giống chữ A in hoa, đây là sản phẩm cải tiến của áo mưa
+                                    cánh
+                                    dơi. Được thiết kế với diện tích bao phủ tốt hơn so với áo mưa cánh dơi, giảm nước
+                                    tạt
+                                    vào người giúp tránh mưa hiệu quả hơn. Với kiểu dáng đẹp mắt và hiện đại, áo mưa chữ
+                                    A
+                                    cũng đang được rất nhiều người dùng phổ biển hơn</div>
+                            </div>
+                            <div class="giftdescription">
+                                <div class="info-title">Chi tiết</div>
+                                <ul>
+                                    <li>Chất liệu: Nhựa PVC</li>
+                                    <li>Kích thước: 98cm x 118cm</li>
+                                    <li>Sản xuất: Việt Nam</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sub-giftinfo">
+                    <div class="price-tab">
+                        <div class="price text-orange"><i class="fab fa-bitcoin me-1"></i>900</div>
+                        <div><button class="btn btn-warning rounded-pill px-5 py-2 fs-5">Đổi quà</button></div>
+                    </div>
+                    <div class="giftinfo-subtab mt-3">
+                        <div class="info-title">Đánh giá (422)</div>
+                        <div class="reviewer-info mb-3">
+                            <div class="d-flex pb-2">
+                                <div class="me-2"><img class="avt-review"
+                                        src="images/istockphoto-1371797889-612x612.jpg" alt=""></div>
+                                <div class="d-flex flex-column">
+                                    <div class="fw-bold">Taylor Adam</div>
+                                    <div>
+                                        <span class="pe-2 border-end border-secondary">27/07/2023</span>
+                                        <span class="text-orange ps-2">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="reviewer-comment">
+                                "Tui vừa mới nhận được quà xong, ban đầu tưởng bên này chỉ lừa thôi. Nhưng không nha, tui nhận được thiệt kaka"
+                            </div>
+                        </div>
+                        <div class="reviewer-info mb-3">
+                            <div class="d-flex pb-2">
+                                <div class="me-2"><img class="avt-review"
+                                        src="images/istockphoto-1371797889-612x612.jpg" alt=""></div>
+                                <div class="d-flex flex-column">
+                                    <div class="fw-bold">Taylor Adam</div>
+                                    <div>
+                                        <span class="pe-2 border-end border-secondary">27/07/2023</span>
+                                        <span class="text-orange ps-2">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star text-black"></i>
+                                            <i class="fas fa-star text-black"></i>
+                                            <i class="fas fa-star text-black"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="reviewer-comment">
+                                "Tui vừa mới nhận được quà xong, ban đầu tưởng bên này chỉ lừa thôi. Nhưng không nha, tui nhận được thiệt kaka"
+                            </div>
+                        </div>
+                        <div class="reviewer-info mb-3">
+                            <div class="d-flex pb-2">
+                                <div class="me-2"><img class="avt-review"
+                                        src="images/istockphoto-1371797889-612x612.jpg" alt=""></div>
+                                <div class="d-flex flex-column">
+                                    <div class="fw-bold">Taylor Adam</div>
+                                    <div>
+                                        <span class="pe-2 border-end border-secondary">27/07/2023</span>
+                                        <span class="text-orange ps-2">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="reviewer-comment">
+                                "Tui vừa mới nhận được quà xong, ban đầu tưởng bên này chỉ lừa thôi. Nhưng không nha, tui nhận được thiệt kaka"
+                            </div>
+                        </div>
+                        <div class="cursor-pointer">Hiển thị thêm</div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal">
+        <div class="modal__content"></div>
+        <div class="modal__close">
+            &#10005;
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"
+        integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        function incrementValue(e) {
+            e.preventDefault();
+            var fieldName = $(e.target).data('field');
+            var parent = $(e.target).closest('div');
+            var currentVal = parseInt(parent.find('input[name=' + fieldName + ']').val(), 10);
+
+            if (!isNaN(currentVal)) {
+                parent.find('input[name=' + fieldName + ']').val(currentVal + 1);
+            } else {
+                parent.find('input[name=' + fieldName + ']').val(0);
+            }
+        }
+
+        function decrementValue(e) {
+            e.preventDefault();
+            var fieldName = $(e.target).data('field');
+            var parent = $(e.target).closest('div');
+            var currentVal = parseInt(parent.find('input[name=' + fieldName + ']').val(), 10);
+
+            if (!isNaN(currentVal) && currentVal > 0) {
+                parent.find('input[name=' + fieldName + ']').val(currentVal - 1);
+            } else {
+                parent.find('input[name=' + fieldName + ']').val(0);
+            }
+        }
+
+        $('.group-input-button').on('click', '.button-plus', function (e) {
+            incrementValue(e);
+        });
+
+        $('.group-input-button').on('click', '.button-minus', function (e) {
+            decrementValue(e);
+        });
+
+        const dropdown = document.querySelector(".user-info-dropdown");
+        const dropdownWindow = document.querySelector(".dropdown-user-window");
+
+        dropdown.addEventListener("click", (event) => {
+            dropdownWindow.classList.toggle("active");
+        });
+
+        dropdown.addEventListener("blur", (event) => {
+            dropdownWindow.classList.remove("active");
+        });
+ 
+        function image_preview(event) {
+            $('.modal').addClass('show');
+            if ($(this).hasClass('default')) {
+                $('.modal').addClass('default');
+            }
+            $('.modal__content').append(
+                '<img class="content-append modal__img-auto img_pri" src="' + $(event).attr('src') + '"></div>'
+            );
+
+            $('.modal').on('click', function (e) {
+                if (!$(e.target).hasClass('content-append')) {
+                    $('.modal').removeClass('show default rotate');
+                    $('.modal__content .content-append').remove();
+                }
+            });
+        }
+    </script>
+    <!-- Bootstrap JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.20/dist/sweetalert2.all.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.1.1/js/all.js"
+        integrity="sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+        integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
