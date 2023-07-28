@@ -65,6 +65,8 @@ app.get('/about', function (req, res) {
 
 app.get('/events', (req, res) => {
     const userId = req.query.userId;
+    const registeredEvents = req.session.registeredEvents || []; // Fetch registeredEvents from the session data
+
 
     if (userId) {
         req.session.userId = userId;
@@ -73,7 +75,12 @@ app.get('/events', (req, res) => {
     const user = req.session.userId ? { id: req.session.userId } : null;
 
     // const sql = 'SELECT * FROM events'; 
-    const sql = 'SELECT e.event_id, e.event_name, e.event_date, e.event_location, e.content, CASE WHEN EXISTS (SELECT 1 FROM event_participants ep WHERE e.event_id = ep.event_id AND ep.user_id = ?) THEN 1 ELSE 0 END AS hasRegistered FROM events e;';
+    const sql = `
+    SELECT e.event_id, e.event_name, e.event_date, e.event_location, e.content,
+      IF(ep.user_id IS NOT NULL, 1, 0) AS hasRegistered
+    FROM events e
+    LEFT JOIN event_participants ep ON e.event_id = ep.event_id AND ep.user_id = ?
+  `;
     connection.query(sql, [userId], (err, events) => {
         if (err) {
             console.error('Error querying the database:', err);
@@ -81,23 +88,82 @@ app.get('/events', (req, res) => {
         }
 
 
-        const sql = 'SELECT * FROM event_participants WHERE user_id = ?';
-        connection.query(sql, [userId], (error, results) => {
-            if (error) {
-                console.error('Lỗi truy vấn cơ sở dữ liệu: ' + error.stack);
-                return res.status(500).json({ error: 'Lỗi truy vấn cơ sở dữ liệu' });
-            }
 
-            // Kiểm tra xem user đã đăng ký sự kiện nào hay chưa
-            const hasRegistered = results.length > 0;
 
-            // Tiếp tục xử lý với biến hasRegistered ở đây
 
-            res.render('events', { user, events, hasRegistered });
-        });
+
+        res.render('events', { user, events, eventData: JSON.stringify(registeredEvents) });
     });
 
+
+
 });
+
+
+
+
+// app.post('/register', (req, res) => {
+//     const eventId = req.body.eventId; // Get eventId from the client
+//     const userId = req.session.userId; // Get userId from the session
+
+
+//     // Check if the user is already registered for the event
+//     const checkQuery = 'SELECT * FROM event_participants WHERE event_id = ? AND user_id = ?';
+//     connection.query(checkQuery, [eventId, userId], (err, rows) => {
+//         if (err) {
+//             return res.status(500).json({ message: 'Lỗi khi truy vấn dữ liệu' });
+//         }
+
+//         // If the user is already registered, respond with the appropriate message
+//         if (rows.length > 0) {
+
+//             return res.json({ message: 'Người dùng đã đăng ký sự kiện này trước đó' });
+//             // return res.json(1);
+
+
+//         }
+
+
+//         // If the user is not registered, proceed with inserting the registration record
+//         const insertQuery = 'INSERT INTO event_participants (event_id, user_id) VALUES (?, ?)';
+//         connection.query(insertQuery, [eventId, userId], (err, result) => {
+//             if (err) {
+//                 return res.status(500).json({ message: 'Lỗi khi thêm dữ liệu vào bảng event_participants' });
+//             }
+
+//             // Check the affectedRows to determine if the insertion was successful
+//             if (result.affectedRows === 1) {
+//                 // If the affectedRows is 1, it means a new registration was added successfully
+//                 // Update the event's registration status in the server-side data
+//                 const updateQuery = 'UPDATE events SET hasRegistered = (CASE WHEN EXISTS (SELECT 1 FROM event_participants ep WHERE events.event_id = ep.event_id AND ep.user_id = ?) THEN 1 ELSE 0 END) WHERE event_id = ?';
+//                 connection.query(updateQuery, [userId, eventId], (err, updateResult) => {
+//                     if (err) {
+//                         console.error('Error updating event registration status:', err);
+//                     }
+
+//                     // Send the success message back to the client
+//                     // return res.json({ message: 'Đăng ký tham gia sự kiện thành công' });
+//                     if (!req.session.registeredEvents) {
+//                         req.session.registeredEvents = [];
+//                     }
+//                     req.session.registeredEvents.push(eventId);
+
+//                     return res.json({ message: 'Đăng ký tham gia sự kiện thành công' });
+
+//                 });
+//             } else {
+//                 // return res.json({ message: 'Người dùng đã đăng ký sự kiện này trước đó' });
+//                 return res.json({ message: 'Người dùng đã đăng ký sự kiện này trước đó' });
+
+//                 // res.redirect('/events');
+//             }
+//         });
+        
+
+
+
+//     });
+// });
 
 
 app.post('/register', (req, res) => {
@@ -114,9 +180,7 @@ app.post('/register', (req, res) => {
         // If the user is already registered, respond with the appropriate message
         if (rows.length > 0) {
             return res.json({ message: 'Người dùng đã đăng ký sự kiện này trước đó' });
-
         }
-
 
         // If the user is not registered, proceed with inserting the registration record
         const insertQuery = 'INSERT INTO event_participants (event_id, user_id) VALUES (?, ?)';
@@ -129,23 +193,69 @@ app.post('/register', (req, res) => {
             if (result.affectedRows === 1) {
                 // If the affectedRows is 1, it means a new registration was added successfully
                 // Update the event's registration status in the server-side data
-                const sqlUpdate = 'UPDATE events SET hasRegistered = 1 WHERE event_id = ?';
-                connection.query(sqlUpdate, [eventId], (err, updateResult) => {
+                const updateQuery = 'UPDATE events SET hasRegistered = (CASE WHEN EXISTS (SELECT 1 FROM event_participants ep WHERE events.event_id = ep.event_id AND ep.user_id = ?) THEN 1 ELSE 0 END) WHERE event_id = ?';
+                connection.query(updateQuery, [userId, eventId], (err, updateResult) => {
                     if (err) {
                         console.error('Error updating event registration status:', err);
+                        return res.status(500).json({ message: 'Lỗi khi cập nhật trạng thái đăng ký sự kiện' });
                     }
 
-                    // Send the success message back to the client
-                    return res.json({ message: 'Đăng ký tham gia sự kiện thành công' });
+                    // Get the event point from the events table
+                    const getEventPointQuery = 'SELECT event_point FROM events WHERE event_id = ?';
+                    connection.query(getEventPointQuery, [eventId], (err, eventRows) => {
+                        if (err) {
+                            console.error('Error getting event point:', err);
+                            return res.status(500).json({ message: 'Lỗi khi lấy điểm sự kiện' });
+                        }
+
+                        if (eventRows.length !== 1) {
+                            return res.status(500).json({ message: 'Sự kiện không tồn tại hoặc có nhiều bản ghi trùng lặp' });
+                        }
+
+                        const eventPoint = eventRows[0].event_point;
+
+                        // Get the user's current point from the users table
+                        const getUserPointQuery = 'SELECT user_point FROM users WHERE id = ?';
+                        connection.query(getUserPointQuery, [userId], (err, userRows) => {
+                            if (err) {
+                                console.error('Error getting user point:', err);
+                                return res.status(500).json({ message: 'Lỗi khi lấy điểm người dùng' });
+                            }
+
+                            if (userRows.length !== 1) {
+                                return res.status(500).json({ message: 'Người dùng không tồn tại hoặc có nhiều bản ghi trùng lặp' });
+                            }
+
+                            const userPoint = userRows[0].user_point;
+
+                            // Calculate the new user point after adding the event point
+                            const newUserPoint = userPoint + eventPoint;
+
+                            // Update the user's point in the users table
+                            const updateUserPointQuery = 'UPDATE users SET user_point = ? WHERE id = ?';
+                            connection.query(updateUserPointQuery, [newUserPoint, userId], (err, updateUserResult) => {
+                                if (err) {
+                                    console.error('Error updating user point:', err);
+                                    return res.status(500).json({ message: 'Lỗi khi cập nhật điểm người dùng' });
+                                }
+
+                                // Send the success message back to the client
+                                return res.json({ message: 'Đăng ký tham gia sự kiện thành công' });
+                            });
+                        });
+                    });
                 });
             } else {
                 // If the affectedRows is 0, it means the insertion was ignored (duplicate registration)
                 return res.json({ message: 'Người dùng đã đăng ký sự kiện này trước đó' });
-                // res.redirect('/events');
             }
         });
     });
 });
+
+
+
+
 
 
 app.get('/signup', (req, res) => {
@@ -156,7 +266,7 @@ app.get('/signup', (req, res) => {
 });
 
 app.post('/signup', (req, res) => {
-    const { username, phonenumber, email, password, confirmpassword } = req.body;
+    const { username, phonenumber, email, password, confirmpassword, referralCodeType  } = req.body;
 
 
 
@@ -164,7 +274,7 @@ app.post('/signup', (req, res) => {
         return res.render('signup', { errorMessageSignup: 'Passwords at least 8 characters', user: null });
     }
     if (password !== confirmpassword) {
-        return res.render('signup' );
+        return res.render('signup');
 
     }
 
@@ -200,11 +310,36 @@ app.post('/signup', (req, res) => {
                     return res.status(500).json({ error: 'Error hashing password' });
                 }
 
-                const user = { username, phonenumber, email, password: hashedPassword, referral_code: referralCode };
+                const user = { username, phonenumber, email, password: hashedPassword, referral_code: referralCode, user_point: 0 };
                 connection.query('INSERT INTO users SET ?', user, (err, result) => {
                     if (err) {
                         return res.status(500).json({ error: 'Error register user' });
                     }
+
+
+                    // Nếu người dùng nhập mã giới thiệu của mình
+            if (referralCodeType) {
+                // Kiểm tra xem mã giới thiệu này có tồn tại trong cơ sở dữ liệu hay không
+                connection.query('SELECT * FROM users WHERE referral_code = ?', [referralCode], (err, rows) => {
+                    if (err) {
+                        console.error('Error fetching user with referral code:', err);
+                        // Xử lý lỗi (nếu cần)
+                    }
+
+                    if (rows.length > 0) {
+                        // Mã giới thiệu hợp lệ, tăng giá trị của trường referral_code_count lên 1
+                        const referredUserId = rows[0].id;
+                        connection.query('UPDATE users SET referral_code_count = referral_code_count + 1 WHERE id = ?', [referredUserId], (err, updateResult) => {
+                            if (err) {
+                                console.error('Error updating referral code count:', err);
+                                // Xử lý lỗi (nếu cần)
+                            }
+                        });
+                    }
+                });
+            }
+
+
                     // req.session.userId = result.insertId;
 
                     res.render('homepage', { user: null, registrationSuccess: true, showLoginForm: true });
@@ -218,6 +353,12 @@ app.post('/signup', (req, res) => {
 
 
 app.get('/login', (req, res) => {
+
+    if (req.session.loggedIn) {
+        // Chuyển hướng về trang chủ (home) nếu đã đăng nhập
+        return res.redirect('/');
+    }
+
     res.render('login'); // Assuming you have a login.ejs file for the login form
 });
 
@@ -229,24 +370,15 @@ app.post('/login', (req, res) => {
         return res.render('login', { errorMessage: 'Phone Number/Email is required', user: null });
     }
 
-// Check if the phonenumberOrEmail is a valid email or phone number
-let fieldToCheck;
-if (phonenumberOrEmail.includes('@')) {
-    fieldToCheck = 'email';
-} else {
-    fieldToCheck = 'phonenumber';
-}
+    // Check if the phonenumberOrEmail is a valid email or phone number
+    let fieldToCheck;
+    if (phonenumberOrEmail.includes('@')) {
+        fieldToCheck = 'email';
+    } else {
+        fieldToCheck = 'phonenumber';
+    }
 
 
-
-    // connection.query('SELECT * FROM users WHERE phonenumber = ? and email = ?', [phonenumber, email], (err, rows) => {
-    //     if (err) {
-    //         return res.render('login', { errorMessage: 'Error fetching user', user: null });
-    //     }
-
-    //     if (rows.length === 0) {
-    //         return res.render('login', { errorMessage: 'User not found', user: null });
-    //     }
     connection.query(`SELECT * FROM users WHERE ${fieldToCheck} = ?`, [phonenumberOrEmail], (err, rows) => {
         if (err) {
             return res.render('login', { errorMessage: 'Error fetching user', user: null });
@@ -266,6 +398,7 @@ if (phonenumberOrEmail.includes('@')) {
             }
 
             // Đăng nhập thành công, lưu userId vào session
+            req.session.loggedIn = true;
 
             req.session.userId = user.id;
 

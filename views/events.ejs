@@ -98,18 +98,18 @@
 
                                                 <div class="d-flex align-items-end">
                                                     <% if (user) { %>
-
-                                                        <% if (event.hasRegistered) { %>                                                            <!-- If the user is registered, show "Đã đăng ký" button -->
-                                                            <button class="btn btn-lg btn-primary" disabled>Đã đăng ký</button>
+                                                        
+                                                        <% if (event.hasRegistered === 1) { %>
+                                                            <button class="btn btn-lg btn-outline-primary btn-maincolor" disabled>Đã đăng ký</button>
                                                           <% } else { %>
-                                                            <!-- If the user is not registered, show "Đăng ký tham gia" button -->
-                                                            <button class="btn btn-lg btn-outline-primary btn-maincolor" onclick="registerForEvent('<%= event.event_id %>')">Đăng ký tham gia</button>
+                                                            <button id="registerButton_<%= event.event_id %>" class="btn btn-lg btn-outline-primary btn-maincolor" onclick="registerForEvent('<%= event.event_id %>')">Đăng ký tham gia</button>
                                                           <% } %>
-                                                        <% } else { %>
-                                                          <a href="/"> <button class="btn btn-lg btn-outline-primary btn-maincolor">Đăng nhập để tham gia</button></a>
-                                                        <% } %>
-                
-                                                     
+
+                                                    <% } else { %>
+                                                            <a href="/"><button
+                                                                    class="btn btn-lg btn-outline-primary btn-maincolor">Đăng
+                                                                    nhập để tham gia</button></a>
+                                                    <% } %>
 
                                                 </div>
 
@@ -140,39 +140,17 @@
             integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
             </script>
 </body>
-<script>
-    // function registerForEvent(eventId) {
-    //     const registerButton = document.getElementById('registerButton');
+<!-- <script>
 
-    //     // Gửi yêu cầu POST để đăng ký tham gia sự kiện
-    //     fetch('/register', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify({ eventId })
-    //     })
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             // console.log(data.message);
-
-    //             if (data.message === 'Người dùng đã đăng ký sự kiện này trước đó' || data.message === 'Đăng ký tham gia sự kiện thành công') {
-    //                 buttonElement.textContent = 'Đã đăng ký';
-    //                 buttonElement.disabled = true;
-    //             } else {
-    //                 // Nếu chưa đăng ký trước đó, hiển thị thông báo đăng ký thành công (tùy chọn)
-    //                 console.log(data.message); // Optional: Log the success message from the server
-    //             }
-    //         })
-    //         .catch(error => {
-    //             // Xử lý lỗi (nếu cần)
-    //             console.error(error);
-    //         });
-    // }
 
     function registerForEvent(eventId) {
-        const registerButton = document.getElementById('registerButton');
+        // const registerButton = document.getElementById('registerButton');
+        const registerButton = document.getElementById(`registerButton_${eventId}`);
 
+        if (!registerButton) {
+        console.error(`Button with ID 'registerButton_${eventId}' not found.`);
+        return;
+      }
         // Gửi yêu cầu POST để đăng ký tham gia sự kiện
         fetch('/register', {
             method: 'POST',
@@ -187,17 +165,14 @@
             console.log(data.message);
 
             // If the registration was successful, update the button text and disable it
-            if (data.message === 'Đăng ký tham gia sự kiện thành công') {
-                const buttonElement = document.querySelector(`[onclick="registerForEvent('${eventId}')"]`);
-                buttonElement.textContent = 'Đã đăng ký';
-                buttonElement.disabled = true;
+            if (data === 1  ) {
+                // const buttonElement = document.querySelector(`[onclick="registerForEvent('${eventId}')"]`);
+                // const buttonElement = document.getElementById(`registerButton_${eventId}`);
+                registerButton.textContent = 'Đã đăng ký';
+          registerButton.disabled = true;
+
             }
-            const isActivated = data.isActivated;
-          if (isActivated) {
-            alert('Nút đã kích hoạt!');
-          } else {
-            alert('Nút chưa kích hoạt.');
-          }
+          
         })
         .catch(error => {
             // Xử lý lỗi (nếu cần)
@@ -207,13 +182,47 @@
 
 
 
+</script> -->
 
-    document.getElementById('registerButton').addEventListener('click', function() {
-      // Gọi hàm để thực hiện truy vấn SQL khi nhấp vào nút
-      performSQLQuery();
-    });
+<script>
+    // Phần mã JavaScript khai báo trước
 
- 
+    function registerForEvent(eventId) {
+        const registerButton = document.getElementById(`registerButton_${eventId}`);
+
+        // Gửi yêu cầu POST để đăng ký tham gia sự kiện
+        fetch('/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ eventId })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Log the success message from the server (optional)
+                console.log(data.message);
+
+                // If the registration was successful, update the button text and disable it
+                if (data.message === 'Đăng ký tham gia sự kiện thành công') {
+                registerButton.textContent = 'Đã đăng ký';
+                registerButton.disabled = true;
+            } else if (data.message === 'Người dùng đã đăng ký sự kiện này trước đó') {
+                // Nếu người dùng đã đăng ký trước đó, không làm gì cả
+                registerButton.textContent = 'Đã đăng ký';
+                registerButton.disabled = true;           
+             }
+        })
+            .catch(error => {
+                // Xử lý lỗi (nếu cần)
+                console.error(error);
+            });
+    }
+
+
+
+
 </script>
+
 
 </html>
