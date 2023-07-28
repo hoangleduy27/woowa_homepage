@@ -79,6 +79,7 @@ body {
     padding: 6px 12px;
     border-radius: 5px;
     border: none;
+    border-bottom: 1px solid  ;
     box-shadow: none;
 }
 .form-container .form-horizontal .form-control:focus{ box-shadow: 0 0 5px #0043AB; }
@@ -92,6 +93,7 @@ body {
     width: 100%;
     padding: 9px 11px;
     margin: 0 0 20px;
+    border-bottom: 1px solid  ;
     border-radius: 50px;
     transition: all 0.3s ease 0s;
 }

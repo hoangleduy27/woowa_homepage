@@ -90,64 +90,30 @@
 
 
 
-        $(document).ready(function () {
-            $(".button_register").click(function () {
-                $(".register_form").css("transform", "scale(1)");
-            });
-
-            $(".button_login").click(function () {
-                $(".login_form").css("transform", "scale(1)");
-            });
-            $(".return_login").click(function () {
-                $(".login_form").css("transform", "scale(1)");
-            });
-
-            $(".return_register").click(function () {
-                $(".login_form").css("transform", "scale(0)");
-                $(".register_form").css("transform", "scale(1)");
-            });
-
-            $("#close1").click(function () {
-                $(".register_form").css("transform", "scale(0)");
-                $(".login_form").css("transform", "scale(0)");
-            });
-            $("#close2").click(function () {
-                $(".login_form").css("transform", "scale(0)");
-                $(".register_form").css("transform", "scale(0)");
-            });
-        });
-
-
-        function showLoginForm() {
-            $(".login_form").css("transform", "scale(1)");
-            $(".register_form").css("transform", "scale(0)");
-        }
 
 
 
 
+        // document.addEventListener("DOMContentLoaded", function () {
+        //     const registerLink = document.querySelector(".return_register");
+        //     const signupFormContainer = document.getElementById("signup_form_container");
+        //     const loginLink = document.querySelector(".return_login");
+        //     const loginFormContainer = document.getElementById("login_form_container");
 
+        //     registerLink.addEventListener("click", function (event) {
+        //         event.preventDefault();
+        //         signupFormContainer.style.display = "block";
+        //         // You can also close the login form if needed
+        //         // loginFormContainer.style.display = "none";
+        //     });
 
-        document.addEventListener("DOMContentLoaded", function () {
-            const registerLink = document.querySelector(".return_register");
-            const signupFormContainer = document.getElementById("signup_form_container");
-            const loginLink = document.querySelector(".return_login");
-            const loginFormContainer = document.getElementById("login_form_container");
-
-            registerLink.addEventListener("click", function (event) {
-                event.preventDefault();
-                signupFormContainer.style.display = "block";
-                // You can also close the login form if needed
-                // loginFormContainer.style.display = "none";
-            });
-
-            loginLink.addEventListener("click", function (event) {
-                event.preventDefault();
-                loginFormContainer.style.display = "block";
-                // You can also close the signup form if needed
-                // signupFormContainer.style.display = "none";
-            });
-        });
+        //     loginLink.addEventListener("click", function (event) {
+        //         event.preventDefault();
+        //         loginFormContainer.style.display = "block";
+        //         // You can also close the signup form if needed
+        //         // signupFormContainer.style.display = "none";
+        //     });
+        // });
         const dropdown = document.querySelector(".user-info-dropdown");
         const dropdownWindow = document.querySelector(".dropdown-user-window");
 
@@ -193,12 +159,10 @@
     <!-- Add this script to display the registration alert -->
     <% if (typeof registrationSuccess !== 'undefined' && registrationSuccess) { %>
         <script>
-            // Wait for the DOM to be ready
             document.addEventListener("DOMContentLoaded", function() {
-                // Show the modal alert after a short delay (you can adjust the delay as needed)
                 setTimeout(function() {
                     $('#registrationModal').modal('show');
-                }, 1000);
+                }, 500);
             });
         </script>
         <% } %>
@@ -206,12 +170,10 @@
         <!-- Add this script to display the login alert -->
         <% if (typeof loginSuccess !== 'undefined' && loginSuccess) { %>
         <script>
-            // Wait for the DOM to be ready
             document.addEventListener("DOMContentLoaded", function() {
-                // Show the modal alert after a short delay (you can adjust the delay as needed)
                 setTimeout(function() {
                     $('#loginModal').modal('show');
-                }, 1000);
+                }, 500);
             });
         </script>
         <% } %>
@@ -227,7 +189,7 @@
                 <p class="lead">Congratulations! Your registration has been successful.</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                <a href="/login"><button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button></a>
             </div>
         </div>
     </div>

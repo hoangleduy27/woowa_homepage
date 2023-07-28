@@ -33,8 +33,8 @@ $(document).ready(function () {
     });
 
 
-    $("#phone").on('keyup',function(){
-        var phone = $("#phone").val();
+    $("#phonenumber").on('keyup',function(){
+        var phone = $("#phonenumber").val();
         var number = /(((\+|)84)|0)(3|5|7|8|9)+([0-9]{8})\b/ ;
         if (phone.length == 0){
             $("#error_phone").text("Xin vui lòng nhập số điện thoại !");
@@ -59,6 +59,7 @@ $(document).ready(function () {
 
     $("#password").on('keyup',function(){
         var password = $("#password").val();
+
         var number = /([0-9])/;
         var alphabets = /([a-zA-Z])/;
         var special_characters = /([~,!,@,#,$,%,^,&,*,-,_,+,=,?,>,<])/;
@@ -76,7 +77,7 @@ $(document).ready(function () {
                 $("#error_password").text("Bảo mật: trung bình. Mật khẩu nên bao gồm cả chữ cái, số và kí tự đặc biệt").css('color', 'orange');
             }
         }
-        
+       
         
     });
 
@@ -86,6 +87,7 @@ $(document).ready(function () {
         var email = $("#email").val();
         var phone = $("#phonenumber").val();
         var password = $("#password").val();
+
         var invite_code = $("#invite_code").val();
         var lb = $('#label_name').text();
         console.log(lb);
@@ -120,8 +122,29 @@ $(document).ready(function () {
             return false;
         }
 
+
         
         
         
+        
+    });
+
+    $(document).ready(function() {
+        // Function to check if passwords match
+        function checkPasswordMatch() {
+            var password = $("#password").val();
+            var confirmPassword = $("#confirmpassword").val();
+
+            if (password !== confirmPassword) {
+                $("#error_confirmpassword").text("Passwords do not match").css('color', 'red');
+            } else {
+                $("#error_confirmpassword").text("Passwords match").css('color', 'green');
+            }
+        }
+
+        // Attach keyup event to #confirmpassword field
+        $("#confirmpassword").on('keyup', function() {
+            checkPasswordMatch();
+        });
     });
 });
