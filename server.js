@@ -45,7 +45,7 @@ app.use(
 
 
 
-app.get('/', function (req, res) {
+app.get('/', function(req, res) {
     const userId = req.query.userId;
 
     if (userId) {
@@ -58,7 +58,7 @@ app.get('/', function (req, res) {
     res.render('homepage', { user, errorMessage: null, errorMessageSignup: null });
 });
 
-app.get('/about', function (req, res) {
+app.get('/about', function(req, res) {
     return res.render('about');
 
 });
@@ -158,7 +158,7 @@ app.get('/events', (req, res) => {
 //                 // res.redirect('/events');
 //             }
 //         });
-        
+
 
 
 
@@ -266,7 +266,7 @@ app.get('/signup', (req, res) => {
 });
 
 app.post('/signup', (req, res) => {
-    const { username, phonenumber, email, password, confirmpassword, referralCodeType  } = req.body;
+    const { username, phonenumber, email, password, confirmpassword, referralCodeType } = req.body;
 
 
 
@@ -318,26 +318,26 @@ app.post('/signup', (req, res) => {
 
 
                     // Nếu người dùng nhập mã giới thiệu của mình
-            if (referralCodeType) {
-                // Kiểm tra xem mã giới thiệu này có tồn tại trong cơ sở dữ liệu hay không
-                connection.query('SELECT * FROM users WHERE referral_code = ?', [referralCode], (err, rows) => {
-                    if (err) {
-                        console.error('Error fetching user with referral code:', err);
-                        // Xử lý lỗi (nếu cần)
-                    }
-
-                    if (rows.length > 0) {
-                        // Mã giới thiệu hợp lệ, tăng giá trị của trường referral_code_count lên 1
-                        const referredUserId = rows[0].id;
-                        connection.query('UPDATE users SET referral_code_count = referral_code_count + 1 WHERE id = ?', [referredUserId], (err, updateResult) => {
+                    if (referralCodeType) {
+                        // Kiểm tra xem mã giới thiệu này có tồn tại trong cơ sở dữ liệu hay không
+                        connection.query('SELECT * FROM users WHERE referral_code = ?', [referralCodeType], (err, rows) => {
                             if (err) {
-                                console.error('Error updating referral code count:', err);
+                                console.error('Error fetching user with referral code:', err);
                                 // Xử lý lỗi (nếu cần)
+                            }
+
+                            if (rows.length > 0) {
+                                // Mã giới thiệu hợp lệ, tăng giá trị của trường referral_code_count lên 1
+                                const referredUserId = rows[0].id;
+                                connection.query('UPDATE users SET referral_code_count = referral_code_count + 1 WHERE id = ?', [referredUserId], (err, updateResult) => {
+                                    if (err) {
+                                        console.error('Error updating referral code count:', err);
+                                        // Xử lý lỗi (nếu cần)
+                                    }
+                                });
                             }
                         });
                     }
-                });
-            }
 
 
                     // req.session.userId = result.insertId;
@@ -409,9 +409,7 @@ app.post('/login', (req, res) => {
 });
 
 
-
-
-app.get('/profile', function (req, res) {
+app.get('/profile', function(req, res) {
     const userId = req.session.userId;
 
     if (!userId) {
@@ -429,17 +427,40 @@ app.get('/profile', function (req, res) {
 
         const user = rows[0];
 
-        // Render the dashboard with user information
-        res.render('profile', { user });
+
+        if (!user.has_referenced) {
+            const userPoint = parseFloat(rows[0].user_point);
+            const referralCodeCount = rows[0].referral_code_count;
+            const updatedUserPoint = userPoint + referralCodeCount * 1000;
+
+            // Cập nhật điểm mới cho người dùng
+            connection.query('UPDATE users SET user_point = ?, has_referenced = true WHERE id = ?', [updatedUserPoint, userId], (err, result) => {
+                if (err) {
+                    console.error('Error updating user_point:', err);
+                    return;
+                }
+                user.user_point = updatedUserPoint;
+                user.has_referenced = true;
+
+
+                res.render('profile', { user });
 
 
 
+            });
+        } else {
+
+            // Render the dashboard with user information
+            res.render('profile', { user });
+
+
+        }
 
     });
 });
 
 
-app.get('/update-profile', function (req, res) {
+app.get('/update-profile', function(req, res) {
     // Check if the user is logged in (user ID exists in the session)
     const userId = req.session.userId;
     if (!userId) {
@@ -464,7 +485,7 @@ app.get('/update-profile', function (req, res) {
 });
 
 // Route to handle the profile update form submission
-app.post('/update-profile', function (req, res) {
+app.post('/update-profile', function(req, res) {
     // Check if the user is logged in (user ID exists in the session)
     const userId = req.session.userId;
     if (!userId) {
@@ -485,7 +506,7 @@ app.post('/update-profile', function (req, res) {
 });
 
 
-app.get('/change-password', function (req, res) {
+app.get('/change-password', function(req, res) {
     const userId = req.session.userId;
     if (!userId) {
         return res.redirect('/');
@@ -497,7 +518,7 @@ app.get('/change-password', function (req, res) {
 // Route to handle the password change form submission
 // Route to handle the password change form submission
 
-app.post('/changepassword', function (req, res) {
+app.post('/changepassword', function(req, res) {
     // Check if the user is logged in (user ID exists in the session)
     const userId = req.session.userId;
     if (!userId) {
@@ -562,7 +583,10 @@ app.post('/changepassword', function (req, res) {
 
 app.get('/logout', (req, res) => {
     // Hủy bỏ phiên đăng nhập bằng cách xóa userId từ phiên
+    req.session.hasReferenced = false;
+
     req.session.userId = null;
+
 
     // Xóa toàn bộ thông tin phiên và đăng xuất người dùng
     req.session.destroy((err) => {
