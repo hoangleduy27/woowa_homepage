@@ -101,71 +101,6 @@ app.get('/events', (req, res) => {
 
 
 
-
-// app.post('/register', (req, res) => {
-//     const eventId = req.body.eventId; // Get eventId from the client
-//     const userId = req.session.userId; // Get userId from the session
-
-
-//     // Check if the user is already registered for the event
-//     const checkQuery = 'SELECT * FROM event_participants WHERE event_id = ? AND user_id = ?';
-//     connection.query(checkQuery, [eventId, userId], (err, rows) => {
-//         if (err) {
-//             return res.status(500).json({ message: 'Lỗi khi truy vấn dữ liệu' });
-//         }
-
-//         // If the user is already registered, respond with the appropriate message
-//         if (rows.length > 0) {
-
-//             return res.json({ message: 'Người dùng đã đăng ký sự kiện này trước đó' });
-//             // return res.json(1);
-
-
-//         }
-
-
-//         // If the user is not registered, proceed with inserting the registration record
-//         const insertQuery = 'INSERT INTO event_participants (event_id, user_id) VALUES (?, ?)';
-//         connection.query(insertQuery, [eventId, userId], (err, result) => {
-//             if (err) {
-//                 return res.status(500).json({ message: 'Lỗi khi thêm dữ liệu vào bảng event_participants' });
-//             }
-
-//             // Check the affectedRows to determine if the insertion was successful
-//             if (result.affectedRows === 1) {
-//                 // If the affectedRows is 1, it means a new registration was added successfully
-//                 // Update the event's registration status in the server-side data
-//                 const updateQuery = 'UPDATE events SET hasRegistered = (CASE WHEN EXISTS (SELECT 1 FROM event_participants ep WHERE events.event_id = ep.event_id AND ep.user_id = ?) THEN 1 ELSE 0 END) WHERE event_id = ?';
-//                 connection.query(updateQuery, [userId, eventId], (err, updateResult) => {
-//                     if (err) {
-//                         console.error('Error updating event registration status:', err);
-//                     }
-
-//                     // Send the success message back to the client
-//                     // return res.json({ message: 'Đăng ký tham gia sự kiện thành công' });
-//                     if (!req.session.registeredEvents) {
-//                         req.session.registeredEvents = [];
-//                     }
-//                     req.session.registeredEvents.push(eventId);
-
-//                     return res.json({ message: 'Đăng ký tham gia sự kiện thành công' });
-
-//                 });
-//             } else {
-//                 // return res.json({ message: 'Người dùng đã đăng ký sự kiện này trước đó' });
-//                 return res.json({ message: 'Người dùng đã đăng ký sự kiện này trước đó' });
-
-//                 // res.redirect('/events');
-//             }
-//         });
-
-
-
-
-//     });
-// });
-
-
 app.post('/register', (req, res) => {
     const eventId = req.body.eventId; // Get eventId from the client
     const userId = req.session.userId; // Get userId from the session
@@ -265,17 +200,17 @@ app.get('/signup', (req, res) => {
     return res.render('signup', { user });
 });
 
+
+
 app.post('/signup', (req, res) => {
     const { username, phonenumber, email, password, confirmpassword, referralCodeType } = req.body;
 
-
-
     if (password.length < 8) {
-        return res.render('signup', { errorMessageSignup: 'Passwords at least 8 characters', user: null });
+        return res.render('signup', { errorMessageSignup: 'Passwords must be at least 8 characters', user: null });
     }
-    if (password !== confirmpassword) {
-        return res.render('signup');
 
+    if (password !== confirmpassword) {
+        return res.render('signup', { errorMessageSignup: 'Passwords do not match', user: null });
     }
 
     connection.query('SELECT * FROM users WHERE email = ?', [email], (err, rows) => {
@@ -294,10 +229,9 @@ app.post('/signup', (req, res) => {
             }
 
             if (rows.length > 0) {
-                // An account with this email already exists
-                return res.render('signup', { errorMessageSignup: 'Phone is already registered', user: null });
+                // An account with this phone number already exists
+                return res.render('signup', { errorMessageSignup: 'Phone number is already registered', user: null });
             }
-
 
             const referralCode = randomstring.generate({
                 length: 6,
@@ -305,47 +239,68 @@ app.post('/signup', (req, res) => {
                 capitalization: 'uppercase'
             });
 
-            bcrypt.hash(password, 10, (err, hashedPassword) => {
-                if (err) {
-                    return res.status(500).json({ error: 'Error hashing password' });
-                }
+            // Calculate the referral points based on the referral code entered by the user
+            let referrerReferralPoint = 0;
+            let referredUserReferralPoint = 0;
 
-                const user = { username, phonenumber, email, password: hashedPassword, referral_code: referralCode, user_point: 0 };
-                connection.query('INSERT INTO users SET ?', user, (err, result) => {
+            if (referralCodeType) {
+                connection.query('SELECT * FROM users WHERE referral_code = ?', [referralCodeType], (err, rows) => {
                     if (err) {
-                        return res.status(500).json({ error: 'Error register user' });
+                        console.error('Error fetching user with referral code:', err);
+                        // Handle the error if needed
                     }
 
+                    if (rows.length > 0) {
+                        // Referral code is valid, increase the referral points for both the referrer and the referred user
+                        const referredUserId = rows[0].id;
+                        referrerReferralPoint = 1000; // Set the referral points for the referrer to 1000
+                        referredUserReferralPoint = 500; // Set the referral points for the referred user to 500
 
-                    // Nếu người dùng nhập mã giới thiệu của mình
-                    if (referralCodeType) {
-                        // Kiểm tra xem mã giới thiệu này có tồn tại trong cơ sở dữ liệu hay không
-                        connection.query('SELECT * FROM users WHERE referral_code = ?', [referralCodeType], (err, rows) => {
+                        connection.query('UPDATE users SET referral_code_count = referral_code_count + 1, user_point = user_point + ? WHERE id = ?', [referrerReferralPoint, referredUserId], (err, updateResult) => {
                             if (err) {
-                                console.error('Error fetching user with referral code:', err);
-                                // Xử lý lỗi (nếu cần)
-                            }
-
-                            if (rows.length > 0) {
-                                // Mã giới thiệu hợp lệ, tăng giá trị của trường referral_code_count lên 1
-                                const referredUserId = rows[0].id;
-                                connection.query('UPDATE users SET referral_code_count = referral_code_count + 1 WHERE id = ?', [referredUserId], (err, updateResult) => {
-                                    if (err) {
-                                        console.error('Error updating referral code count:', err);
-                                        // Xử lý lỗi (nếu cần)
-                                    }
-                                });
+                                console.error('Error updating referral code count and user points:', err);
+                                // Handle the error if needed
                             }
                         });
                     }
 
+                    // Continue with user registration process
+                    bcrypt.hash(password, 10, (err, hashedPassword) => {
+                        if (err) {
+                            return res.status(500).json({ error: 'Error hashing password' });
+                        }
 
-                    // req.session.userId = result.insertId;
 
-                    res.render('homepage', { user: null, registrationSuccess: true, showLoginForm: true });
 
+                            // Register the referred user with the corresponding referral points
+                            const referredUser = { username, phonenumber, email, password: hashedPassword, referral_code: referralCode, user_point: referredUserReferralPoint };
+                            connection.query('INSERT INTO users SET ?', referredUser, (err, referredUserResult) => {
+                                if (err) {
+                                    return res.status(500).json({ error: 'Error registering referred user' });
+                                }
+
+                                res.render('homepage', { user: null, registrationSuccess: true, showLoginForm: true });
+                            });
+                        });
+                    });
+            } else {
+                // Continue with user registration process without referral points
+                bcrypt.hash(password, 10, (err, hashedPassword) => {
+                    if (err) {
+                        return res.status(500).json({ error: 'Error hashing password' });
+                    }
+
+                    // Assign zero referral points to the users before registration
+                    const user = { username, phonenumber, email, password: hashedPassword, referral_code: referralCode, user_point: 0 };
+                    connection.query('INSERT INTO users SET ?', user, (err, result) => {
+                        if (err) {
+                            return res.status(500).json({ error: 'Error registering user' });
+                        }
+
+                        res.render('homepage', { user: null, registrationSuccess: true, showLoginForm: true });
+                    });
                 });
-            });
+            }
         });
     });
 });
@@ -428,33 +383,33 @@ app.get('/profile', function(req, res) {
         const user = rows[0];
 
 
-        if (!user.has_referenced) {
-            const userPoint = parseFloat(rows[0].user_point);
-            const referralCodeCount = rows[0].referral_code_count;
-            const updatedUserPoint = userPoint + referralCodeCount * 1000;
+        // if (!user.has_referenced) {
+        //     const userPoint = parseFloat(rows[0].user_point);
+        //     const referralCodeCount = rows[0].referral_code_count;
+        //     const updatedUserPoint = userPoint + referralCodeCount * 1000;
 
-            // Cập nhật điểm mới cho người dùng
-            connection.query('UPDATE users SET user_point = ?, has_referenced = true WHERE id = ?', [updatedUserPoint, userId], (err, result) => {
-                if (err) {
-                    console.error('Error updating user_point:', err);
-                    return;
-                }
-                user.user_point = updatedUserPoint;
-                user.has_referenced = true;
-
-
-                res.render('profile', { user });
+        //     // Cập nhật điểm mới cho người dùng
+        //     connection.query('UPDATE users SET user_point = ?, has_referenced = true WHERE id = ?', [updatedUserPoint, userId], (err, result) => {
+        //         if (err) {
+        //             console.error('Error updating user_point:', err);
+        //             return;
+        //         }
+        //         user.user_point = updatedUserPoint;
+        //         user.has_referenced = true;
 
 
+        //         res.render('profile', { user });
 
-            });
-        } else {
+
+
+        //     });
+        // } else {
 
             // Render the dashboard with user information
             res.render('profile', { user });
 
 
-        }
+        // }
 
     });
 });
