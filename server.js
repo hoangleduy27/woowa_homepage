@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const moment = require('moment');
 const async = require('async');
-
+const nodemailer = require('nodemailer');
 const path = require('path');
 const mysql = require('mysql');
 const bcrypt = require('bcrypt');
@@ -32,6 +32,9 @@ connection.connect((err) => {
     console.log('Connection successfull')
 })
 
+
+
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -45,7 +48,14 @@ app.use(
 
 
 
-app.get('/', function(req, res) {
+
+
+
+
+
+
+
+app.get('/', function (req, res) {
     const userId = req.query.userId;
 
     if (userId) {
@@ -58,135 +68,139 @@ app.get('/', function(req, res) {
     res.render('homepage', { user, errorMessage: null, errorMessageSignup: null });
 });
 
-app.get('/about', function(req, res) {
+app.get('/about', function (req, res) {
     return res.render('about');
 
 });
 
+
 app.get('/events', (req, res) => {
     const userId = req.query.userId;
-    const registeredEvents = req.session.registeredEvents || []; // Fetch registeredEvents from the session data
 
-
-    if (userId) {
-        req.session.userId = userId;
-    }
-
-    const user = req.session.userId ? { id: req.session.userId } : null;
-
-    // const sql = 'SELECT * FROM events'; 
-    const sql = `
-    SELECT e.event_id, e.event_name, e.event_date, e.event_location, e.content,
-      IF(ep.user_id IS NOT NULL, 1, 0) AS hasRegistered
-    FROM events e
-    LEFT JOIN event_participants ep ON e.event_id = ep.event_id AND ep.user_id = ?
-  `;
-    connection.query(sql, [userId], (err, events) => {
+    // Fetch all events from the events table
+    const getEventsQuery = 'SELECT * FROM events';
+    connection.query(getEventsQuery, (err, events) => {
         if (err) {
-            console.error('Error querying the database:', err);
-            return res.status(500).json({ message: 'Lỗi khi truy vấn cơ sở dữ liệu' });
+            console.error('Error querying the database for events:', err);
+            return res.status(500).json({ message: 'Lỗi khi truy vấn cơ sở dữ liệu cho các sự kiện' });
         }
 
-
-
-
-
-
-        res.render('events', { user, events, eventData: JSON.stringify(registeredEvents) });
-    });
-
-
-
-});
-
-
-
-app.post('/register', (req, res) => {
-    const eventId = req.body.eventId; // Get eventId from the client
-    const userId = req.session.userId; // Get userId from the session
-
-    // Check if the user is already registered for the event
-    const checkQuery = 'SELECT * FROM event_participants WHERE event_id = ? AND user_id = ?';
-    connection.query(checkQuery, [eventId, userId], (err, rows) => {
-        if (err) {
-            return res.status(500).json({ message: 'Lỗi khi truy vấn dữ liệu' });
+        // Check if the userId is provided and set it in the session
+        if (userId) {
+            req.session.userId = userId;
         }
 
-        // If the user is already registered, respond with the appropriate message
-        if (rows.length > 0) {
-            return res.json({ message: 'Người dùng đã đăng ký sự kiện này trước đó' });
-        }
-
-        // If the user is not registered, proceed with inserting the registration record
-        const insertQuery = 'INSERT INTO event_participants (event_id, user_id) VALUES (?, ?)';
-        connection.query(insertQuery, [eventId, userId], (err, result) => {
-            if (err) {
-                return res.status(500).json({ message: 'Lỗi khi thêm dữ liệu vào bảng event_participants' });
+        // Fetch user information from the users table based on the userId stored in the session
+        const userIdFromSession = req.session.userId;
+        const getUserQuery = 'SELECT * FROM users WHERE id = ?';
+        connection.query(getUserQuery, [userIdFromSession], (userErr, userRows) => {
+            if (userErr) {
+                console.error('Error querying user data:', userErr);
+                return res.status(500).json({ message: 'Lỗi khi truy vấn dữ liệu người dùng' });
             }
 
-            // Check the affectedRows to determine if the insertion was successful
-            if (result.affectedRows === 1) {
-                // If the affectedRows is 1, it means a new registration was added successfully
-                // Update the event's registration status in the server-side data
-                const updateQuery = 'UPDATE events SET hasRegistered = (CASE WHEN EXISTS (SELECT 1 FROM event_participants ep WHERE events.event_id = ep.event_id AND ep.user_id = ?) THEN 1 ELSE 0 END) WHERE event_id = ?';
-                connection.query(updateQuery, [userId, eventId], (err, updateResult) => {
-                    if (err) {
-                        console.error('Error updating event registration status:', err);
-                        return res.status(500).json({ message: 'Lỗi khi cập nhật trạng thái đăng ký sự kiện' });
-                    }
+            const user = userRows.length === 1 ? userRows[0] : null;
+            const redeemmessage = req.query.redeemmessage;
 
-                    // Get the event point from the events table
-                    const getEventPointQuery = 'SELECT event_point FROM events WHERE event_id = ?';
-                    connection.query(getEventPointQuery, [eventId], (err, eventRows) => {
-                        if (err) {
-                            console.error('Error getting event point:', err);
-                            return res.status(500).json({ message: 'Lỗi khi lấy điểm sự kiện' });
-                        }
-
-                        if (eventRows.length !== 1) {
-                            return res.status(500).json({ message: 'Sự kiện không tồn tại hoặc có nhiều bản ghi trùng lặp' });
-                        }
-
-                        const eventPoint = eventRows[0].event_point;
-
-                        // Get the user's current point from the users table
-                        const getUserPointQuery = 'SELECT user_point FROM users WHERE id = ?';
-                        connection.query(getUserPointQuery, [userId], (err, userRows) => {
-                            if (err) {
-                                console.error('Error getting user point:', err);
-                                return res.status(500).json({ message: 'Lỗi khi lấy điểm người dùng' });
-                            }
-
-                            if (userRows.length !== 1) {
-                                return res.status(500).json({ message: 'Người dùng không tồn tại hoặc có nhiều bản ghi trùng lặp' });
-                            }
-
-                            const userPoint = userRows[0].user_point;
-
-                            // Calculate the new user point after adding the event point
-                            const newUserPoint = userPoint + eventPoint;
-
-                            // Update the user's point in the users table
-                            const updateUserPointQuery = 'UPDATE users SET user_point = ? WHERE id = ?';
-                            connection.query(updateUserPointQuery, [newUserPoint, userId], (err, updateUserResult) => {
-                                if (err) {
-                                    console.error('Error updating user point:', err);
-                                    return res.status(500).json({ message: 'Lỗi khi cập nhật điểm người dùng' });
-                                }
-
-                                // Send the success message back to the client
-                                return res.json({ message: 'Đăng ký tham gia sự kiện thành công' });
-                            });
-                        });
-                    });
-                });
-            } else {
-                // If the affectedRows is 0, it means the insertion was ignored (duplicate registration)
-                return res.json({ message: 'Người dùng đã đăng ký sự kiện này trước đó' });
-            }
+            res.render('events', { user, events, ticket: user ? user.ticket : null, redeemmessage });
         });
     });
 });
+
+
+
+app.get('/redeem-gift', (req, res) => {
+    const userId = req.session.userId;
+  
+    if (!userId) {
+      return res.redirect('/login');
+    }
+  
+    // Check if the user has enough points to redeem the gift (minimum 5000 points)
+    const getUserPointQuery = 'SELECT user_point FROM users WHERE id = ?';
+    connection.query(getUserPointQuery, [userId], (err, userRows) => {
+      if (err) {
+        console.error('Error getting user point:', err);
+        return res.status(500).json({ message: 'Lỗi khi lấy điểm người dùng' });
+      }
+  
+      if (userRows.length !== 1) {
+        return res.status(500).json({ message: 'Người dùng không tồn tại hoặc có nhiều bản ghi trùng lặp' });
+      }
+  
+      const userPoint = userRows[0].user_point;
+  
+      if (userPoint < 5000) {
+        // User does not have enough points to redeem the gift
+        return res.redirect('/events?redeemmessage=not_enough_points');
+      }
+  
+      // Deduct 5000 points from the user's point and update the ticket status to "yes"
+      const newUserPoint = userPoint - 5000;
+      const updateUserQuery = 'UPDATE users SET user_point = ?, ticket = "yes" WHERE id = ?';
+      connection.query(updateUserQuery, [newUserPoint, userId], (err, updateUserResult) => {
+        if (err) {
+          console.error('Error updating user point and ticket status:', err);
+          return res.status(500).json({ message: 'Lỗi khi cập nhật điểm người dùng và trạng thái vé' });
+        }
+  
+
+  
+        // Gửi email khi đăng ký thành công
+        const getUserEmailQuery = 'SELECT email, username FROM users WHERE id = ?';
+        connection.query(getUserEmailQuery, [userId], (err, userEmailRows) => {
+          if (err) {
+            console.error('Error getting user email:', err);
+            return res.status(500).json({ message: 'Lỗi khi lấy email người dùng' });
+          }
+  
+          if (userEmailRows.length !== 1) {
+            console.error('User with id ' + userId + ' not found or multiple records with the same id exist.');
+            return res.status(500).json({ message: 'Người dùng không tồn tại hoặc có nhiều bản ghi trùng lặp' });
+          }
+  
+          const userEmail = userEmailRows[0].email;
+          const userName = userEmailRows[0].username;
+  
+          // Thông tin email
+          const mailOptions = {
+            from: 'hlduy01dn@gmail.com', // Email của bạn
+            to: userEmail, // Địa chỉ email người nhận từ CSDL
+            subject: 'Ticket Confirmation', // Tiêu đề email
+            html: `<p>Dear ${userName},</p>
+                    <p>Your ticket has been confirmed.</p>
+                    <p>Thank you for using our service!</p>
+                    <p>Best regards,</p>
+                    <p>The Admin Team</p>`,
+          };
+  
+          // Gửi email
+          transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+              console.log('Error sending email:', error);
+            } else {
+              console.log('Email sent to:', userEmail);
+            }
+          });
+        });
+  
+        res.redirect(`/events?redeemmessage=success`);
+      });
+    });
+  });
+  
+
+
+// Cấu hình dịch vụ Gmail
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'hlduy01dn@gmail.com', // Email của bạn
+        pass: 'dsqrtreqocyxrwtr', // Mật khẩu của bạn 
+
+    },
+});
+
 
 
 
@@ -272,17 +286,17 @@ app.post('/signup', (req, res) => {
 
 
 
-                            // Register the referred user with the corresponding referral points
-                            const referredUser = { username, phonenumber, email, password: hashedPassword, referral_code: referralCode, user_point: referredUserReferralPoint };
-                            connection.query('INSERT INTO users SET ?', referredUser, (err, referredUserResult) => {
-                                if (err) {
-                                    return res.status(500).json({ error: 'Error registering referred user' });
-                                }
+                        // Register the referred user with the corresponding referral points
+                        const referredUser = { username, phonenumber, email, password: hashedPassword, referral_code: referralCode, user_point: referredUserReferralPoint };
+                        connection.query('INSERT INTO users SET ?', referredUser, (err, referredUserResult) => {
+                            if (err) {
+                                return res.status(500).json({ error: 'Error registering referred user' });
+                            }
 
-                                res.render('homepage', { user: null, registrationSuccess: true, showLoginForm: true });
-                            });
+                            res.render('homepage', { user: null, registrationSuccess: true, showLoginForm: true });
                         });
                     });
+                });
             } else {
                 // Continue with user registration process without referral points
                 bcrypt.hash(password, 10, (err, hashedPassword) => {
@@ -364,7 +378,7 @@ app.post('/login', (req, res) => {
 });
 
 
-app.get('/profile', function(req, res) {
+app.get('/profile', function (req, res) {
     const userId = req.session.userId;
 
     if (!userId) {
@@ -382,40 +396,13 @@ app.get('/profile', function(req, res) {
 
         const user = rows[0];
 
-
-        // if (!user.has_referenced) {
-        //     const userPoint = parseFloat(rows[0].user_point);
-        //     const referralCodeCount = rows[0].referral_code_count;
-        //     const updatedUserPoint = userPoint + referralCodeCount * 1000;
-
-        //     // Cập nhật điểm mới cho người dùng
-        //     connection.query('UPDATE users SET user_point = ?, has_referenced = true WHERE id = ?', [updatedUserPoint, userId], (err, result) => {
-        //         if (err) {
-        //             console.error('Error updating user_point:', err);
-        //             return;
-        //         }
-        //         user.user_point = updatedUserPoint;
-        //         user.has_referenced = true;
-
-
-        //         res.render('profile', { user });
-
-
-
-        //     });
-        // } else {
-
-            // Render the dashboard with user information
-            res.render('profile', { user });
-
-
-        // }
+        res.render('profile', { user });
 
     });
 });
 
 
-app.get('/update-profile', function(req, res) {
+app.get('/update-profile', function (req, res) {
     // Check if the user is logged in (user ID exists in the session)
     const userId = req.session.userId;
     if (!userId) {
@@ -440,7 +427,7 @@ app.get('/update-profile', function(req, res) {
 });
 
 // Route to handle the profile update form submission
-app.post('/update-profile', function(req, res) {
+app.post('/update-profile', function (req, res) {
     // Check if the user is logged in (user ID exists in the session)
     const userId = req.session.userId;
     if (!userId) {
@@ -461,7 +448,7 @@ app.post('/update-profile', function(req, res) {
 });
 
 
-app.get('/change-password', function(req, res) {
+app.get('/change-password', function (req, res) {
     const userId = req.session.userId;
     if (!userId) {
         return res.redirect('/');
@@ -473,7 +460,7 @@ app.get('/change-password', function(req, res) {
 // Route to handle the password change form submission
 // Route to handle the password change form submission
 
-app.post('/changepassword', function(req, res) {
+app.post('/changepassword', function (req, res) {
     // Check if the user is logged in (user ID exists in the session)
     const userId = req.session.userId;
     if (!userId) {

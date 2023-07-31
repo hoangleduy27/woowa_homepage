@@ -441,12 +441,14 @@ button[type="submit"]:hover {
     visibility: visible;
 }
 
-.dropdown-user-window div {
+.dropdown-user-window a {
     padding: 7px 0px;
     cursor: pointer;
     display: flex;
     align-items: center;
     padding: 10px 20px;
+    color: black;
+    text-decoration: none;
 }
 
 .dropdown-user-window div:first-child:hover {
