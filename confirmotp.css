@@ -123,14 +123,14 @@ body {
 }
 
 .form-horizontal .form-group {
-    margin: 0 0 20px;
+    margin: 0 0 15px;
 }
 
 .form-horizontal .form-group label {
     font-weight: 500;
 }
 
-.form-horizontal .form-control {
+/* .form-horizontal .form-control {
     color: #888;
     background: #f0f0f0;
     font-weight: 400;
@@ -140,7 +140,7 @@ body {
     border-radius: 5px;
     border: none;
     box-shadow: none;
-}
+} */
 
 .form-horizontal .form-control:focus {
     box-shadow: 0 0 5px #0043AB;
@@ -153,7 +153,7 @@ body {
     font-weight: 500;
     letter-spacing: 0.5px;
     text-transform: capitalize;
-    width: 100%;
+    width: 200px;
     padding: 9px 11px;
     margin: 0 0 20px;
     border-radius: 50px;
@@ -185,6 +185,8 @@ body {
 
 .side-background {
     padding: 0 1vh;
+    /* background-color: #0043AB; */
+    /* border-radius: 100px 0 0 100px; */
 }
 
 .socialmedias {
@@ -203,7 +205,7 @@ body {
 
 .showpass {
     position: absolute;
-    color:#888;
+    color: #888;
     bottom: 26px;
     left: 17px;
 }
@@ -212,6 +214,44 @@ body {
     display: block;
     height: 14px;
 }
+
+/* OTP CONFIRM CSS */
+/* .card-otp {
+    width: 400px;
+    border: none;
+    height: 300px;
+    box-shadow: 0px 5px 20px 0px #d2dae3;
+    z-index: 1;
+    display:vh flex;
+    justify-content: center;
+    align-items: center
+} */
+
+.card-otp .inputs input {
+    width: 60px;
+    height: 60px;
+    font-size: 30px;
+    font-weight: bolder;
+}
+
+input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0
+}
+
+.card-otp-2 .content a {
+    color: #0043AB
+}
+
+/* .form-control:focus {
+    box-shadow: none;
+    border: 2px solid red
+} */
+
+/* OTP CONFIRM CSS */
+  
 
 .carousel-item {
     height: 98vh;

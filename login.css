@@ -184,8 +184,7 @@ body {
 }
 
 .side-background {
-    background-color: #0043AB;
-    border-radius: 100px 0 0 100px;
+    padding: 0 1vh;
 }
 
 .socialmedias {
@@ -205,6 +204,23 @@ body {
 .showpass {
     position: absolute;
     color:#888;
-    bottom: 12px;
+    bottom: 26px;
     left: 17px;
 }
+
+.error-message {
+    display: block;
+    height: 14px;
+}
+
+.carousel-item {
+    height: 98vh;
+    min-height: 350px;
+    background: no-repeat center center scroll;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    border-radius: 20px;
+}
+
