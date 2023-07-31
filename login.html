@@ -31,15 +31,15 @@
                     </div>
                     <form class="form-horizontal">
                         <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" id="email" name="email" class="form-control">
-                            <small class="error-message"></small>
+                            <label>Phone number/Email</label>
+                            <input type="email" id="phone_email" name="email" class="form-control">
+                            <small class="error-message" id="error_phone_email"></small>
                         </div>
                         <div class="form-group position-relative">
                             <label>Mật khẩu</label>
-                            <input type="password" id="password" name="password" class="form-control ps-5">
+                            <input type="password" id="pass_login" name="password" class="form-control ps-5">
                             <i class="fas fa-eye showpass cursor-pointer" onclick="togglePassword(this)"></i>
-                            <small class="error-message"></small>
+                            <small class="error-message" id="error_password"></small>
                         </div>
                         <div class="d-flex justify-content-between mb-3">
                             <div class="form-check cursor-pointer">
@@ -50,7 +50,7 @@
                             </div>
                             <div class="cursor-pointer"><a href="" class="text-decoration-none">Quên mật khẩu?</a></div>
                         </div>
-                        <button type="submit" class="btn signin">Đăng Nhập</button>
+                        <button type="button" class="btn signin" id="login_btn">Đăng Nhập</button>
                     </form>
                     <div class="mb-2 text-center">Hoặc</div>
                     <div class="socialmedias mb-3">
@@ -74,15 +74,16 @@
                             aria-label="Slide 3"></button>
                     </div>
                     <div class="carousel-inner">
-                        <div class="carousel-item active" data-bs-interval="10000">
+                        <div class="carousel-item active">
+                            <img src="images/music_event.png" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item" data-bs-interval="10000">
                             <img src="images/samsungeventbanner.jpg" class="d-block w-100" alt="...">
                         </div>
                         <div class="carousel-item" data-bs-interval="2000">
                             <img src="images/LGgramEventBanner.jpg" class="d-block w-100" alt="...">
                         </div>
-                        <div class="carousel-item">
-                            <img src="images/HyundaiEventBanner.jpg" class="d-block w-100" alt="...">
-                        </div>
+                        
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
                         data-bs-slide="prev">
@@ -119,9 +120,11 @@
         integrity="sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a"
         crossorigin="anonymous"></script>
     <!-- Fontawesome Javascript Library -->
-    <script defer src="https://use.fontawesome.com/releases/v5.1.1/js/all.js"
+    <scrip defer src="https://use.fontawesome.com/releases/v5.1.1/js/all.js"
         integrity="sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a"
         crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="validate_login.js"></script>
 </body>
 
 </html>

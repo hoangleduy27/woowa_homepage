@@ -205,6 +205,11 @@ body {
 .showpass {
     position: absolute;
     color:#888;
-    bottom: 12px;
+    bottom: 26px;
     left: 17px;
+}
+
+.error-message {
+    display: block;
+    height: 14px;
 }
