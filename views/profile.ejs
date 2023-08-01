@@ -54,6 +54,16 @@
                       </span></p>
                 </div>
                 <div>
+             <span class="color-black fw-bold fs-4">Bạn đang có: <%= user.referral_code_count%> lượt giới thiệu</span>
+             
+
+                </div>
+                <% if(user.ticket === 'yes') { %>
+                    <span>Bạn đã có vé</span>
+                    <% } else { %> 
+    
+                    <% } %> 
+                <div>
                     <i class="fab fa-bitcoin color-orange"></i> <span class="color-orange fw-bold fs-4"><%= user.user_point.toLocaleString() %></span>
 
 

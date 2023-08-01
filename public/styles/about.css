@@ -68,7 +68,7 @@ body {
     z-index: 5;
 }
 
-.dropdown-user-window div {
+.dropdown-user-window a {
     padding: 7px 0px;
     cursor: pointer;
     display: flex;

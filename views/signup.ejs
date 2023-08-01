@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Title</title>
+    <title>ĐĂNG KÝ TÀI KHOẢN MỚI</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -13,90 +13,143 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
         integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
     <link rel="stylesheet" href="/styles/register.css">
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
 </head>
 
 <body>
-    <div class="form-bg">
-        <div class="container d-flex align-items-center h-100">
-            <div class="row">
-                <div class="offset-md-2 col-md-8 offset-sm-3 col-sm-6">
-                    <div class="form-container">
-                        <div class="left-content">
-                            <h3 class="title">Woowa Adex</h3>
-                            <h4 class="sub-title">Ứng dụng quảng cáo và tiếp thị kỹ thuật số hàng đầu Việt Nam</h4>
-                            <div><img src="/image/ads-compain.jpg" alt=""></div>
+    <div class="authentication-wrapper ">
+        <div class="authentication-inner row m-0">
+            <div class="d-flex col-12 col-lg-5 align-items-center p-sm-5 p-4">
+                <div class="mx-auto w-100">
+                    <div class="mb-4"><a href="/"><img src="/image/woowa_logo.png" alt="" width="150"></a></div>
+                    <div class="mb-3">
+                        <div class="fs-1 fw-bold text-maincolor">Đăng Ký</div>
+                        <div>Chào mừng đến với <span class="text-maincolor">Woowa Adex</span>. Ứng dụng quảng cáo và
+                            tiếp thị kỹ thuật số hàng đầu Việt Nam</div>
+                    </div>
+                    <form action="" class="form-horizontal" method="post" action="/signup">
+                        <div class="form-group ">
+                            <label>Họ tên</label>
+                            <input type="text" id="username" name="username" class="form-control">
+                            <small class="error-message" id="error_name"></small>
                         </div>
-                        <div class="right-content">
-                            <h3 class="form-title">Đăng ký</h3>
-         
-                            <form name="Register" class="form-horizontal" method="post" action="/signup">
-                                <div class="form-group">
-                                    <label>Họ tên</label>
-                                    <input type="text" id="username" name="username" class="form-control" >
-                                    <small id="error_name"></small>
-                                </div>
-                                <div class="form-group">
-                                    <label>Email</label>
-                                    <input type="email" id="email" name="email" class="form-control">
-                                    <small id="error_email"></small>
-                                </div>
-                                <div class="form-group">
-                                    <label>Số điện thoại</label>
-                                    <input type="text" id="phonenumber" name="phonenumber" class="form-control" autocomplete="off">
-                                    <small id="error_phone"></small>
-                                </div>
-                                <div class="form-group position-relative">
-                                    <label>Password</label>
-                                    <input type="password" id="password" name="password" class="form-control ps-5">
-                                    <i class="icontoggle far fa-eye" onclick="togglePassword(this)"></i>
-                                    <small id="error_password"></small>
-                                </div>
-                                <div class="form-group">
-                                    <label>Nhập lại mật khẩu</label>
-
-                                    <input type="password" id="confirmpassword" name="confirmpassword" class="form-control" required>
-                                    <small id="error_confirmpassword"></small>
-
-                                    <span></span>
-                
-                                </div>
-                                <div class="form-group">
-                                    <label>Mã mời bạn bè</label>
-                                    <input type="text" id="referralCodeType" name="referralCodeType" class="form-control">
-                                    <small class="error-message"></small>
-                                </div>
-                                <% if (typeof errorMessageSignup !=='undefined' && errorMessageSignup) { %>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="email" name="email" class="form-control">
+                            <small class="error-message" id="error_email"></small>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="form-group col-12 col-lg-6">
+                                <label>Số điện thoại</label>
+                                <input type="tel" id="phonenumber" name="phonenumber" class="form-control">
+                                <small class="error-message" id="error_phone"></small>
+                            </div>
+                            <div class="form-group col-12 col-lg-6">
+                                <label>Mã giới thiệu</label>
+                                <input type="text" id="referralCodeType" name="referralCodeType" class="form-control">
+                                <% if (typeof errorreferral !=='undefined' && errorreferral) { %>
                                     <p style="color: red;" class="error-message">
-                                        <%= errorMessageSignup %>
+                                        <%= errorreferral %>
                                     </p>
                                     <% } %>
-                                <button type="submit" id="btn-register" class="btn signin">Đăng ký</button>
-                            </form>
-                            <span class="separator">Hoặc</span>
-                            <ul class="social-links">
-                                <li><a href=""><img src="/image/facebook.png" alt=""></a></li>
-                                <li><a href=""><img src="/image/google.png" alt=""></a></li>
-                                <li><a href=""><img src="/image/zalo.png" alt=""></a></li>
-                            </ul>
-                            <span class="signup-link">Bạn đã có tài khoản? <a href="/login">Đăng nhập ngay</a></span>
+                            </div>
+                        </div>
+                        <div class="form-group position-relative">
+                            <label>Mật khẩu</label>
+                            <input type="password" id="password" name="password" class="form-control ps-5">
+                            <i class="fas fa-eye showpass cursor-pointer" onclick="togglePassword(this,'pass')"></i>
+                            <small class="error-message" id="error_password"></small>
+                        </div>
+                        <div class="form-group position-relative">
+                            <label>Xác nhận mật khẩu</label>
+                            <input type="password" id="confirmpassword" name="confirmpassword" class="form-control ps-5">
+                            <i class="fas fa-eye showpass" onclick="togglePassword(this,'confirm')"></i>
+                            <small class="error-message" id="error_confirmpassword"></small>
+                        </div>
+                        <% if (typeof errorMessageSignup !=='undefined' && errorMessageSignup) { %>
+                            <p style="color: red;" class="error-message">
+                                <%= errorMessageSignup %>
+                            </p>
+                            <% } %>
+                            
+                        <button type="submit" class="btn signin" id="btn-register">Đăng Ký</button>
+                    </form>
+                    <div class="mb-2 text-center">Hoặc</div>
+                    <div class="socialmedias mb-3">
+                        <button class="btn"><img src="/image/zalo.png" alt="" srcset=""></button>
+                        <button class="btn"><img src="/image/google.png" alt="" srcset=""></button>
+                        <button class="btn"><img src="/image/facebook.png" alt="" srcset=""></button>
+                    </div>
+                    <div class="text-center">Bạn đã có tài khoản? <a href="/login" class="text-decoration-none">Đăng nhập
+                            ngay</a></div>
+                </div>
+            </div>
+            <div class="d-none d-lg-flex justify-content-center align-items-center col-lg-7 side-background">
+                <div id="carouselExampleCaptions" class="carousel slide w-100" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0"
+                            class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+                            aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+                            aria-label="Slide 3"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active"
+                            style="background-image: url('/image/partymusicevent1x1.png')">
+                            <!-- <div class="carousel-caption">
+                                <h5>First slide label</h5>
+                                <p>Some representative placeholder content for the first slide.</p>
+                            </div> -->
+                        </div>
+                        <div class="carousel-item"
+                            style="background-image: url('/image/samsungeventbanner.jpg')">
+                            <!-- <div class="carousel-caption">
+                                <h5>Second slide label</h5>
+                                <p>Some representative placeholder content for the second slide.</p>
+                            </div> -->
+                        </div>
+                        <div class="carousel-item"
+                            style="background-image: url('/image/LGgramEventBanner.jpg')">
+                            <!-- <div class="carousel-caption">
+                                <h5>Third slide label</h5>
+                                <p>Some representative placeholder content for the third slide.</p>
+                            </div> -->
                         </div>
                     </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Trước</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Sau</span>
+                    </button>
                 </div>
             </div>
         </div>
+        <!-- <img class="image-fluid" src="/image/undraw_forgot_password_re_hxwm.svg" alt=""> -->
     </div>
 
 
     <script type="text/javascript">
-        function togglePassword(e) {
-            const type = document.getElementById("password").getAttribute('type') === 'password' ? 'text' : 'password';
-            // const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-            document.getElementById("password").setAttribute('type', type);
+        function togglePassword(e,type) {
+            if (type === "pass") {
+                const type = document.getElementById("password").getAttribute('type') === 'password' ? 'text' : 'password';
+                document.getElementById("password").setAttribute('type', type);
+            } else {
+                const type = document.getElementById("confirm-password").getAttribute('type') === 'password' ? 'text' : 'password';
+                document.getElementById("confirm-password").setAttribute('type', type);
+            }
+           
             // toggle the eye / eye slash icon  
             if (e.classList.contains("fa-eye-slash")) e.classList.toggle('fa-eye');
             else e.classList.toggle('fa-eye-slash');
         }
-
     </script>
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
@@ -108,6 +161,8 @@
     <script defer src="https://use.fontawesome.com/releases/v5.1.1/js/all.js"
         integrity="sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a"
         crossorigin="anonymous"></script>
+    <!-- Fontawesome Javascript Library -->
+    <script defer src="https://use.fontawesome.com/releases/v5.1.1/js/all.js" integrity="sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="/validate_register.js"></script>
 </body>

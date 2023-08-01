@@ -17,39 +17,8 @@
 
 <body>
     <div class="">
-        <nav class="navbar">
-            <img src="/image/woowa_logo.png" class="lg" height="50" />
-            <div class="d-flex align-items-center">
-                <ul class="p-0 m-0">
-                    <li class="active"><a href="/">Trang chủ</a></li>
-                    <li><a href="/events">Sự Kiện</a></li>
-                    <li><a href="#">Cửa Hàng đổi thưởng</a></li>
-                    <li><a href="/about">Về chúng tôi</a></li>
-                </ul>
-                <div class="d-flex align-items-center">
-                    <div class="position-relative pe-4">
-                        <i class="far fa-bell fs-5"></i>
-                    </div>
-                    <div>
-                        <div class="cursor-pointer user-info-dropdown" tabindex="0">
-                            <img class="rounded-circle" src="/image/istockphoto-1371797889-612x612.jpg" height="50px"
-                                srcset="" />
-                            <div class="dropdown-user-window" id="dropdown-user">
-                                <div>
-                                    <a href="/profile"><i class="fas fa-user"></i> Thông tin cá nhân</a>
-                                </div>
-                                <div>
-                                    <a href="/change-password"><i class="fas fa-lock"></i> Đổi mật khẩu</a>
-                                </div>
-                                <div>
-                                    <a href="/logout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </nav>
+        <%- include('headerPartial')%>
+
 
         <div>
             <div class="mb-4">
@@ -65,7 +34,7 @@
                 </div>
                 <div class="cover-banner"></div>
                 <div class="banner-intro">
-                    <img src="/image/woowa_logo.png" width="600px" alt="" />
+                    <!-- <img src="/image/woowa_logo.png" width="600px" alt="" /> -->
                 </div>
             </div>
             <div class="mb-4">

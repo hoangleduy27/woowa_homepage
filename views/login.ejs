@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Title</title>
+    <title>ĐĂNG NHẬP</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -12,64 +12,134 @@
         integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
         integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
-    <link rel="stylesheet" href="/validate_login.js">
     <link rel="stylesheet" href="/styles/login.css">
-
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
+        integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
 </head>
 
 <body>
-    <div class="form-bg">
-        <div class="container d-flex align-items-center h-100">
-            <div class="row">
-                <div class="offset-md-2 col-md-8 offset-sm-3 col-sm-6">
-                    <div class="form-container">
-                        <div class="left-content">
-                            <h3 class="title">Woowa Adex</h3>
-                            <h4 class="sub-title">A Digital Marketing Flatform</h4>
+    <div class="authentication-wrapper ">
+        <div class="authentication-inner row m-0">
+            <div class="d-flex col-12 col-lg-5 align-items-center p-sm-5 p-4">
+                <div class="mx-auto w-100">
+                    <div class="mb-4"><a href="/"><img src="/image/woowa_logo.png" alt="" width="150"></a></div>
+                    <div class="mb-3">
+                        <div class="fs-1 fw-bold text-maincolor">Đăng Nhập</div>
+                        <div>Chào mừng đến với <span class="text-maincolor">Woowa Adex</span>. Ứng dụng quảng cáo và
+                            tiếp thị kỹ thuật số hàng đầu Việt Nam</div>
+                    </div>
+                    <form class="form-horizontal" action="/login" method="post">
+                        <div class="form-group">
+                            <label>Phone number/Email</label>
+                            <input type="text" id="phonenumberOrEmail" name="phonenumberOrEmail" class="form-control" oninput="convertPhoneNumber()">
+                            <small class="error-message" id="error_phone_email"></small>
                         </div>
-                        <div class="right-content">
-                            <h3 class="form-title">Đăng nhập</h3>
- 
-                            <form class="form-horizontal" action="/login" method="post" >
-                                <div class="form-group">
-                                    <label>Phone / Email</label>
-                                    <input type="text" class="form-control" id="phonenumberOrEmail" name="phonenumberOrEmail">
-                                    <small id="error_phone_email"></small>
-                                </div>
-                                <div class="form-group">
-                                    <label>Password</label>
-                                    <input type="password" class="form-control" id="password" name="password">
-                                    <small id="error_password"></small>
-                                </div>
-                                <% if (typeof errorMessage !=='undefined' && errorMessage) { %>
-                                    <p style="color: red;" class="error-message">
-                                        <%= errorMessage %>
-                                    </p>
-                                    <% } %>
-                                <button class="btn signin" type="submit">Đăng nhập</button>
-                                <div class="form-check remember-me">
-                                    <input class="checkbox" type="checkbox" value="" id="rememberme">
-                                    <label class="check-label" for="rememberme">
-                                        Giữ đăng nhập
-                                    </label>
-                                </div>
-                                <a href="" class="forgot">Quên mật khẩu</a>
-                            </form>
-                            <span class="separator">OR</span>
-                            <ul class="social-icons">
-                                <li><img class="icon-socialmedias" src="/image/facebook.png"/></li>
-                                <li><img class="icon-socialmedias" src="/image/google.png"/></li>
-                                <li><img class="icon-socialmedias" src="/image/zalo.png"/></li>
-                            </ul>
-                            <span class="signup-link">Bạn chưa có tài khoản? <a href="/signup">Đăng ký ngay</a></span>
+                        <div class="form-group position-relative">
+                            <label>Mật khẩu</label>
+                            <input type="password" id="password" name="password" class="form-control ps-5">
+                            <i class="fas fa-eye showpass cursor-pointer" onclick="togglePassword(this)"></i>
+                            <small class="error-message" id="error_password"></small>
+                        </div>
+                        <% if (typeof errorMessage !=='undefined' && errorMessage) { %>
+                            <p style="color: red;" class="error-message">
+                                <%= errorMessage %>
+                            </p>
+                            <% } %>
+                        <div class="d-flex justify-content-between mb-3">
+                            <div class="form-check cursor-pointer">
+                                <input class="form-check-input" type="checkbox" value="" id="rememberme">
+                                <label class="form-check-label" for="rememberme">
+                                    Giữ đăng nhập
+                                </label>
+                            </div>
+                            <div class="cursor-pointer"><a href="/forgotpassword" class="text-decoration-none">Quên mật khẩu?</a></div>
+                        </div>
+                        <button type="submit" class="btn signin" id="login_btn">Đăng Nhập</button>
+                    </form>
+                    <div class="mb-2 text-center">Hoặc</div>
+                    <div class="socialmedias mb-3">
+                        <button class="btn"><img src="/image/zalo.png" alt="" srcset=""></button>
+                        <button class="btn"><img src="/image/google.png" alt="" srcset=""></button>
+                        <button class="btn"><img src="/image/facebook.png" alt="" srcset=""></button>
+                    </div>
+                    <div class="text-center">Bạn chưa có tài khoản? <a href="/signup" class="text-decoration-none">Đăng ký
+                            ngay</a></div>
+                </div>
+            </div>
+            <div class="d-none d-lg-flex justify-content-center align-items-center col-lg-7 side-background">
+                <div id="carouselExampleCaptions" class="carousel slide w-100" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0"
+                            class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+                            aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+                            aria-label="Slide 3"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active"
+                            style="background-image: url('/image/partymusicevent1x1.png')">
+                            <!-- <div class="carousel-caption">
+                                <h5>First slide label</h5>
+                                <p>Some representative placeholder content for the first slide.</p>
+                            </div> -->
+                        </div>
+                        <div class="carousel-item"
+                            style="background-image: url('/image/samsungeventbanner.jpg')">
+                            <!-- <div class="carousel-caption">
+                                <h5>Second slide label</h5>
+                                <p>Some representative placeholder content for the second slide.</p>
+                            </div> -->
+                        </div>
+                        <div class="carousel-item"
+                            style="background-image: url('/image/LGgramEventBanner.jpg')">
+                            <!-- <div class="carousel-caption">
+                                <h5>Third slide label</h5>
+                                <p>Some representative placeholder content for the third slide.</p>
+                            </div> -->
                         </div>
                     </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Trước</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Sau</span>
+                    </button>
                 </div>
             </div>
         </div>
+        <!-- <img class="image-fluid" src="/image/undraw_forgot_password_re_hxwm.svg" alt=""> -->
     </div>
 
+    <script type="text/javascript">
+        function togglePassword(e) {
+            const type = document.getElementById("password").getAttribute('type') === 'password' ? 'text' : 'password';
+            document.getElementById("password").setAttribute('type', type);
+            if (e.classList.contains("fa-eye-slash")) e.classList.toggle('fa-eye');
+            else e.classList.toggle('fa-eye-slash');
+        }
+    </script>
+    <!-- Add this script to your HTML file -->
+
+<script>
+    function convertPhoneNumber() {
+            let inputElement = document.getElementById('phonenumberOrEmail');
+            let phoneNumber = inputElement.value.trim();
+
+            if (phoneNumber.startsWith('0')) {
+                phoneNumber = "+84" + phoneNumber.substring(1);
+            }
+
+            inputElement.value = phoneNumber;
+        }
+</script>
     <!-- Bootstrap JavaScript Libraries -->
+    
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
         integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
         </script>
@@ -79,11 +149,12 @@
     <script defer src="https://use.fontawesome.com/releases/v5.1.1/js/all.js"
         integrity="sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a"
         crossorigin="anonymous"></script>
+    <!-- Fontawesome Javascript Library -->
+    <scrip defer src="https://use.fontawesome.com/releases/v5.1.1/js/all.js"
+        integrity="sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a"
+        crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="/validate_login.js"></script>
-    <script>
-
-    </script>
 </body>
 
-</html>s
+</html>

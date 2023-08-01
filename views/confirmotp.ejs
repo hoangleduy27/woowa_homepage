@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>XÁC NHẬN TÀI KHOẢN</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
+        integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="/styles/confirmotp.css">
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
+        integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+</head>
+
+<body>
+    
+    <div class="authentication-wrapper ">
+        <div class="authentication-inner row m-0">
+            <div class="d-flex col-12 col-lg-5 align-items-center p-sm-5 p-4">
+                <div class="mx-auto w-100">
+                    <div class="mb-4"><img src="/image/woowa_logo.png" alt="" width="150"></div>
+                    <div class="mb-3">
+                        <div class="fs-1 fw-bold text-maincolor">Xác thực tài khoản</div>
+                        <div>Mã OTP đã được gửi đến số điện thoại <b class="text-maincolor"><%= phoneNumber %></b>. Vui lòng
+                            kiểm tra tin nhắn đến và nhập mã
+                            xác thực</div>
+                    </div>
+                    <form class="form-horizontal" action="/confirmotp" method="post">
+                        <div class="position-relative">
+                            <div class="card-otp p-2 text-center">
+                                <div id="otp" class="inputs d-flex flex-row justify-content-center mt-2">
+                                    <input class="m-2 text-center form-control rounded" type="number" name="otp1" maxlength="1" required oninput="moveToNext(this, 'otp2')" />
+                                    <input class="m-2 text-center form-control rounded" type="number" name="otp2" maxlength="1" required oninput="moveToNext(this, 'otp3')" />
+                                    <input class="m-2 text-center form-control rounded" type="number" name="otp3" maxlength="1" required oninput="moveToNext(this, 'otp4')" />
+                                    <input class="m-2 text-center form-control rounded" type="number" name="otp4" maxlength="1" required oninput="moveToNext(this, 'otp5')" />
+                                    <input class="m-2 text-center form-control rounded" type="number" name="otp5" maxlength="1" required oninput="moveToNext(this, 'otp6')" />
+                                    <input class="m-2 text-center form-control rounded" type="number" name="otp6" maxlength="1" required />
+                                    
+                                    <!-- <input type="number" id="otp" name="otp" maxlength="6" required> -->
+                                </div>
+                                <div class="mt-4">
+                                    <button type="submit" class="btn signin px-4 validate">Gửi</button>
+                                </div>
+                            </div>
+                            <div class="card-otp-2">
+                                <div class="content d-flex justify-content-center align-items-center">
+                                    <span>Bạn chưa nhận được mã xác thực?</span> <a href="#" class="text-decoration-none ms-3">Gửi lại (1/3)</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    
+
+                </div>
+            </div>
+            <div class="d-none d-lg-flex justify-content-center align-items-center col-lg-7 side-background">
+                <div id="carouselExampleCaptions" class="carousel slide w-100" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0"
+                            class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+                            aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+                            aria-label="Slide 3"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active"
+                            style="background-image: url('/image/partymusicevent1x1.png')">
+
+                        </div>
+                        <div class="carousel-item"
+                            style="background-image: url('/image/samsungeventbanner.jpg')">
+
+                        </div>
+                        <div class="carousel-item"
+                            style="background-image: url('/image/LGgramEventBanner.jpg')">
+
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function (event) {
+            function OTPInput() {
+                const inputs = document.querySelectorAll('#otp > *[id]');
+                for (let i = 0; i < inputs.length; i++) {
+                    inputs[i].addEventListener('keydown', function (event) {
+                        if (event.key === "Backspace") {
+                            inputs[i].value = '';
+                            if (i !== 0) inputs[i - 1].focus();
+                        }
+                        else {
+                            if (i === inputs.length - 1 && inputs[i].value !== '') { return true; }
+                            else if (event.keyCode > 47 && event.keyCode < 58) { inputs[i].value = event.key; if (i !== inputs.length - 1) inputs[i + 1].focus(); event.preventDefault(); }
+                            else if (event.keyCode > 64 && event.keyCode < 91) { inputs[i].value = String.fromCharCode(event.keyCode); if (i !== inputs.length - 1) inputs[i + 1].focus(); event.preventDefault(); }
+                        }
+                    });
+                }
+            }
+            OTPInput();
+        });
+    </script>
+    
+<script>
+    function moveToNext(currentInput, nextInputName) {
+      const currentInputValue = currentInput.value;
+      if (currentInputValue.length === currentInput.maxLength) {
+        const nextInput = document.getElementsByName(nextInputName)[0];
+        nextInput.focus();
+      }
+    }
+  </script>
+    <!-- Bootstrap JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
+        </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+        integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
+        </script>
+    <script defer src="https://use.fontawesome.com/releases/v5.1.1/js/all.js"
+        integrity="sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a"
+        crossorigin="anonymous"></script>
+    <!-- Fontawesome Javascript Library -->
+    <script defer src="https://use.fontawesome.com/releases/v5.1.1/js/all.js"
+        integrity="sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a"
+        crossorigin="anonymous"></script>
+</body>
+
+    
+</html>
