@@ -63,7 +63,7 @@ font-size: 18px; */
     overflow: hidden;
 }
 
-span {
+button span {
     background: rgb(11, 121, 247);
     height: 100%;
     width: 0;

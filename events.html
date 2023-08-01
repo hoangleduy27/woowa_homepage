@@ -1,174 +1,318 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>Events</title>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Events</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-    <!-- Bootstrap CSS v5.2.1 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+  <!-- Bootstrap CSS v5.2.1 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Mali" rel="stylesheet">
-    <link rel="stylesheet" href="events.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
-        integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Mali" rel="stylesheet" />
+  <link rel="stylesheet" href="events.css" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
+    integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous" />
 </head>
 
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-light bg-light">
-            <div class="container">
-                <a class="navbar-brand" href="#">Navbar</a>
-                <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="collapsibleNavId" style="justify-content: end;">
-                    <ul class="navbar-nav mt-2 mt-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#" aria-current="page">Home <span
-                                    class="visually-hidden">(current)</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                            <div class="dropdown-menu" aria-labelledby="dropdownId">
-                                <a class="dropdown-item" href="#">Action 1</a>
-                                <a class="dropdown-item" href="#">Action 2</a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+  <header>
+    <nav class="navbar navbar-expand-sm navbar-light bg-light">
+      <div class="container">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
+          data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
+          aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavId" style="justify-content: end">
+          <ul class="navbar-nav mt-2 mt-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" href="#" aria-current="page">Home <span
+                  class="visually-hidden">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">Dropdown</a>
+              <div class="dropdown-menu" aria-labelledby="dropdownId">
+                <a class="dropdown-item" href="#">Action 1</a>
+                <a class="dropdown-item" href="#">Action 2</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
 
-    </header>
+  <main>
+    <!-- <div class="d-flex ">
+      <div></div>
+    </div> -->
+    <div class="position-relative">
+      <div class="position-absolute title-event-page p-3 p-md-5">
+        <h1 class="text-maincolor fw-bold">Hãy tham gia sự kiện cùng Woowa Adex!!!</h1>
+        <span>Đăng ký tài khoản để tham gia sự kiện và nhận nhiều phần quà hơn</span>
+      </div>
+      <div class="backgroundevent"></div>
+
+    </div>
     
-    <main class="main-article ">
-        <div class="d-flex justify-content-center align-items-center mt-5">
-            <span class="icon-search"><i class="fas fa-search"></i></span>
-            <input type="text" class="form-control input-search" placeholder="Tìm kiếm sự kiện">
-        </div>
-        <ul class="tabs-nav nav nav-pills mb-5 mt-5 justify-content-center" id="pills-tab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
-                    type="button" role="tab" aria-controls="pills-home" aria-selected="true">Tất cả</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile"
-                    type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Đang diễn ra</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact"
-                    type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Sắp diễn ra</button>
-            </li>
-        </ul>
-        <div class="tab-content" id="pills-tabContent">
-            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                <div class="card-events card mb-3">
-                    <div class="row g-0">
-                        <div class="col-md">
-                            <img src="images/blackpinkconcert.jpg" class="img-fluid rounded-start" alt="BlackPink-concept" style="height: 300px;">
+    <div class="main-article">
+      <!-- <div class="d-flex justify-content-center align-items-center mt-5">
+                <span class="icon-search"><i class="fas fa-search"></i></span>
+                <input type="text" class="form-control input-search" placeholder="Tìm kiếm sự kiện">
+            </div> -->
+      <ul class="tabs-nav nav nav-pills mb-5 mt-5 justify-content-center" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
+            type="button" role="tab" aria-controls="pills-home" aria-selected="true">
+            Tất cả
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile"
+            type="button" role="tab" aria-controls="pills-profile" aria-selected="false">
+            Đang diễn ra
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact"
+            type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
+            Sắp diễn ra
+          </button>
+        </li>
+      </ul>
+      <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active m-lg-5 m-2" id="pills-home" role="tabpanel"
+          aria-labelledby="pills-home-tab">
+          <div class="card-events card mb-3">
+            <div class="row g-0">
+              <div class="col-md col-12">
+                <img src="images/partymusicevent1x1.png" class="img-fluid rounded-start" alt="BlackPink-concept" />
+              </div>
+              <div class="col-12 col-md-9">
+                <div class="card-body">
+                  <div class="card-title d-block d-md-flex justify-content-between pb-3">
+                    <h1 class="title-event">PARTY MUSIC</h1>
+                    <div class="free-pill-title"><span>Miễn Phí</span></div>
+                  </div>
+                  <div class="d-flex flex-column justify-content-between content-events">
+                    <p class="card-text">
+                      Woowa chính thức thông báo
+                      <b>nhóm nhạc EXO, IVE, STAY C & ca sĩ Sơn Tùng MTP</b>
+                      tại sự kiện Party Music diễn ra vào khoản thời gian sắp
+                      tới được tổ chức tại sân vận động quốc gia Mỹ Đình, Hà
+                      Nội vào ngày 20/9
+                    </p>
+                    <div class="d-block d-md-flex justify-content-between">
+                      <div class="d-md-flex flex-md-column justify-content-end">
+                        <div>
+                          <small class="text-muted">
+                            <i class="fas fa-map-marker-alt pe-1"></i>
+                            Sân vận động Quốc gia Mỹ Đình, Hà Nội, Việt Nam
+                          </small>
                         </div>
-                        <div class="col-md-9">
-                            <div class="card-body">
-                                <div class="card-title d-flex justify-content-between pb-3">
-                                    <img src="images/logoblackpink.png" alt="" height="50">
-                                    <div class="free-pill-title"><span>FREE</span></div>
-                                </div>
-                                <div class="d-flex flex-column justify-content-between content-events">
-                                    <p class="card-text">YG Entertainment chính thức thông báo điểm đến tiếp theo trong
-                                        tour diễn vòng quanh thế giới Born Pink của nhóm nhạc BLACKPINK chính là sân vận
-                                        động quốc gia Mỹ Đình, Hà Nội vào hai ngày 29 và 30/7</p>
-                                    <div class="card-text d-flex justify-content-between">
-                                        <div>
-                                            <div>
-                                                <small class="text-muted">
-                                                    <i class="fas fa-map-marker-alt pe-1"></i>
-                                                    Sân vận động Quốc gia Mỹ Đình, Hà Nội, Việt Nam
-                                                </small>
-                                            </div>
-                                            <div>
-                                                <small class="text-muted">
-                                                    <i class="fas fa-calendar pe-1"></i>
-                                                    Thứ 7, 23/9/2023 19:00
-                                                </small>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-end">
-                                            <button class="btn btn-lg btn-outline-primary btn-maincolor">Đăng ký</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div>
+                          <small class="text-muted">
+                            <i class="fas fa-calendar pe-1"></i>
+                            Thứ 4, 20/9/2023 19:00
+                          </small>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">...</div>
-            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
-                <div class="card-events card mb-3">
-                    <div class="row g-0">
-                        <div class="col-md">
-                            <img src="images/blackpinkconcert.jpg" class="img-fluid rounded-start" alt="BlackPink-concept" style="height: 300px;">
+                      </div>
+                      <div class="mt-2 mt-lg-0 d-md-none d-block">
+                        <div class="d-flex justify-content-between">
+                          <small>Cần giới thiệu 6 người để nhận được vé</small>
+                          <span class="text-maincolor fw-bold">4/10</span>
                         </div>
-                        <div class="col-md-9">
-                            <div class="card-body">
-                                <div class="card-title d-flex justify-content-between pb-3">
-                                    <img src="images/logoblackpink.png" alt="" height="50">
-                                    <div class="free-pill-title"><span>FREE</span></div>
-                                </div>
-                                <div class="d-flex flex-column justify-content-between content-events">
-                                    <p class="card-text">YG Entertainment chính thức thông báo điểm đến tiếp theo trong
-                                        tour diễn vòng quanh thế giới Born Pink của nhóm nhạc BLACKPINK chính là sân vận
-                                        động quốc gia Mỹ Đình, Hà Nội vào hai ngày 29 và 30/7</p>
-                                    <div class="card-text d-flex justify-content-between">
-                                        <div>
-                                            <div>
-                                                <small class="text-muted">
-                                                    <i class="fas fa-map-marker-alt pe-1"></i>
-                                                    Sân vận động Quốc gia Mỹ Đình, Hà Nội, Việt Nam
-                                                </small>
-                                            </div>
-                                            <div>
-                                                <small class="text-muted">
-                                                    <i class="fas fa-calendar pe-1"></i>
-                                                    Thứ 7, 23/9/2023 19:00
-                                                </small>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-end">
-                                            <button class="btn btn-lg btn-outline-primary btn-maincolor">Đăng ký</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="progress">
+                          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                            aria-label="Animated striped example" aria-valuenow="4" aria-valuemin="0" aria-valuemax="10"
+                            style="width: 40%"></div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-    <footer>
-        <!-- place footer here -->
-    </footer>
-    <!-- Bootstrap JavaScript Libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
-        </script>
+                      </div>
+                      <div class="d-none d-md-flex align-items-end">
+                        <div class="position-relative">
+                          <div class="pie position-absolute end-0"
+                            data-pie='{"unit": "7/10", "percent": 70,"strokeBottom": 5, "colorSlice": "#0043AB", "colorCircle": "#f1f1f1", "round": true, "size": 80, "fontSize": "1.6rem"}'
+                            data-pie-index="1">
+                          </div>
+                          <small>Cần giới thiệu 3 người để nhận vé</small>
+                        </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
-        integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
-        </script>
+                        <div class="d-flex align-items-end mt-2 mt-lg-0">
+                          <button class="btn btn-lg btn-outline-primary btn-maincolor w-100 w-md-auto">
+                            Nhận vé
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+          ...
+        </div>
+        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+          <div class="card-events card mb-3">
+            <div class="row g-0">
+              <div class="col-md col-12">
+                <img src="images/partymusicevent1x1.png" class="img-fluid rounded-start" alt="BlackPink-concept" />
+              </div>
+              <div class="col-12 col-md-9">
+                <div class="card-body">
+                  <div class="card-title d-block d-md-flex justify-content-between pb-3">
+                    <h1 class="title-event">PARTY MUSIC</h1>
+                    <div class="free-pill-title"><span>Miễn Phí</span></div>
+                  </div>
+                  <div class="d-flex flex-column justify-content-between content-events">
+                    <p class="card-text">
+                      Woowa chính thức thông báo
+                      <b>nhóm nhạc EXO, IVE, STAY C & ca sĩ Sơn Tùng MTP</b>
+                      tại sự kiện Party Music diễn ra vào khoản thời gian sắp
+                      tới được tổ chức tại sân vận động quốc gia Mỹ Đình, Hà
+                      Nội vào ngày 20/9
+                    </p>
+                    <div class="d-block d-md-flex justify-content-between">
+                      <div class="d-md-flex flex-md-column justify-content-end">
+                        <div>
+                          <small class="text-muted">
+                            <i class="fas fa-map-marker-alt pe-1"></i>
+                            Sân vận động Quốc gia Mỹ Đình, Hà Nội, Việt Nam
+                          </small>
+                        </div>
+                        <div>
+                          <small class="text-muted">
+                            <i class="fas fa-calendar pe-1"></i>
+                            Thứ 4, 20/9/2023 19:00
+                          </small>
+                        </div>
+                      </div>
+                      <div class="mt-2 mt-lg-0 d-md-none d-block">
+                        <div class="d-flex justify-content-between">
+                          <small>Cần giới thiệu 6 người để nhận được vé</small>
+                          <span class="text-maincolor fw-bold">4/10</span>
+                        </div>
+                        <div class="progress">
+                          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                            aria-label="Animated striped example" aria-valuenow="4" aria-valuemin="0" aria-valuemax="10"
+                            style="width: 40%"></div>
+                        </div>
+                      </div>
+                      <div class="d-none d-md-flex align-items-end">
+                        <div class="position-relative">
+                          <div class="pie position-absolute end-0"
+                            data-pie='{"unit": "7/10", "percent": 70,"strokeBottom": 5, "colorSlice": "#0043AB", "colorCircle": "#f1f1f1", "round": true, "size": 80, "fontSize": "1.6rem"}'
+                            data-pie-index="2">
+                          </div>
+                          <small>Cần giới thiệu 3 người để nhận vé</small>
+                        </div>
+
+                        <div class="d-flex align-items-end mt-2 mt-lg-0">
+                          <button class="btn btn-lg btn-outline-primary btn-maincolor w-100 w-md-auto">
+                            Nhận vé
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </main>
+  <!-- Circular Progress Bar JS -->
+  <!-- <script src="https://cdn.jsdelivr.net/gh/AngeloFaella/CircularProgressBar@1.0/circularProgressBar.min.js"></script> -->
+  <script
+    src="https://cdn.jsdelivr.net/gh/tomik23/circular-progress-bar@latest/docs/circularProgressBar.min.js"></script>
+  <script type="text/JavaScript">
+     window.addEventListener("DOMContentLoaded", () => {
+  // update circle when range change
+  const pie = document.querySelectorAll(".pie");
+
+  // start the animation when the element is in the page view
+  const elements = [].slice.call(document.querySelectorAll(".pie"));
+  const circle = new CircularProgressBar("pie");
+
+  // circle.initial();
+
+  if ("IntersectionObserver" in window) {
+    const config = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0.75
+    };
+
+    const ovserver = new IntersectionObserver((entries, observer) => {
+      entries.map((entry) => {
+        if (entry.isIntersecting && entry.intersectionRatio > 0.75) {
+          circle.initial(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, config);
+
+    elements.map((item) => {
+      ovserver.observe(item);
+    });
+  } else {
+    elements.map((element) => {
+      circle.initial(element);
+    });
+  }
+
+  setInterval(() => {
+    const typeFont = [100, 200, 300, 400, 500, 600, 700];
+    const colorHex = `#${Math.floor((Math.random() * 0xffffff) << 0).toString(
+      16
+    )}`;
+    const options = {
+      index: 17,
+      percent: Math.floor(Math.random() * 100 + 1),
+      colorSlice: colorHex,
+      fontColor: colorHex,
+      fontSize: `${Math.floor(Math.random() * (1.4 - 1 + 1) + 1)}rem`,
+      fontWeight: typeFont[Math.floor(Math.random() * typeFont.length)]
+    };
+    circle.animationTo(options);
+  }, 3000);
+
+  // global configuration
+  const globalConfig = {
+    speed: 30,
+    animationSmooth: "1s ease-out",
+    strokeBottom: 5,
+    colorSlice: "#FF6D00",
+    colorCircle: "#f1f1f1",
+    round: true
+  };
+
+  const global = new CircularProgressBar("global", globalConfig);
+  global.initial();
+
+});
+
+  </script>
+  <!-- Bootstrap JavaScript Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+    crossorigin="anonymous"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+    integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
+    crossorigin="anonymous"></script>
 </body>
 
 </html>

@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
 
 body {
-    background-image:  url(images/background.jpg);
+    /* background-image:  url(images/background.jpg);
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: cover; */
     font-family: 'Josefin Sans', sans-serif;
 }
 
@@ -17,30 +17,43 @@ body {
     width: 50%;
 }
 
-.tabs-nav li{
+/* .tabs-nav li{
     margin-left: 30px;
-}
-
+} */
 
 .tabs-nav li button.nav-link {
-    color: black;
+    color: rgba(255, 255, 255, 0.7);
+    background-color: #0043AB;
+    border-radius: 0px;
+}
+
+.tabs-nav li:first-child button.nav-link {
+    border-radius: 10px 0 0 10px;
+}
+
+.tabs-nav li:last-child button.nav-link {
+    border-radius: 0 10px 10px 0;
 }
 
 .tabs-nav li button.nav-link.active{
-    background-color: #0043AB;
-    border-radius: 40px;
-    min-width: 100px;
+    background-color: #4878C3;
     font-weight: bold;
 }
 
-.card-events {
+/* .card-events {
     height: 300px;
     box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
 .content-events {
-    height: 200px;
+    height: 190px;
 }
+
+.img-fluid {
+    height: 300px;
+    object-fit: fill;
+    width: 100%;
+} */
 
 .btn-primary {
     background-color: #0043AB;
@@ -56,17 +69,11 @@ body {
     color: white !important;
 }
 
-
-.free-pill-title  {
+.title-event {
     font-weight: bold;
-    font-size: 30px !important;
-    min-width: 150px;
-    padding: 8px 25px;
-    background-color: green;
-    color: white;
-    height: 50px;
-    text-align: center;
-    border-radius: 30px;
+    color: #0043AB;
+    font-style: italic;
+    margin: 0;
 }
 
 /* 
@@ -98,6 +105,140 @@ body {
     border: 0.5px dashed #0043AB;
 } */
 
+.text-maincolor {
+    color: #0043AB;
+}
+
+.progress-bar {
+    background-color: #0043AB;
+}
+
 .main-article {
     margin: 20px;
 }
+
+.backgroundevent {
+    background-image: url(images/eventtitle.jpg);
+    height: 300px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    object-fit: cover;
+}
+
+
+@media screen and (min-width:992px) {
+    .tabs-nav li button.nav-link {
+        height: 70px;
+        min-width: 180px;
+        font-size: 20px;
+    }
+
+    .card-events {
+        height: 300px;
+        box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.25);
+    }
+    
+    .card-text {
+        width: 80%;
+    }
+
+    .content-events {
+        height: 190px;
+    }
+    
+    .img-fluid {
+        height: 300px;
+        object-fit: fill;
+        width: 100%;
+    }
+
+    .free-pill-title  {
+        font-weight: bold;
+        font-size: 30px !important;
+        min-width: 150px;
+        padding: 8px 25px;
+        background-color: green;
+        color: white;
+        height: 50px;
+        text-align: center;
+        border-radius: 30px;
+    }
+
+    .title-event-page {
+        top: 15%;
+        width: 50%;
+    }
+}
+
+@media screen and (max-width:767px) {
+    .tabs-nav li button.nav-link {
+        height: 50px;
+        min-width: 150px;
+    }
+
+    .free-pill-title  {
+        font-weight: bold;
+        font-size: 12px !important;
+        min-width: 90px;
+        padding: 8px 15px;
+        background-color: green;
+        color: white;
+        height: 30px;
+        text-align: center;
+        border-radius: 30px;
+    }
+}
+
+@media screen and (max-width:576px) {
+    .tabs-nav li button.nav-link {
+        height: 50px;
+        min-width: 100px;
+    }
+
+    .card-events {
+        box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.25);
+    }
+    
+    .img-fluid {
+        object-fit: fill;
+        width: 100%;
+    }
+
+    .free-pill-title  {
+        font-weight: bold;
+        font-size: 12px !important;
+        width: 25%;
+        padding: 8px 15px;
+        background-color: green;
+        color: white;
+        height: 30px;
+        text-align: center;
+        border-radius: 30px;
+    }
+
+    .title-event-page {
+        top: 5%;
+        width: 80%;
+    }
+
+    .backgroundevent {
+        height: 200px;
+    }
+}
+
+
+
+/* PROGRESS BAR CSS */
+.pie {
+    bottom: 30px;
+}
+
+/* .pie-percent-1: {
+  display: none;
+} */
+
+[class^="pie-percent-"] {
+    display: none;
+}
+/* PROGRESS BAR CSS */
