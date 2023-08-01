@@ -104,12 +104,13 @@
                                                                 disabled>
                                                                 <i class="fas fa-check"></i> Đã đăng ký
                                                             </button>
-                                                            <% } else { %>
+                                                            <% } else if (user.referral_code_count >= 10) { %>
+                                                                
                                                                 <div class="ticket-status">
                                                                     <button
                                                                         class="btn btn-lg btn-outline-primary btn-maincolor"
                                                                         onclick="return showRedeemConfirmation();">
-                                                                        Đăng ký vé Concert | 10 share
+                                                                        <i class="fas fa-check"></i>  Có thể đăng ký |  <%= user.referral_code_count %> / 10 share
                                                                     </button>
                                                                     <!-- <% if (typeof redeemmessage !=='undefined' &&
                                                                         redeemmessage==='not_enough_referral_codes' ) { %>
@@ -118,8 +119,14 @@
                                                                         </p>
                                                                         <% } %> -->
 
-                                                                    <% } %>
-
+                                                                        <% } else { %>
+                                                                            <div class="ticket-status">
+                                                                                <button class="btn btn-lg btn-outline-primary btn-maincolor" disabled>
+                                                                                   <%= user.referral_code_count %> / 10 share
+                                                                                </button>
+                                                                            </div>
+                                                                    
+                                                                            <% } %>
 
                                                                         <% } else { %>
                                                                             <a href="/"><button
@@ -170,7 +177,7 @@
         // Use SweetAlert2 to show the confirmation dialog
         Swal.fire({
             title: 'Xác nhận đăng ký',
-            text: 'Bạn cần 10 lượt chia sẻ để đổi',
+            text: 'Bạn chắc chắn muốn tham gia chứ ?',
             icon: 'question',
             showCancelButton: true,
             confirmButtonText: 'Đăng ký',
