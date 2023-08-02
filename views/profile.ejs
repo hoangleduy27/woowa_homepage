@@ -8,194 +8,205 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS v5.2.1 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mali" rel="stylesheet">
     <link rel="stylesheet" href="/styles/profile.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
+        integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
 </head>
 
 <body>
 
-<%- include('headerPartial')%>
+    <%- include('headerPartial')%>
 
 
 
-    <main class="main-article">
-        <div class="member-basic-info">
-            <div class="me-4 d-flex align-middle align-items-center"><img class="avt-img" src="/image//istockphoto-1371797889-612x612.jpg" alt="Member Avatar" srcset="" height="250" width="250"></div>
-            <div class="member-info">
-                <p class="member-name fw-bold">
-                     <%= user.username %>
-                </p>
-                <div class="info-item-list">
-                    <p class="info-item">
-                        <i class="fa fa-envelope" aria-hidden="true"></i>
-                        <span> &nbsp <%= user.email %></span>
-                    </p>
-                    <p class="info-item">
-                        <i class="fa fa-phone-square" aria-hidden="true"></i>
-                        <span>  &nbsp  <% if (user.phonenumber) { %>
-                          <%= user.phonenumber %>
-                      <% } else { %>
-                          N/A
-                      <% } %></span>
-                    </p>
-                    <p class="info-item">
-                        <i class="far fa-calendar-alt"></i>
-                        <span> &nbsp 
-                          <% if (user.birthday) { %>
-                              <%= new Date(user.birthday).toLocaleDateString() %>
-                          <% } else { %>
-                              N/A
-                          <% } %>
-                      </span></p>
-                </div>
-                <div>
-             <span class="color-black fw-bold fs-4">Bạn đang có: <%= user.referral_code_count%> lượt giới thiệu</span>
-             
-
-                </div>
-                <% if(user.ticket === 'yes') { %>
-                    <span>Bạn đã có vé</span>
-                    <% } else { %> 
-    
-                    <% } %> 
-                <div>
-                    <i class="fab fa-bitcoin color-orange"></i> <span class="color-orange fw-bold fs-4"><%= user.user_point.toLocaleString() %></span>
-
-
-
-                </div>
- 
-            </div>
-        </div>
-        <div class="d-flex justify-content-between below">
-            <div class="sidebar  me-4">
-                <div class="list-items">
-                    <div><a style="color: black; text-decoration: none;" href="/update-profile">Thông tin của tôi</a></div>
-                    <div><a style="color: black; text-decoration: none;" href="/change-password">Đổi mật khẩu</a></div>
-                    <div>Điểm thưởng</div>
-                    <div class="active">Mời bạn bè</div>
-                    <div> <a style="color: red;" href="/logout"> Đăng xuất</a></div>
-
-                </div>
-            </div>
-            <div class="content-member">
-                <div class="mb-4">
-                    <div class="fw-bold fs-5">Mời bạn bè</div>
-                    <div class="fw-light">Mời bạn bè để nhận thêm nhiều điểm thưởng hơn!!</div>
-                </div>
-                <div>
-                    <div class="pb-2">
-                        <div class="d-flex align-items-center pb-2"><i class="fas fa-qrcode"></i> <span>&nbsp Mã giới thiệu</span></div>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" value=" <%= user.referral_code %>
-                            " placeholder="Invite Code" aria-describedby="basic-addon2"required readonly  >
-                            <span class="input-group-text cursor-pointer" id="basic-addon2"><i class="fas fa-clone p-0 "
-                  style="font-size: 18px !important;" onclick="copyToClipboard()" ></i></span>
+        <main class="main-article">
+            <div class="member-basic-info p-md-3 d-block d-md-flex">
+                <div class="mb-3 mb-md-0 me-md-4 d-flex align-middle justify-content-center align-items-center"><img
+                        class="avt-img" src="/image/istockphoto-1371797889-612x612.jpg" alt="Member Avatar" srcset=""
+                        height="250" width="250"></div>
+                <div class="member-info d-md-flex d-block justify-content-between">
+                    
+                    <div class="pb-3 p-md-0">
+                        <p class="fs-md-2 fs-lg-1 fs-4 fw-bold">&nbsp;<%= user.username %></p>
+                        <div class="info-item-list">
+                          <p class="info-item">
+                            <i class="fa fa-envelope text-maincolor" aria-hidden="true"></i>
+                            <span>&nbsp;<%= user.email %></span>
+                          </p>
+                          <p class="info-item">
+                            <i class="fa fa-phone-square text-maincolor" aria-hidden="true"></i>
+                            <span>&nbsp; <% if (user.phonenumber) { %>
+                                <%= user.phonenumber %>
+                                    <% } else { %>
+                                        N/A
+                                        <% } %>
+                            </span>
+                          </p>
+                          <p class="info-item">
+                            <i class="far fa-calendar-alt text-maincolor"></i>
+                            <span>&nbsp;
+                                <% if (user.birthday) { %>
+                                    <%= new Date(user.birthday).toLocaleDateString() %>
+                                        <% } else { %>
+                                            N/A
+                                            <% } %>
+                            </span>
+                          </p>
                         </div>
+                        <% if(user.ticket==='yes' ) { %>
+                            <div class="ticket-receive"><i class="far fa-check-circle"></i><span class="title-receive"> Đã
+                                    nhận được vé</span></div>
+                            <% } else { %>
+    
+                                <% } %>                      </div>
+                      <div class="total_invited position-relative">
+                        <div class="">
+                          <i class="fas fa-share-alt count-shared-icon"></i>
+                          <p class="text-white fw-bold">Lượt chia sẻ</p>
+                        </div>
+                        <div class="total-shared">
+                            <%= user.referral_code_count%>
+
+                        </div>
+                      </div>
                     </div>
                     <div>
-                        <div class="d-flex align-items-center pb-2"><i class="fas fa-link"></i> <span> &nbsp Đường dẫn giới thiệu</span></div>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" value="https://adex.woowa.vn?inviteCode=WW202152" placeholder="Invite Link" aria-describedby="basic-addon3">
-                            <span class="input-group-text cursor-pointer" id="basic-addon3"><i class="fas fa-clone p-0 "
-                  style="font-size: 18px !important;"></i></span>
-                        </div>
-                    </div>
 
-                </div>
+
+  <!-- <i class="fab fa-bitcoin color-orange"></i> <span class="color-orange fw-bold fs-4">20.000</span> -->
+      </div>
+    </div>
+    <div class="d-block d-md-flex justify-content-between p-md-3 p-0 below">
+      <div class="sidebar my-3 my-md-0 mb-md-0 me-md-4">
+        <div class="list-items">
+          <div><a style="color: black; text-decoration: none;" href="/update-profile">Thông tin của
+            tôi</a></div>
+            <div><a style="color: black; text-decoration: none;" href="/change-password">Đổi mật khẩu</a>
+            </div>          
+            <div>Điểm thưởng</div>
+          <div class="active">Mời bạn bè</div>
+          <div> <a style="color: red;" href="/logout"> Đăng xuất</a></div>
+
+        </div>
+      </div>
+      <div class="content-member">
+        <div class="mb-4">
+          <div class="fw-bold fs-5">Mời bạn bè</div>
+          <div class="fw-light">Mời bạn bè để nhận thêm nhiều điểm thưởng hơn!!</div>
+        </div>
+        <div>
+          <div class="pb-2">
+            <div class="d-flex align-items-center pb-2"><i class="fas fa-qrcode"></i> <span>Mã giới thiệu</span></div>
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" value="<%= user.referral_code %>" placeholder="Invite Code"
+                aria-describedby="basic-addon2" required readonly>
+              <span class="input-group-text cursor-pointer" id="basic-addon2"><i class="fas fa-clone p-0 "
+                  style="font-size: 18px !important;" onclick="copyToClipboard()"></i></span>
             </div>
-        </div>
+          </div>
+          <div>
+            <div class="d-flex align-items-center pb-2"><i class="fas fa-link"></i> <span>Đường dẫn giới thiệu</span>
+            </div>
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" value="https://adex.woowa.vn?inviteCode=WW202152"
+                placeholder="Invite Link" aria-describedby="basic-addon3">
+              <span class="input-group-text cursor-pointer" id="basic-addon3"><i class="fas fa-clone p-0 "
+                  style="font-size: 18px !important;"></i></span>
+            </div>
+          </div>
 
-
-
-          <!-- Bootstrap Modal for displaying the alert -->
-  <div class="modal fade" id="copyAlertModal" tabindex="-1" role="dialog" aria-labelledby="copyAlertModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="copyAlertModalLabel">Referral Code Copied</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          <!-- <span aria-hidden="true">&times;</span> -->
-          </button>
-        </div>
-        <div class="modal-body">
-          Your referral code has been copied to the clipboard.
         </div>
       </div>
     </div>
-  </div>
+              <!-- Bootstrap Modal for displaying the alert -->
+              <div class="modal fade" id="copyAlertModal" tabindex="-1" role="dialog"
+              aria-labelledby="copyAlertModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title" id="copyAlertModalLabel">Referral Code Copied</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          <!-- <span aria-hidden="true">&times;</span> -->
+                          </button>
+                      </div>
+                      <div class="modal-body">
+                          Your referral code has been copied to the clipboard.
+                      </div>
+                  </div>
+              </div>
+          </div>
 
-
-
-    </main>
-    <footer>
-        <!-- place footer here -->
-    </footer>
-    <!-- Bootstrap JavaScript Libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
+  </main>
+  <footer>
+    <!-- place footer here -->
+  </footer>
+  <!-- Bootstrap JavaScript Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js" integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+    integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
     </script>
 </body>
 
 <script>
-    function goBackToHome() {
-        // Kiểm tra xem trang hiện tại có tham số 'user' hay không
-        const urlParams = new URLSearchParams(window.location.search);
-        const userParam = urlParams.get('user');
+  function goBackToHome() {
+      // Kiểm tra xem trang hiện tại có tham số 'user' hay không
+      const urlParams = new URLSearchParams(window.location.search);
+      const userParam = urlParams.get('user');
 
-        // Lấy thông tin người dùng đã đăng nhập từ localStorage
-        const loggedInUser = localStorage.getItem('loggedInUser');
+      // Lấy thông tin người dùng đã đăng nhập từ localStorage
+      const loggedInUser = localStorage.getItem('loggedInUser');
 
-        // Nếu đã đăng nhập và trang không có tham số 'user'
-        if (loggedInUser && !userParam) {
-            // Chuyển hướng trang với thêm tham số 'user' vào URL
-            window.location.href = window.location.href + (window.location.href.includes('?') ? '&user=' + loggedInUser : '?user=' + loggedInUser);
-        }
-    }
+      // Nếu đã đăng nhập và trang không có tham số 'user'
+      if (loggedInUser && !userParam) {
+          // Chuyển hướng trang với thêm tham số 'user' vào URL
+          window.location.href = window.location.href + (window.location.href.includes('?') ? '&user=' + loggedInUser : '?user=' + loggedInUser);
+      }
+  }
 
 
-    function copyToClipboard() {
+  function copyToClipboard() {
       const referralCodeInput = document.querySelector(".form-control");
       referralCodeInput.select();
 
       try {
-        const successful = document.execCommand("copy");
-        if (successful) {
-          // Show the Bootstrap modal to indicate the copy success
-          $("#copyAlertModal").modal("show");
-        } else {
-          // Show a fallback alert if modal is not supported
-          alert("Copy failed. Please try again.");
-        }
+          const successful = document.execCommand("copy");
+          if (successful) {
+              // Show the Bootstrap modal to indicate the copy success
+              $("#copyAlertModal").modal("show");
+          } else {
+              // Show a fallback alert if modal is not supported
+              alert("Copy failed. Please try again.");
+          }
       } catch (err) {
-        alert("Copy to clipboard is not supported by your browser.");
+          alert("Copy to clipboard is not supported by your browser.");
       }
-    }
+  }
 
 
-    function formatDate(dateString) {
-    if (!dateString) return '';
+  function formatDate(dateString) {
+      if (!dateString) return '';
 
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
+      const date = new Date(dateString);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
 
-    return `${year}-${month}-${day}`;
-}
+      return `${year}-${month}-${day}`;
+  }
 
-// Keep the rest of your code inside the $(document).ready() function
-$(document).ready(function () {
-    // Your existing code here...
-});
+  // Keep the rest of your code inside the $(document).ready() function
+  $(document).ready(function () {
+      // Your existing code here...
+  });
 
 </script>
-
 </html>

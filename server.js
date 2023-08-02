@@ -6,13 +6,14 @@ const nodemailer = require('nodemailer');
 const path = require('path');
 const mysql = require('mysql');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const twilio = require('twilio');
 const qrcode = require('qrcode');
 const config = require('./config'); // Đường dẫn đến file config.js
 const randomstring = require('randomstring'); // Import the 'randomstring' library for generating random strings
-const { render } = require('ejs');
+const ejs = require('ejs');
 const fs = require('fs');
 const uuid = require('uuid');
 
@@ -330,10 +331,10 @@ app.get('/redeem-gift', async (req, res) => {
                 const userName = userEmailRows[0].username;
 
                 // Kiểm tra và tạo thư mục nếu nó chưa tồn tại
-                const qrCodeDir = 'qr_codes';
-                if (!fs.existsSync(qrCodeDir)) {
-                    fs.mkdirSync(qrCodeDir);
-                }
+                // const qrCodeDir = 'qr_codes';
+                // if (!fs.existsSync(qrCodeDir)) {
+                //     fs.mkdirSync(qrCodeDir);
+                // }
                 // Generate the QR code with all user data
                 const userData = {
                     username: userName,
@@ -341,20 +342,24 @@ app.get('/redeem-gift', async (req, res) => {
                     referral_code_count: referralCodeCount,
                     ticket: 'yes',
                 };
-
+                (async () => {
                 try {
                     const qrCodeData = JSON.stringify(userData);
                     const qrCodeOptions = {
-                        type: 'svg',
+                        type: 'png',
                     };
 
                     // Generate the QR code as SVG data
-                    const qrCodeSVG = await qrcode.toString(qrCodeData, qrCodeOptions);
-                    // Tạo tên tệp độc nhất sử dụng uuid
-                    const uniqueFileName = uuid.v4();
-                    const qrCodeFilePath = path.join(qrCodeDir, `${uniqueFileName}.svg`);
+                    // const qrCodePNG = await qrcode.toString(qrCodeData, qrCodeOptions);
+                    // // Tạo tên tệp độc nhất sử dụng uuid
+                    // // const uniqueFileName = uuid.v4();
+                    // // const qrCodeFilePath = path.join(qrCodeDir, `${uniqueFileName}.png`);
+                    // const qrCodeBase64 = qrCodePNG.toString('base64');
+                    // const qrCodeDataURL = `data:image/svg;base64,${qrCodeBase64}`;
+                
+                    const qrCodeDataURL = await qrcode.toDataURL(qrCodeData, qrCodeOptions);
 
-                    fs.writeFileSync(qrCodeFilePath, qrCodeSVG);
+                    // fs.writeFileSync(qrCodeFilePath, qrCodeSVG);
 
                     // Email information
                     const mailOptions = {
@@ -368,12 +373,13 @@ app.get('/redeem-gift', async (req, res) => {
                 <p>Thank you for using our service!</p>
                 <p>Best regards,</p>
                 <p>The Admin Team</p>
-                <img src="cid:qrcode" width="400">`, // Đính kèm mã QR code trong email bằng CID
-                        attachments: [{
-                            filename: 'qrcode.svg',
-                            path: qrCodeFilePath,
-                            cid: 'svg', // ID của CID được sử dụng trong src của thẻ img
-                        }],
+
+                <img src="${qrCodeDataURL}" width="200">`, // Nhúng mã QR code trong email bằng data URL
+                // attachments: [{
+                //             filename: 'qrcode.png',
+                //             content: qrCodeSVG,
+                //             cid: 'qr_code_image', // ID của CID được sử dụng trong src của thẻ img
+                //         }],
                     };
                     // Send email
                     transporter.sendMail(mailOptions, (error, info) => {
@@ -389,7 +395,7 @@ app.get('/redeem-gift', async (req, res) => {
                     console.log('Error generating QR code:', error);
                     return res.status(500).json({ message: 'Lỗi khi tạo mã QR code' });
                 }
-
+            })();
                 res.redirect(`/events?redeemmessage=success`);
             });
         });
@@ -539,6 +545,7 @@ app.get('/signup', (req, res) => {
 // Signup route
 app.post('/signup', async (req, res) => {
     const { username, phonenumber, email, password, confirmpassword, referralCodeType } = req.body;
+
     const modifiedPhoneNumber = phonenumber.replace(/^0/, '+84');
 
     if (password.length < 8) {
@@ -581,7 +588,8 @@ app.post('/signup', async (req, res) => {
 
                     if (rows.length === 0) {
                         // Referral code does not exist in the database
-                        return res.render('signup', { errorreferral: 'Mã giới thiệu chưa chính xác', user: req.body });
+                        return res.render('signup', {errorreferral:'Sai mã giới thiệu', user:null })
+                        
                     }
 
                     try {
@@ -601,7 +609,9 @@ app.post('/signup', async (req, res) => {
                         // Save the user information in session for later use in the /confirmotp route
                         req.session.userData = { username, phonenumber: modifiedPhoneNumber, email, password, referralCodeType };
 
-                        res.redirect('/confirmotp', { phoneNumber: modifiedPhoneNumber });
+                        req.session.modifiedPhoneNumber = modifiedPhoneNumber;
+
+                        res.redirect('/confirmotp'); // Redirect to /confirmotp without passing an object
                     } catch (error) {
                         console.error('Error sending OTP:', error);
                         res.send('System error, please try again later.');
@@ -624,7 +634,8 @@ app.post('/signup', async (req, res) => {
                     });
 
                     // Save the user information in session for later use in the /confirmotp route
-                    req.session.userData = { username, phonenumber: modifiedPhoneNumber, email, password, referralCodeType };
+                    req.session.userData = { username, phonenumber:modifiedPhoneNumber, email, password, referralCodeType };
+                    req.session.modifiedPhoneNumber = modifiedPhoneNumber;
 
                     res.redirect('/confirmotp');
                 } catch (error) {
@@ -800,6 +811,126 @@ app.post('/login', (req, res) => {
 app.get('/forgotpassword', (req, res) => {
     return res.render('forgotpassword');
 });
+// Xử lý yêu cầu gửi email quên mật khẩu
+app.post('/forgotpassword', (req, res) => {
+    const email = req.body.email;
+  
+    // Kiểm tra xem email có tồn tại trong cơ sở dữ liệu hay không
+    connection.query('SELECT * FROM users WHERE email = ?', [email], (err, rows) => {
+      if (err) {
+        console.error('Error querying database:', err);
+        return res.status(500).json({ message: 'Lỗi khi truy vấn cơ sở dữ liệu' });
+      }
+  
+      if (rows.length === 0) {
+        // Email không tồn tại trong cơ sở dữ liệu
+        return res.status(400).json({ message: 'Email không tồn tại' });
+      }
+  
+      // Tạo mã khôi phục ngẫu nhiên
+      const token = crypto.randomBytes(20).toString('hex');
+  
+      // Lưu mã khôi phục vào cơ sở dữ liệu
+      connection.query('INSERT INTO reset_tokens (email, token) VALUES (?, ?)', [email, token], (err, result) => {
+        if (err) {
+          console.error('Error inserting reset token:', err);
+          return res.status(500).json({ message: 'Lỗi khi lưu mã khôi phục vào cơ sở dữ liệu' });
+        }
+  
+        // Gửi email chứa liên kết để reset mật khẩu
+        const resetLink = `http://localhost:3000/resetpassword/${token}`;
+  
+        const mailOptions = {
+          from: 'your-email-username',
+          to: email,
+          subject: 'Reset Password',
+          html: `<p>Click on the link below to reset your password:</p><a href="${resetLink}">${resetLink}</a>`,
+        };
+  
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            console.error('Error sending email:', error);
+            return res.status(500).json({ message: 'Lỗi khi gửi email' });
+          }
+  
+        //   return res.status(200).json({ message: 'Vui lòng kiểm tra email để đặt lại mật khẩu' });
+        return res.render('homepage',{resetpassmmessage : true, user:null});
+          
+        });
+      });
+    });
+  });
+  // Trang reset mật khẩu
+  app.get('/resetpassword/:token', (req, res) => {
+    const token = req.params.token;
+  
+    // Kiểm tra xem mã khôi phục có hợp lệ hay không
+    connection.query('SELECT * FROM reset_tokens WHERE token = ?', [token], (err, rows) => {
+      if (err) {
+        console.error('Error querying database:', err);
+        return res.status(500).json({ message: 'Lỗi khi truy vấn cơ sở dữ liệu' });
+      }
+  
+      if (rows.length === 0) {
+        // Mã khôi phục không hợp lệ
+        return res.status(400).json({ message: 'Mã khôi phục không hợp lệ' });
+      }
+  
+      const email = rows[0].email;
+      res.render('resetpassword', { token, email });
+    });
+  });
+  
+  // Xử lý yêu cầu reset mật khẩu
+  app.post('/resetpassword', (req, res) => {
+    const token = req.body.token;
+    const newPassword = req.body.password;
+  
+    // Kiểm tra xem mã khôi phục có hợp lệ hay không
+    connection.query('SELECT * FROM reset_tokens WHERE token = ?', [token], (err, rows) => {
+      if (err) {
+        console.error('Error querying database:', err);
+        return res.status(500).json({ message: 'Lỗi khi truy vấn cơ sở dữ liệu' });
+      }
+  
+      if (rows.length === 0) {
+        // Mã khôi phục không hợp lệ
+        return res.status(400).json({ message: 'Mã khôi phục không hợp lệ' });
+      }
+  
+      const email = rows[0].email;
+  
+      // Mã hóa mật khẩu mới trước khi lưu vào cơ sở dữ liệu
+      bcrypt.hash(newPassword, 10, (err, hashedPassword) => {
+        if (err) {
+          console.error('Error hashing password:', err);
+          return res.status(500).json({ message: 'Lỗi khi mã hóa mật khẩu mới' });
+        }
+  
+        // Cập nhật mật khẩu mới trong cơ sở dữ liệu cho người dùng
+        connection.query('UPDATE users SET password = ? WHERE email = ?', [hashedPassword, email], (err, result) => {
+          if (err) {
+            console.error('Error updating password:', err);
+            return res.status(500).json({ message: 'Lỗi khi cập nhật mật khẩu mới' });
+          }
+  
+          // Xóa mã khôi phục trong cơ sở dữ liệu sau khi đã sử dụng
+          connection.query('DELETE FROM reset_tokens WHERE token = ?', [token], (err, result) => {
+            if (err) {
+              console.error('Error deleting reset token:', err);
+              return res.status(500).json({ message: 'Lỗi khi xóa mã khôi phục' });
+            }
+  
+            //  res.redirect(`/?resetmessage=success`);
+             return res.render('homepage',{resetmessage : true, user:null});
+
+
+
+        });
+        });
+      });
+    });
+  });
 
 
 

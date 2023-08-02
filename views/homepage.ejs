@@ -44,22 +44,28 @@
                                     height="50px" srcset="" />
                                 <div class="dropdown-user-window" id="dropdown-user">
 
-                                    <a href="/profile"><div>
-                                        <i class="fas fa-user"></i> Thông tin cá nhân
-                                    </div></a>
-                                    <a href="/change-password"> <div>
-                                        <i class="fas fa-lock"></i> Đổi mật khẩu
-                                    </div></a>
-                                    <a href="/logout"> <div>
-                                        <i class="fas fa-sign-out-alt"></i> Đăng xuất
-                                    </div></a>
-                            </div>
-                            <% } else { %>
+                                    <a href="/profile">
+                                        <div>
+                                            <i class="fas fa-user"></i> Thông tin cá nhân
+                                        </div>
+                                    </a>
+                                    <a href="/change-password">
+                                        <div>
+                                            <i class="fas fa-lock"></i> Đổi mật khẩu
+                                        </div>
+                                    </a>
+                                    <a href="/logout">
+                                        <div>
+                                            <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                                        </div>
+                                    </a>
+                                </div>
+                                <% } else { %>
 
-                                <% } %>
+                                    <% } %>
+                            </div>
                     </div>
                 </div>
-            </div>
         </nav>
 
         <div class="container-form">
@@ -163,7 +169,7 @@
         </script>
         <% } %>
             <!-- Add this script to display the login alert -->
-            <% if (typeof loginSuccess !=='undefined' && loginSuccess) { %>
+            <% if (typeof resetpassmmessage !=='undefined' && resetpassmmessage !=null ) { %>
                 <script>
                     document.addEventListener("DOMContentLoaded", function () {
                         setTimeout(function () {
@@ -173,38 +179,66 @@
                                 imageWidth: 100,
                                 imageHeight: 100,
                                 imageAlt: 'Success Icon',
-                                type: 'success',
-                                title: 'Login Successful',
-                                text: 'Welcome back! You have successfully logged in.',
+                                title: 'Mã đã gửi đến mail của bạn',
+                                text: 'Vui lòng truy cập email để xác nhận.',
                                 confirmButtonText: 'OK',
                                 customClass: {
                                     title: 'custom-title-class', // Tên lớp CSS tùy chỉnh cho tiêu đề
                                 }
+
                             });
                         }, 500);
                     });
                 </script>
                 <% } %>
-                    <!-- Modal for Registration Success -->
-                    <style>
-                        .custom-title-class {
-                            color: rgb(17, 0, 255);
-                            /* Thay đổi màu tiêu đề thành màu đỏ */
-                            font-size: 24px;
-                            /* Tùy chỉnh kích thước font của tiêu đề */
-                        }
-                    </style>
+                    <% if (typeof resetmessage !=='undefined' && resetmessage !=null ) { %>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                setTimeout(function () {
+                                    // Thay thế modal bằng thông báo SweetAlert2
+                                    Swal.fire({
+                                        imageUrl: '/image/rocket1.png', // Thay đổi đường dẫn tới hình ảnh thành công
+                                        imageWidth: 100,
+                                        imageHeight: 100,
+                                        imageAlt: 'Success Icon',
+                                        title: 'Đã đổi mật khẩu thành công',
+                                        text: 'Đăng nhập ngay.',
+                                        confirmButtonText: 'OK',
+                                        customClass: {
+                                            title: 'custom-title-class', // Tên lớp CSS tùy chỉnh cho tiêu đề
+                                        }
 
-                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@latest/dist/sweetalert2.min.js"></script>
-                    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-                        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
-                        crossorigin="anonymous"></script>
-                    <script defer src="https://use.fontawesome.com/releases/v5.1.1/js/all.js"
-                        integrity="sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a"
-                        crossorigin="anonymous"></script>
-                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
-                        integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
-                        crossorigin="anonymous"></script>
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            // Nếu người dùng bấm nút "OK", chuyển hướng sang trang đăng nhập
+                                            window.location.href = "/login";
+                                        }
+                                    });
+                                }, 500);
+                            });
+                        </script>
+                        <% } %>
+                            <!-- Modal for Registration Success -->
+                            <style>
+                                .custom-title-class {
+                                    color: rgb(17, 0, 255);
+                                    /* Thay đổi màu tiêu đề thành màu đỏ */
+                                    font-size: 24px;
+                                    /* Tùy chỉnh kích thước font của tiêu đề */
+                                }
+                            </style>
+
+                            <script
+                                src="https://cdn.jsdelivr.net/npm/sweetalert2@latest/dist/sweetalert2.min.js"></script>
+                            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+                                integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+                                crossorigin="anonymous"></script>
+                            <script defer src="https://use.fontawesome.com/releases/v5.1.1/js/all.js"
+                                integrity="sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a"
+                                crossorigin="anonymous"></script>
+                            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+                                integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
+                                crossorigin="anonymous"></script>
 </body>
 
 </html>
