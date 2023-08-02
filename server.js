@@ -54,7 +54,7 @@ app.use(
 
 // Khởi tạo Twilio Client với các thông tin tài khoản Twilio của bạn
 const accountSid = 'ACd522933544b3c3f3f2add765c5a98c7d';
-const authToken = '2ebbfa39c713834aaaa953d93de0af1c';
+const authToken = '6070d6eacc6ac9e2b784842a5046429c';
 const twilioPhoneNumber = '+1 470 613 4992'; // Số điện thoại Twilio gửi SMS
 
 const client = twilio(accountSid, authToken);
@@ -370,7 +370,7 @@ app.get('/redeem-gift', async (req, res) => {
                 <p>The Admin Team</p>
                 <img src="cid:qrcode" width="400">`, // Đính kèm mã QR code trong email bằng CID
                         attachments: [{
-                            filename: 'qrcode.pn',
+                            filename: 'qrcode.svg',
                             path: qrCodeFilePath,
                             cid: 'svg', // ID của CID được sử dụng trong src của thẻ img
                         }],

@@ -17,6 +17,16 @@
   <link rel="stylesheet" href="/styles/events.css" />
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
     integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous" />
+    <link rel="stylesheet" href="node_modules/sweetalert2/dist/sweetalert2.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mali" rel="stylesheet">
+    <link rel="stylesheet" href="/styles/events.css">
+    <link rel="stylesheet" href="/src/scss/custom-boostrap.scss">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
+        integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
 </head>
 
 <body>
@@ -110,7 +120,7 @@
                             </button>
                         <% } else if (user.referral_code_count >= 10) { %>
                             <div class="d-flex align-items-end mt-2 mt-lg-0">
-                                <button class="btn btn-lg btn-outline-primary btn-maincolor w-100 w-md-auto">
+                                <button class="btn btn-lg btn-outline-primary btn-maincolor w-100 w-md-auto"  onclick="return showRedeemConfirmation()">
                                   Nhận vé
                                 </button>
                               </div>
@@ -220,6 +230,47 @@
   <!-- <script src="https://cdn.jsdelivr.net/gh/AngeloFaella/CircularProgressBar@1.0/circularProgressBar.min.js"></script> -->
   <script
     src="https://cdn.jsdelivr.net/gh/tomik23/circular-progress-bar@latest/docs/circularProgressBar.min.js"></script>
+    <script src="node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+    crossorigin="anonymous"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+    integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
+    crossorigin="anonymous"></script>
+     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+            integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
+            </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+            integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
+            </script>
+        <!-- Include SweetAlert library -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+
+    <script>
+        function showRedeemConfirmation() {
+            // Use SweetAlert2 to show the confirmation dialog
+            console.log('ok')
+            Swal.fire({
+                title: 'Xác nhận đăng ký',
+                text: 'Bạn chắc chắn muốn tham gia chứ ?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Đăng ký',
+                cancelButtonText: 'Hủy bỏ',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // User clicked Đổi quà button, proceed with redemption
+                    window.location.href = "/redeem-gift";
+                } else {
+                    return false;
+                }
+            });
+        }
+      
+    
+      </script>
   <script type="text/JavaScript">
      window.addEventListener("DOMContentLoaded", () => {
   // update circle when range change
@@ -288,29 +339,39 @@
 });
 
   </script>
-  
-<script>
-    function showRedeemConfirmation() {
-        // Use SweetAlert2 to show the confirmation dialog
-        Swal.fire({
-            title: 'Xác nhận đăng ký',
-            text: 'Bạn chắc chắn muốn tham gia chứ ?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Đăng ký',
-            cancelButtonText: 'Hủy bỏ',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // User clicked Đổi quà button, proceed with redemption
-                window.location.href = "/redeem-gift";
-            } else {
-                return false;
-            }
-        });
+  <script>
+    // Phần mã JavaScript khai báo trước
+    function registerForEvent(eventId) {
+        const registerButton = document.getElementById(`registerButton_${eventId}`);
+        // Gửi yêu cầu POST để đăng ký tham gia sự kiện
+        fetch('/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ eventId })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Log the success message from the server (optional)
+                console.log(data.message);
+                // If the registration was successful, update the button text and disable it
+                if (data.message === 'Đăng ký tham gia sự kiện thành công') {
+                registerButton.textContent = 'Đã đăng ký';
+                registerButton.disabled = true;
+            } else if (data.message === 'Người dùng đã đăng ký sự kiện này trước đó') {
+                // Nếu người dùng đã đăng ký trước đó, không làm gì cả
+                registerButton.textContent = 'Đã đăng ký';
+                registerButton.disabled = true;           
+             }
+        })
+            .catch(error => {
+                // Xử lý lỗi (nếu cần)
+                console.error(error);
+            });
     }
-  
-  
   </script>
+
   
   
   <% if (typeof redeemmessage !=='undefined' && redeemmessage==='success' ) { %>
@@ -336,13 +397,7 @@
     </script>
     <% } %>
   <!-- Bootstrap JavaScript Libraries -->
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
-    crossorigin="anonymous"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
-    integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
-    crossorigin="anonymous"></script>
 </body>
 
 
