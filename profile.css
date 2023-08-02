@@ -98,7 +98,7 @@ body {
 
 .total_invited {
     height: 150px;
-    width: 150px;
+    min-width: 150px;
     background-color: #0043AB;
     border-radius: 20px;
     padding: 20px;
@@ -122,4 +122,20 @@ body {
     font-size: 50px;
     height: 55px;
     color: orange;
+}
+
+.ticket-receive {
+    background-color: green;
+    padding: 10px 20px;
+    color: white;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.ticket-receive .title-receive {
+    height: 20px;
 }
