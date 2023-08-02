@@ -92,10 +92,14 @@
     <div class="d-block d-md-flex justify-content-between p-md-3 p-0 below">
       <div class="sidebar my-3 my-md-0 mb-md-0 me-md-4">
         <div class="list-items">
-          <div>Thông tin của tôi</div>
-          <div>Đổi mật khẩu</div>
-          <div>Điểm thưởng</div>
+          <div><a style="color: black; text-decoration: none;" href="/update-profile">Thông tin của
+            tôi</a></div>
+            <div><a style="color: black; text-decoration: none;" href="/change-password">Đổi mật khẩu</a>
+            </div>          
+            <div>Điểm thưởng</div>
           <div class="active">Mời bạn bè</div>
+          <div> <a style="color: red;" href="/logout"> Đăng xuất</a></div>
+
         </div>
       </div>
       <div class="content-member">
@@ -107,10 +111,10 @@
           <div class="pb-2">
             <div class="d-flex align-items-center pb-2"><i class="fas fa-qrcode"></i> <span>Mã giới thiệu</span></div>
             <div class="input-group mb-3">
-              <input type="text" class="form-control" value="WW202152" placeholder="Invite Code"
-                aria-describedby="basic-addon2">
+              <input type="text" class="form-control" value="<%= user.referral_code %>" placeholder="Invite Code"
+                aria-describedby="basic-addon2" required readonly>
               <span class="input-group-text cursor-pointer" id="basic-addon2"><i class="fas fa-clone p-0 "
-                  style="font-size: 18px !important;"></i></span>
+                  style="font-size: 18px !important;" onclick="copyToClipboard()"></i></span>
             </div>
           </div>
           <div>
@@ -127,6 +131,24 @@
         </div>
       </div>
     </div>
+              <!-- Bootstrap Modal for displaying the alert -->
+              <div class="modal fade" id="copyAlertModal" tabindex="-1" role="dialog"
+              aria-labelledby="copyAlertModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title" id="copyAlertModalLabel">Referral Code Copied</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          <!-- <span aria-hidden="true">&times;</span> -->
+                          </button>
+                      </div>
+                      <div class="modal-body">
+                          Your referral code has been copied to the clipboard.
+                      </div>
+                  </div>
+              </div>
+          </div>
+
   </main>
   <footer>
     <!-- place footer here -->
@@ -141,4 +163,57 @@
     </script>
 </body>
 
+<script>
+  function goBackToHome() {
+      // Kiểm tra xem trang hiện tại có tham số 'user' hay không
+      const urlParams = new URLSearchParams(window.location.search);
+      const userParam = urlParams.get('user');
+
+      // Lấy thông tin người dùng đã đăng nhập từ localStorage
+      const loggedInUser = localStorage.getItem('loggedInUser');
+
+      // Nếu đã đăng nhập và trang không có tham số 'user'
+      if (loggedInUser && !userParam) {
+          // Chuyển hướng trang với thêm tham số 'user' vào URL
+          window.location.href = window.location.href + (window.location.href.includes('?') ? '&user=' + loggedInUser : '?user=' + loggedInUser);
+      }
+  }
+
+
+  function copyToClipboard() {
+      const referralCodeInput = document.querySelector(".form-control");
+      referralCodeInput.select();
+
+      try {
+          const successful = document.execCommand("copy");
+          if (successful) {
+              // Show the Bootstrap modal to indicate the copy success
+              $("#copyAlertModal").modal("show");
+          } else {
+              // Show a fallback alert if modal is not supported
+              alert("Copy failed. Please try again.");
+          }
+      } catch (err) {
+          alert("Copy to clipboard is not supported by your browser.");
+      }
+  }
+
+
+  function formatDate(dateString) {
+      if (!dateString) return '';
+
+      const date = new Date(dateString);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+
+      return `${year}-${month}-${day}`;
+  }
+
+  // Keep the rest of your code inside the $(document).ready() function
+  $(document).ready(function () {
+      // Your existing code here...
+  });
+
+</script>
 </html>
