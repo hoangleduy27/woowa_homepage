@@ -13,8 +13,6 @@ body {
 
 .member-basic-info {
     display: flex;
-    
-    padding: 20px;
     border-radius: 20px;
 }
 
@@ -31,9 +29,9 @@ body {
     border-radius: 20px;
 }
 
-.member-name {
+/* .member-name {
     font-size: 35px;
-}
+} */
 
 .fa, .fab, .far, .fas {
     font-size: 25px !important;
@@ -55,7 +53,7 @@ body {
 }
 
 .below {
-    padding: 20px;
+    /* padding: 20px; */
     min-height: 400px;
 }
 
@@ -92,4 +90,36 @@ body {
 
 .cursor-pointer {
     cursor: pointer;
+}
+
+.text-maincolor {
+    color: #0043AB;
+}
+
+.total_invited {
+    height: 150px;
+    width: 150px;
+    background-color: #0043AB;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.count-shared-icon {
+    position: absolute;
+    padding: 0;
+    margin-bottom: 5px;
+    color: rgba(255, 166, 0, 0.6);
+    font-size: 70px !important;
+    bottom: 20px;
+    right: 20px;
+}
+
+.total-shared {
+    font-weight: bold;
+    font-size: 50px;
+    height: 55px;
+    color: orange;
 }
