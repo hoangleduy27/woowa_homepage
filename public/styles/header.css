@@ -67,6 +67,7 @@ body {
 .dropdown-user-window.active {
     display: block;
     visibility: visible;
+    z-index: 1;
 }
 
 .dropdown-user-window a  {

@@ -345,14 +345,14 @@ app.get('/redeem-gift', async (req, res) => {
                 try {
                     const qrCodeData = JSON.stringify(userData);
                     const qrCodeOptions = {
-                        type: 'jpg',
+                        type: 'svg',
                     };
 
                     // Generate the QR code as SVG data
                     const qrCodeSVG = await qrcode.toString(qrCodeData, qrCodeOptions);
                     // Tạo tên tệp độc nhất sử dụng uuid
                     const uniqueFileName = uuid.v4();
-                    const qrCodeFilePath = path.join(qrCodeDir, `${uniqueFileName}.jpg`);
+                    const qrCodeFilePath = path.join(qrCodeDir, `${uniqueFileName}.svg`);
 
                     fs.writeFileSync(qrCodeFilePath, qrCodeSVG);
 
@@ -361,18 +361,18 @@ app.get('/redeem-gift', async (req, res) => {
                         from: 'hlduy01dn@gmail.com', // Your email address
                         to: userEmail, // Receiver's email address from the database
                         subject: 'Ticket Confirmation', // Email subject
-                        html: `<p>Dear ${userName},</p>
+                        html: `<p>Dear ${userName},</p> 
                 <p>Your ticket has been confirmed.</p>
                 <p>Here is your user information:</p>
                 <pre>${JSON.stringify(userData, null, 2)}</pre>
                 <p>Thank you for using our service!</p>
                 <p>Best regards,</p>
                 <p>The Admin Team</p>
-                <img src="cid:qrcode"/>`, // Đính kèm mã QR code trong email bằng CID
+                <img src="cid:qrcode" width="400">`, // Đính kèm mã QR code trong email bằng CID
                         attachments: [{
-                            filename: 'qrcode.jpg',
+                            filename: 'qrcode.pn',
                             path: qrCodeFilePath,
-                            cid: 'qrcode', // ID của CID được sử dụng trong src của thẻ img
+                            cid: 'svg', // ID của CID được sử dụng trong src của thẻ img
                         }],
                     };
                     // Send email
