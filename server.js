@@ -16,6 +16,8 @@ const randomstring = require('randomstring'); // Import the 'randomstring' libra
 const ejs = require('ejs');
 const fs = require('fs');
 const uuid = require('uuid');
+const qr = require('qr-image');
+
 
 
 
@@ -55,7 +57,7 @@ app.use(
 
 // Khởi tạo Twilio Client với các thông tin tài khoản Twilio của bạn
 const accountSid = 'ACd522933544b3c3f3f2add765c5a98c7d';
-const authToken = '6070d6eacc6ac9e2b784842a5046429c';
+const authToken = '7465e03b4426577188687369acebf098';
 const twilioPhoneNumber = '+1 470 613 4992'; // Số điện thoại Twilio gửi SMS
 
 const client = twilio(accountSid, authToken);
@@ -342,24 +344,20 @@ app.get('/redeem-gift', async (req, res) => {
                     referral_code_count: referralCodeCount,
                     ticket: 'yes',
                 };
+                const qrCodeData = JSON.stringify(userData);
+                const qrCodeImage = qr.imageSync(qrCodeData, { type: 'png' });
+
+                const qrCodeDataURL = `data:image/png;base64,${qrCodeImage.toString('base64')}`;
+
+                
                 (async () => {
                 try {
-                    const qrCodeData = JSON.stringify(userData);
-                    const qrCodeOptions = {
-                        type: 'png',
-                    };
+                    
+                    
 
                     // Generate the QR code as SVG data
-                    // const qrCodePNG = await qrcode.toString(qrCodeData, qrCodeOptions);
-                    // // Tạo tên tệp độc nhất sử dụng uuid
-                    // // const uniqueFileName = uuid.v4();
-                    // // const qrCodeFilePath = path.join(qrCodeDir, `${uniqueFileName}.png`);
-                    // const qrCodeBase64 = qrCodePNG.toString('base64');
-                    // const qrCodeDataURL = `data:image/svg;base64,${qrCodeBase64}`;
-                
-                    const qrCodeDataURL = await qrcode.toDataURL(qrCodeData, qrCodeOptions);
 
-                    // fs.writeFileSync(qrCodeFilePath, qrCodeSVG);
+
 
                     // Email information
                     const mailOptions = {
@@ -371,15 +369,18 @@ app.get('/redeem-gift', async (req, res) => {
                 <p>Here is your user information:</p>
                 <pre>${JSON.stringify(userData, null, 2)}</pre>
                 <p>Thank you for using our service!</p>
-                <p>Best regards,</p>
-                <p>The Admin Team</p>
+                <p>Please bring this email or take a screenshot of the QR code to pass through the gate
+                </p>
 
-                <img src="${qrCodeDataURL}" width="200">`, // Nhúng mã QR code trong email bằng data URL
-                // attachments: [{
-                //             filename: 'qrcode.png',
-                //             content: qrCodeSVG,
-                //             cid: 'qr_code_image', // ID của CID được sử dụng trong src của thẻ img
-                //         }],
+                <p>Best regards,</p>
+                <p>The Admin Team</p>`, // Nhúng mã QR code trong email bằng data URL
+                attachments: [
+                    {
+                      filename: 'qrcode.png',
+                      content: qrCodeImage, // Replace qrCodeImage with the generated PNG data
+                      encoding: 'base64',
+                    },
+                  ],
                     };
                     // Send email
                     transporter.sendMail(mailOptions, (error, info) => {
@@ -415,9 +416,15 @@ const transporter = nodemailer.createTransport({
 });
 
 
+
+
+
 app.get('/giftshop', (req, res) => {
     return res.render('giftshop');
 });
+
+
+
 
 
 
@@ -430,117 +437,6 @@ app.get('/signup', (req, res) => {
     return res.render('signup', { user });
 });
 
-
-
-// app.post('/signup', (req, res) => {
-//     const { username, phonenumber, email, password, confirmpassword, referralCodeType } = req.body;
-
-//     if (password.length < 8) {
-//         return res.render('signup', { errorMessageSignup: 'Passwords must be at least 8 characters', user: null });
-//     }
-
-//     if (password !== confirmpassword) {
-//         return res.render('signup', { errorMessageSignup: 'Passwords do not match', user: null });
-//     }
-
-
-
-//     connection.query('SELECT * FROM users WHERE email = ?', [email], (err, rows) => {
-//         if (err) {
-//             return res.status(500).json({ error: 'Error fetching user' });
-//         }
-
-//         if (rows.length > 0) {
-//             // An account with this email already exists
-//             return res.render('signup', { errorMessageSignup: 'Email is already registered', user: null });
-//         }
-
-//         connection.query('SELECT * FROM users WHERE phonenumber = ?', [phonenumber], (err, rows) => {
-//             if (err) {
-//                 return res.status(500).json({ error: 'Error fetching user' });
-//             }
-
-//             if (rows.length > 0) {
-//                 // An account with this phone number already exists
-//                 return res.render('signup', { errorMessageSignup: 'Phone number is already registered', user: null });
-//             }
-
-//             const referralCode = randomstring.generate({
-//                 length: 6,
-//                 charset: 'alphanumeric',
-//                 capitalization: 'uppercase'
-//             });
-
-//             // Calculate the referral points based on the referral code entered by the user
-//             let referrerReferralPoint = 0;
-//             let referredUserReferralPoint = 0;
-
-//             if (referralCodeType) {
-//                 connection.query('SELECT * FROM users WHERE referral_code = ?', [referralCodeType], (err, rows) => {
-//                     if (err) {
-//                         console.error('Error fetching user with referral code:', err);
-//                         // Handle the error if needed
-//                     }
-
-//                     if (rows.length > 0) {
-//                         // Referral code is valid, increase the referral points for both the referrer and the referred user
-//                         const referredUserId = rows[0].id;
-//                         referrerReferralPoint = 1000; // Set the referral points for the referrer to 1000
-//                         referredUserReferralPoint = 500; // Set the referral points for the referred user to 500
-
-//                         connection.query('UPDATE users SET referral_code_count = referral_code_count + 1, user_point = user_point + ? WHERE id = ?', [referrerReferralPoint, referredUserId], (err, updateResult) => {
-//                             if (err) {
-//                                 console.error('Error updating referral code count and user points:', err);
-//                                 // Handle the error if needed
-//                             }
-//                         });
-//                     }
-
-//                     // Continue with user registration process
-//                     bcrypt.hash(password, 10, (err, hashedPassword) => {
-//                         if (err) {
-//                             return res.status(500).json({ error: 'Error hashing password' });
-//                         }
-
-
-
-//                         // Register the referred user with the corresponding referral points
-//                         const referredUser = { username, phonenumber, email, password: hashedPassword, referral_code: referralCode, user_point: referredUserReferralPoint };
-//                         connection.query('INSERT INTO users SET ?', referredUser, (err, referredUserResult) => {
-//                             if (err) {
-//                                 return res.status(500).json({ error: 'Error registering referred user' });
-//                             }
-
-//                             res.render('homepage', { user: null, registrationSuccess: true, showLoginForm: true });
-//                         });
-//                     });
-//                 });
-//             } else {
-//                 // Continue with user registration process without referral points
-//                 bcrypt.hash(password, 10, (err, hashedPassword) => {
-//                     if (err) {
-//                         return res.status(500).json({ error: 'Error hashing password' });
-//                     }
-
-//                     // Assign zero referral points to the users before registration
-//                     const user = { username, phonenumber, email, password: hashedPassword, referral_code: referralCode, user_point: 0 };
-//                     connection.query('INSERT INTO users SET ?', user, (err, result) => {
-//                         if (err) {
-//                             return res.status(500).json({ error: 'Error registering user' });
-//                         }
-
-//                         // res.render('homepage', { user: null, registrationSuccess: true, showLoginForm: true });
-
-
-
-//                     });
-//                 });
-//             }
-
-//         });
-
-//     });
-// });
 
 // Signup route
 app.post('/signup', async (req, res) => {
@@ -569,7 +465,7 @@ app.post('/signup', async (req, res) => {
         }
 
         // Check if the phone number already exists in the database
-        connection.query('SELECT * FROM users WHERE phonenumber = ?', [phonenumber], async (err, rows) => {
+        connection.query('SELECT * FROM users WHERE phonenumber = ?', [modifiedPhoneNumber], async (err, rows) => {
             if (err) {
                 console.error('Error checking phone number:', err);
                 return res.status(500).json({ error: 'Error fetching user' });
@@ -647,7 +543,8 @@ app.post('/signup', async (req, res) => {
     });
 });
 
-// Confirm OTP route
+
+
 // Confirm OTP route
 app.get('/confirmotp', (req, res) => {
     // Retrieve the userData from the session
@@ -752,10 +649,11 @@ app.post('/confirmotp', (req, res) => {
 
 
 
+
+
 app.get('/login', (req, res) => {
 
     if (req.session.loggedIn) {
-        // Chuyển hướng về trang chủ (home) nếu đã đăng nhập
         return res.redirect('/');
     }
 
@@ -787,7 +685,7 @@ app.post('/login', (req, res) => {
         }
 
         if (rows.length === 0) {
-            return res.render('login', { errorMessage: 'User not found', user: null });
+            return res.render('login', { errorMessage: ' Wrong Email or PhoneNumber ', user: null });
         }
 
         const user = rows[0];
@@ -808,6 +706,10 @@ app.post('/login', (req, res) => {
         });
     });
 });
+
+
+
+
 app.get('/forgotpassword', (req, res) => {
     return res.render('forgotpassword');
 });
@@ -860,6 +762,9 @@ app.post('/forgotpassword', (req, res) => {
       });
     });
   });
+
+
+
   // Trang reset mật khẩu
   app.get('/resetpassword/:token', (req, res) => {
     const token = req.params.token;
@@ -923,9 +828,6 @@ app.post('/forgotpassword', (req, res) => {
   
             //  res.redirect(`/?resetmessage=success`);
              return res.render('homepage',{resetmessage : true, user:null});
-
-
-
         });
         });
       });
@@ -934,6 +836,9 @@ app.post('/forgotpassword', (req, res) => {
 
 
 
+
+
+  
 app.get('/profile', function (req, res) {
     const userId = req.session.userId;
 
