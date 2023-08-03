@@ -27,8 +27,13 @@
                 </div>
                 <div>
                     <div class="cursor-pointer user-info-dropdown" tabindex="0">
-                        <img class="rounded-circle" src="/image/istockphoto-1371797889-612x612.jpg" height="50px"
-                            srcset="" />
+                        <% if (typeof profileImage !== 'undefined' && profileImage) { %>
+                            <!-- Display user's uploaded image from the uploads folder -->
+                          <img class="rounded-circle" src="/uploads/<%= profileImage %>" alt="Member Avatar" height="50" width="50">
+                        <% } else { %>
+                          <!-- Display default avatar image -->
+                          <img class="rounded-circle" src="/image/istockphoto-1371797889-612x612.jpg" height="50" srcset="" />                        
+                          <% } %>
                         <div class="dropdown-user-window" id="dropdown-user">
                             <a href="/profile"><div> 
                                 <i class="fas fa-user"></i> Thông tin cá nhân

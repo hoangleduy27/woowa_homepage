@@ -17,6 +17,8 @@ const ejs = require('ejs');
 const fs = require('fs');
 const uuid = require('uuid');
 const qr = require('qr-image');
+const multer = require('multer');
+
 
 
 
@@ -27,6 +29,7 @@ const port = 3000;
 
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const connection = mysql.createConnection({
@@ -65,6 +68,32 @@ const client = twilio(accountSid, authToken);
 
 
 
+// Set up the multer storage
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads/');
+    },
+    filename: function (req, file, cb) {
+      cb(null, Date.now() + '-' + file.originalname);
+    },
+  });
+  
+  const upload = multer({
+    storage: storage,
+    limits: {
+      fileSize: 5 * 1024 * 1024, // 5MB (adjust as needed)
+    },
+    fileFilter: (req, file, cb) => {
+      // Adjust allowed file types here if needed
+      if (file.mimetype.startsWith('image/')) {
+        cb(null, true);
+      } else {
+        cb(new Error('Invalid file type. Only images are allowed.'));
+      }
+    },
+  });
+
+
 
 
 
@@ -77,10 +106,39 @@ app.get('/', function (req, res) {
     }
 
     // Check if the user is logged in (user ID exists in the session)
+
     const user = req.session.userId ? { id: req.session.userId } : null;
 
-    res.render('homepage', { user, errorMessage: null, errorMessageSignup: null });
+    res.render('homepage', { user , errorMessage: null, errorMessageSignup: null});
 });
+
+// app.get('/', function (req, res) {
+//     const userId = req.query.userId;
+
+//     if (userId) {
+//         req.session.userId = userId;
+//     }
+
+//     // Check if the user is logged in (user ID exists in the session)
+//     const user = req.session.userId ? { id: req.session.userId } : null;
+
+//     // Fetch the user data from the database based on the user ID
+//     connection.query('SELECT * FROM users WHERE id = ?', [userId], (err, rows) => {
+//         if (err) {
+//             return res.status(500).json({ error: 'Error fetching user data' });
+//         }
+
+//         // If the user is found, pass the data to the view
+//         if (rows.length > 0) {
+//             const profileImage = rows[0].profile_image_path || null;
+//             res.render('homepage', { user, user: rows[0], profileImage: profileImage });
+//         } else {
+//             // If the user is not found, render the view without user data
+//             res.render('homepage', { user, profileImage: null });
+//         }
+//     });
+// });
+
 
 app.get('/about', function (req, res) {
     return res.render('about');
@@ -855,9 +913,10 @@ app.get('/profile', function (req, res) {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        const user = rows[0];
+        // const user = rows[0];
+        const profileImage = rows[0].profile_image_path || null;
 
-        res.render('profile', { user });
+        res.render('profile', { user: rows[0], profileImage: profileImage  });
 
     });
 });
@@ -867,46 +926,75 @@ app.get('/update-profile', function (req, res) {
     // Check if the user is logged in (user ID exists in the session)
     const userId = req.session.userId;
     if (!userId) {
-        return res.redirect('/');
+      return res.redirect('/');
     }
-
+  
     // Retrieve the user data from the database based on the user ID
     connection.query('SELECT * FROM users WHERE id = ?', [userId], (err, rows) => {
-        if (err) {
-            return res.status(500).json({ error: 'Error fetching user' });
-        }
+      if (err) {
+        return res.status(500).json({ error: 'Error fetching user' });
+      }
+  
+      if (rows.length === 0) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      const userBirthday = new Date(rows[0].birthday);
+      const profileImage = rows[0].profile_image_path || null;
 
-        if (rows.length === 0) {
-            return res.status(404).json({ error: 'User not found' });
-        }
-
-        const user = rows[0];
-
-        res.render('update-profile', { user });
-
+      // Render the profile update form using the 'update-profile.ejs' template
+      res.render('update-profile', { user: rows[0],  userBirthday: userBirthday , profileImage: profileImage });
     });
-});
+  });
 
-// Route to handle the profile update form submission
-app.post('/update-profile', function (req, res) {
+
+
+
+app.post('/update-profile', upload.single('profileImage'), function (req, res) {
     // Check if the user is logged in (user ID exists in the session)
     const userId = req.session.userId;
     if (!userId) {
-        return res.redirect('/');
+      return res.redirect('/');
     }
-
-    const { username, email, phonenumber, birthday } = req.body;
-
-    // Update the user's information in the database
-    connection.query('UPDATE users SET username = ?, email = ?, phonenumber = ?, birthday = ?  WHERE id = ?', [username, email, phonenumber, birthday, userId], (err, result) => {
+  
+    const { username, email, phonenumber, birthday, gender  } = req.body;
+    const profileImage = req.file;
+  
+    // Check if a new profile image was uploaded
+    if (profileImage) {
+      // Update the user's information in the database with the image file path
+      const imagePath = path.join(__dirname, 'uploads', profileImage.filename);
+  
+      // Move the uploaded image to the 'uploads' folder
+      fs.rename(profileImage.path, imagePath, (err) => {
         if (err) {
-            return res.status(500).json({ error: 'Error updating profile' });
+          console.error('Error moving image to uploads folder:', err);
+          return res.status(500).json({ error: 'Error moving image to uploads folder' });
         }
-
+  
+        // Update the user's information in the database with the image file path
+        const query = 'UPDATE users SET username = ?, email = ?, phonenumber = ?, birthday = ?, gender = ?, profile_image_path = ? WHERE id = ?';
+        connection.query(query, [username, email, phonenumber, birthday, gender, profileImage.filename, userId], (err, result) => {
+            if (err) {
+            return res.status(500).json({ error: 'Error updating profile' });
+          }
+  
+          // Redirect the user back to the profile page after successful update
+          res.redirect('/profile');
+        });
+      });
+    } else {
+      // If no new image was uploaded, update the user's information without changing the profile_image_path
+      const query = 'UPDATE users SET username = ?, email = ?, phonenumber = ?, birthday = ? , gender = ? WHERE id = ?';
+      connection.query(query, [username, email, phonenumber, birthday, gender, userId], (err, result) => {
+        if (err) {
+          return res.status(500).json({ error: 'Error updating profile' });
+        }
+  
         // Redirect the user back to the profile page after successful update
         res.redirect('/profile');
-    });
-});
+      });
+    }
+  });
 
 
 app.get('/change-password', function (req, res) {

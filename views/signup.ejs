@@ -165,6 +165,27 @@
     <script defer src="https://use.fontawesome.com/releases/v5.1.1/js/all.js" integrity="sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="/validate_register.js"></script>
+
+
+    <script type="text/javascript">
+        // Function to extract the invite code from the URL
+        function getInviteCodeFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('inviteCode');
+        }
+    
+        // Function to automatically fill the invite code into the referral code input field
+        function autoFillInviteCode() {
+            const referralCodeInput = document.getElementById('referralCodeType');
+            const inviteCode = getInviteCodeFromURL();
+            if (inviteCode) {
+                referralCodeInput.value = inviteCode;
+            }
+        }
+    
+        // Call the autoFillInviteCode function when the page loads
+        document.addEventListener('DOMContentLoaded', autoFillInviteCode);
+    </script>
 </body>
 
 </html>

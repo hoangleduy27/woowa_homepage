@@ -27,9 +27,16 @@
 
         <main class="main-article">
             <div class="member-basic-info p-md-3 d-block d-md-flex">
-                <div class="mb-3 mb-md-0 me-md-4 d-flex align-middle justify-content-center align-items-center"><img
-                        class="avt-img" src="/image/istockphoto-1371797889-612x612.jpg" alt="Member Avatar" srcset=""
-                        height="250" width="250"></div>
+                <div class="mb-3 mb-md-0 me-md-4 d-flex align-middle justify-content-center align-items-center">
+                  <% if (typeof profileImage !== 'undefined' && profileImage) { %>
+                    <!-- Display user's uploaded image from the uploads folder -->
+                  <img class="avt-img" src="/uploads/<%= profileImage %>" alt="Member Avatar" height="250" width="250">
+                <% } else { %>
+                  <!-- Display default avatar image -->
+                  <img class="avt-img" src="/image/istockphoto-1371797889-612x612.jpg"
+                  height="250px" srcset="" /> 
+                <% } %>
+              </div>
                 <div class="member-info d-md-flex d-block justify-content-between">
                     
                     <div class="pb-3 p-md-0">
@@ -102,22 +109,26 @@
         </div>
         <div>
           <div class="pb-2">
-            <div class="d-flex align-items-center pb-2"><i class="fas fa-qrcode"></i> <span>Mã giới thiệu</span></div>
+            <div class="d-flex align-items-center pb-2"><i class="fas fa-qrcode"></i> <span>&nbsp;Mã giới thiệu</span></div>
             <div class="input-group mb-3">
               <input type="text" class="form-control" value="<%= user.referral_code %>" placeholder="Invite Code"
-                aria-describedby="basic-addon2" required readonly>
-              <span class="input-group-text cursor-pointer" id="basic-addon2"><i class="fas fa-clone p-0 "
-                  style="font-size: 18px !important;" onclick="copyToClipboard()"></i></span>
-            </div>
+              aria-describedby="basic-addon2" required readonly>
+            <span class="input-group-text cursor-pointer" id="basic-addon2"
+              onclick="copyToClipboard(document.querySelector('.form-control'))">
+              <i class="fas fa-clone p-0" style="font-size: 18px !important;"></i>
+            </span>
           </div>
-          <div>
-            <div class="d-flex align-items-center pb-2"><i class="fas fa-link"></i> <span>Đường dẫn giới thiệu</span>
+          <div class="pb-2">
+            <div class="d-flex align-items-center pb-2"><i class="fas fa-link"></i> <span>&nbsp;Đường dẫn giới thiệu</span>
             </div>
             <div class="input-group mb-3">
-              <input type="text" class="form-control" value="https://adex.woowa.vn?inviteCode=WW202152"
-                placeholder="Invite Link" aria-describedby="basic-addon3">
-              <span class="input-group-text cursor-pointer" id="basic-addon3"><i class="fas fa-clone p-0 "
-                  style="font-size: 18px !important;"></i></span>
+              <input type="text" class="form-control"
+              value="http://localhost:3000/signup?inviteCode=<%= user.referral_code %>" placeholder="Invite Link"
+              aria-describedby="basic-addon3" required readonly>
+            <span class="input-group-text cursor-pointer" id="basic-addon3"
+              onclick="copyToClipboard(document.querySelectorAll('.form-control')[1])">
+              <i class="fas fa-clone p-0" style="font-size: 18px !important;"></i>
+            </span>
             </div>
           </div>
 
@@ -173,24 +184,22 @@
   }
 
 
-  function copyToClipboard() {
-      const referralCodeInput = document.querySelector(".form-control");
-      referralCodeInput.select();
+  function copyToClipboard(inputElement) {
+  inputElement.select();
 
-      try {
-          const successful = document.execCommand("copy");
-          if (successful) {
-              // Show the Bootstrap modal to indicate the copy success
-              $("#copyAlertModal").modal("show");
-          } else {
-              // Show a fallback alert if modal is not supported
-              alert("Copy failed. Please try again.");
-          }
-      } catch (err) {
-          alert("Copy to clipboard is not supported by your browser.");
-      }
+  try {
+    const successful = document.execCommand("copy");
+    if (successful) {
+      // Show the Bootstrap modal to indicate the copy success
+      $("#copyAlertModal").modal("show");
+    } else {
+      // Show a fallback alert if modal is not supported
+      alert("Copy failed. Please try again.");
+    }
+  } catch (err) {
+    alert("Copy to clipboard is not supported by your browser.");
   }
-
+}
 
   function formatDate(dateString) {
       if (!dateString) return '';
