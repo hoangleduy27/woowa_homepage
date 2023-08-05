@@ -1,215 +1,379 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-    <title>Home Page</title>
-    <!-- Required meta tags -->
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS v5.2.1 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
-        integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous" />
-    <link rel="stylesheet" href="homepage.css" />
+  <link rel="stylesheet" href="css/owl.carousel.min.css">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
+    integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous" />
+  <!-- Style -->
+  <link rel="stylesheet" href="homepage.css" />
+  <title>Website Menu #4</title>
 </head>
 
 <body>
-    <div class="banner">
-        <nav class="navbar">
-            <img src="images/woowa_logo.png" class="lg" height="50" />
-            <div class="d-flex align-items-center">
-                <ul class="p-0 m-0">
-                    <li class="active"><a href="#">Trang chủ</a></li>
-                    <li><a href="#">Sự Kiện</a></li>
-                    <li><a href="#">Về chúng tôi</a></li>
-                    <li></li>
-                </ul>
-                <div class="d-flex align-items-center">
-                    <div class="position-relative pe-4">
-                        <i class="far fa-bell fs-5"></i>
-                    </div>
-                    <div>
-                        <div class="cursor-pointer user-info-dropdown" tabindex="0">
-                            <img class="rounded-circle" src="images/istockphoto-1371797889-612x612.jpg" height="50px"
-                                srcset="" />
-                            <div class="dropdown-user-window" id="dropdown-user">
-                                <div>
-                                    <a href=""><i class="fas fa-user"></i> Thông tin cá nhân</a>
-                                </div>
-                                <div>
-                                    <a href=""><i class="fas fa-lock"></i> Đổi mật khẩu</a>
-                                </div>
-                                <div>
-                                    <a href=""><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
-                                </div>
-                            </div>
-                        </div>
 
-                    </div>
-                </div>
-            </div>
+
+  <div class="site-mobile-menu site-navbar-target">
+    <div class="site-mobile-menu-header">
+      <div class="site-mobile-menu-close mt-3">
+        <span class="icon-close2 js-menu-toggle"><i class="fas fa-times    "></i></span>
+      </div>
+    </div>
+    <div class="site-mobile-menu-body"></div>
+  </div>
+
+
+  <div class="top-bar">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <a href="#" class="">
+            <i class="far fa-envelope-open me-2"></i>
+            <!-- <span class="mr-2  icon-envelope-open-o"></span>  -->
+            <span class="d-none d-md-inline-block">adex-support@woowa.com</span>
+          </a>
+          <span class="mx-md-2 d-inline-block"></span>
+          <a href="#" class="">
+            <i class="fas fa-phone me-2"></i>
+            <span class="d-none d-md-inline-block">(+84) 905 123 456</span>
+          </a>
+          <div class="float-end">
+            <a href="#" class="">
+              <i class="fab fa-twitter me-2  "></i>
+              <span class="d-none d-md-inline-block">Twitter</span></a>
+            <span class="mx-md-2 d-inline-block"></span>
+            <a href="#" class="">
+              <i class="fab fa-facebook-f me-2  "></i>
+              <span class="d-none d-md-inline-block">Facebook</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <header class="site-navbar js-sticky-header site-navbar-target" role="banner">
+    <div class="row justify-content-between align-items-center position-relative mx-md-3">
+      <div class="col-auto toggle-button d-inline-block d-lg-none"><a href="#"
+          class="site-menu-toggle py-5 js-menu-toggle text-black"><span><i
+              class="fas fa-bars fs-3 text-maincolor"></i></span></a></div>
+      <div class="col-auto site-logo">
+        <!-- <a href="index.html" class="text-black"><span class="text-primary">Brand</a> -->
+        <img src="images/woowa_logo.png" class="lg" height="50" />
+      </div>
+      <div class="col-auto d-none d-lg-flex">
+        <nav class="site-navigation text-right ml-auto " role="navigation">
+
+          <ul class="site-menu main-menu js-clone-nav ml-auto d-none d-lg-flex align-items-center">
+            <li><a href="#home-section" class="nav-link active">Trang chủ</a></li>
+            <!-- <li><a href="#services-section" class="nav-link">Dịch vụ</a></li> -->
+            <li><a href="#services-section" class="nav-link">Sự kiện</a></li>
+            <li><a href="#services-section" class="nav-link">Về chúng tôi</a></li>
+            
+            <li class="ps-md-5">
+              <a href="#services-section" class="nav-link fs-6">Đăng nhập</a> / 
+              <a href="#services-section" class="nav-link fs-6">Đăng ký</a>
+            </li>
+            <!-- <li></li> -->
+            <!-- <li class="has-children ps-3 nav-item dropdown">
+              <img class="rounded-circle ms-md-5 nav-link dropdown-toggle"
+                src="images/istockphoto-1371797889-612x612.jpg" height="46px" srcset="" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+
+              <ul class="dropdown-menu">
+                <li><a href="#team-section" class="dropdown-item"><i class="fas fa-user"></i>Thông tin cá nhân</a></li>
+                <li><a href="#pricing-section" class="dropdown-item"><i class="fas fa-lock"></i> Đổi mật khẩu</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a href="#faq-section" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+
+              </ul>
+            </li> -->
+
+
+          </ul>
         </nav>
 
-        <div class="container-form">
-            <div class="centered-text">
-                <h1>
-                    Chào mừng đến với 
-                    <mark style="color: blue; background: none">WOOWA ADEX</mark>
-                </h1>
-                <h2>Kết nối nền tảng công nghệ quảng cáo mới</h2>
-                <h2>Đăng nhập hoặc đăng ký để tìm hiểu thêm thông tin</h2>
-
-                <button class="button_register">
-                    <span></span>Đăng ký
-                </button>
-                <button class="button_login"><span></span>Đăng nhập</button>
-            </div>
-        </div>
+      </div>
+      <div class="col-auto toggle-button d-inline-block d-lg-none"><a href="#"
+          class="site-menu-toggle py-5 js-menu-toggle text-black"><button class="btn btn-sm btn-primary"
+            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Đăng
+            nhập</button></a></div>
     </div>
-    <!-- <section class="container modal hidden" id = "register_form"> -->
-    <section class="register_form" id="register_form">
-        <div class="">
-            <form class="registration-form">
-                <div class="d-flex justify-content-end fs-5 cursor-pointer" id="close1">
-                    <i class="fas fa-times"></i>
-                </div>
-                <h2>Đăng ký</h2>
-                <!-- Your form inputs go here -->
-                <div class="text_field">
-                    <input type="text" required />
-                    <span></span>
-                    <label>Họ và tên*</label>
-                </div>
-                <div class="text_field">
-                    <input type="text" required />
-                    <span></span>
-                    <label>Số điện thoại*</label>
-                </div>
+  </header>
 
-                <div class="text_field">
-                    <input type="password" required />
-                    <span></span>
-                    <label>Mật khẩu*</label>
-                </div>
-                <div class="text_field">
-                    <input type="text" required />
-                    <span></span>
-                    <label>Mã giới thiệu</label>
-                </div>
 
-                <button class="btn btn-primary" type="submit">Đăng ký</button>
-                <ul class="social-icons">
-                    <li><img class="icon-socialmedias" src="images/facebook.png" /></li>
-                    <li><img class="icon-socialmedias" src="images/google.png" /></li>
-                    <li><img class="icon-socialmedias" src="images/zalo.png" /></li>
-                </ul>
-                <div class="signup_link">
-                    Bạn đã có tài khoản? <a class="return_login">Đăng nhập ngay</a>
-                </div>
-            </form>
+
+  <!-- <div class="hero" style="background-image: url('images/hero_1.jpg');"></div> -->
+  <div>
+    <div class="countdown-elem">
+      <img src="images/poster_ngang.png" width="100%" ; height="80%">
+      <div class="countdown d-none d-md-block">
+        <h1 id="headline">Coming soon</h1>
+        <div id="countdown">
+          <ul>
+            <li><span id="days"></span>Ngày</li>
+            <li><span>:</span>&nbsp;</li>
+            <li><span id="hours"></span>Giờ</li>
+            <li><span>:</span>&nbsp;</li>
+            <li><span id="minutes"></span>Phút</li>
+            <li><span>:</span>&nbsp;</li>
+            <li><span id="seconds"></span>Giây</li>
+          </ul>
         </div>
-    </section>
-    <!-- <div class="overlay hidden"></div> -->
+      </div>
+    </div>
 
-    <section class="login_form" id="login_form">
-        <div class="">
-            <form class="login-form">
-                <div class="d-flex justify-content-end fs-5 cursor-pointer" id="close2">
-                    <i class="fas fa-times"></i>
-                </div>
-                <h2>Login</h2>
-                <!-- Your form inputs go here -->
-                <div class="text_field">
-                    <input type="text" required />
-                    <span></span>
-                    <label>Email/Số điện thoại*</label>
-                </div>
-                <div class="text_field">
-                    <input type="password" required />
-                    <span></span>
-                    <label>Mật khẩu</label>
-                </div>
-                <div style="display: flex; justify-content: space-between">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-                        <label class="form-check-label" for="exampleCheck1">Giữ đăng nhập</label>
-                    </div>
-                    <a class="forgot-password" style="text-align: left; color: #2691d9">Quên mật khẩu?</a>
-                </div>
-                <button class="btn btn-primary" type="submit">Đăng nhập</button>
-                <ul class="social-icons">
-                    <li><img class="icon-socialmedias" src="images/facebook.png" /></li>
-                    <li><img class="icon-socialmedias" src="images/google.png" /></li>
-                    <li><img class="icon-socialmedias" src="images/zalo.png" /></li>
-                </ul>
-                <div class="signup_link">
-                    Bạn chưa có tài khoản?
-                    <a class="fw-bold text-decoration-underline return_register">Đăng ký ngay</a>
-                </div>
-            </form>
+    <div class="video-elem" height="1000px">
+      <div class="video">
+        <h1 class="blur-title">Woowa Adex</h1>
+        <h2 class="main-title threeDimension mb-4">Woowa Adex</h2>
+        <div class="d-flex align-items-center justify-content-center">
+          <p class="mb-4 w-75">
+            <span class="fw-bold text-maincolor">Woowa Adex</span> là một ứng dụng công nghệ quảng cáo, kết hợp giữa
+            việc quảng cáo Online và Offline. Tăng hiệu quả quảng cáo đến người dùng cũng như giúp cho các đối tác phổ
+            biển với người dùng nhiều hơn
+          </p>
         </div>
-    </section>
+        <video class="video-play" controls autoplay loop>
+          <source src="video/intro-video.mp4" type="video/mp4">
+          <source src="mov_bbb.ogg" type="video/ogg">
+          Trình duyệt của bạn không được hỗ trợ
+        </video>
+      </div>
+    </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $(".button_register").click(function () {
-                $(".register_form").css("transform", "scale(1)");
-            });
 
-            $(".button_login").click(function () {
-                $(".login_form").css("transform", "scale(1)");
-            });
-            $(".return_login").click(function () {
-                $(".login_form").css("transform", "scale(1)");
-            });
+    <div class="clients">
+      <div class="cli">
+        <div class="sec-heading">
+          <h1 class="blur-title">Đối tác</h1>
+          <h2 class="main-title threeDimension mb-4">Đối tác</h2>
+          <div class="d-flex align-items-center justify-content-center">
+            <p class="mb-4 w-75 text-center">
+              Danh sách <span class="fw-bold text-maincolor">đối tác Woowa Adex</span> hiện đang kết nối
+            </p>
+          </div>
+        </div>
 
-            $(".return_register").click(function () {
-                $(".login_form").css("transform", "scale(0)");
-                $(".register_form").css("transform", "scale(1)");
-            });
+        <div class="owl-carousel owl-theme clients-carousel">
+          <div class="item-box">
+            <img src="images/hyund.png" alt="" class="client-img">
+          </div>
+          <div class="item-box">
+            <img src="images/LG logo.png" alt="" class="client-img">
+          </div>
+          <div class="item-box">
+            <img src="images/samsung.png" alt="" class="client-img">
+          </div>
+          <div class="item-box">
+            <img src="images/kia.png" alt="" class="client-img">
+          </div>
+          <div class="item-box">
+            <img src="images/sm.png" alt="" class="client-img">
+          </div>
+          <div class="item-box">
+            <img src="images/yg.png" alt="" class="client-img">
+          </div>
+          <div class="item-box">
+            <img src="images/kepco.png" alt="" class="client-img" style="padding-left: 25px">
+          </div>
+          <div class="item-box">
+            <img src="images/cj.png" alt="" class="client-img">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-            $("#close1").click(function () {
-                $(".register_form").css("transform", "scale(0)");
-                $(".login_form").css("transform", "scale(0)");
-            });
-            $("#close2").click(function () {
-                $(".login_form").css("transform", "scale(0)");
-                $(".register_form").css("transform", "scale(0)");
-            });
-        });
+  <footer class="footer-section">
+    <div class="container">
+      <div class="footer-cta pt-5 pb-5">
+        <div class="row">
+          <div class="col-xl-4 col-md-4 mb-30">
+            <div class="single-cta">
+              <i class="fas fa-map-marker-alt footer-icons"></i>
+              <div class="cta-text">
+                <h4>Trụ sở</h4>
+                <span>472 Đường 2 tháng 9, Đà Nẵng</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 col-md-4 mb-30">
+            <div class="single-cta">
+              <i class="fas fa-phone footer-icons"></i>
+              <div class="cta-text">
+                <h4>Liên lạc</h4>
+                <span>(+84) 905 123 456</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 col-md-4 mb-30">
+            <div class="single-cta">
+              <i class="far fa-envelope-open footer-icons"></i>
+              <div class="cta-text">
+                <h4>Thư điện tử</h4>
+                <span>adex-support@woowa.com</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-content pt-5 pb-5">
+        <div class="row">
+          <div class="col-xl-4 col-lg-4 mb-50">
+            <div class="footer-widget">
+              <div class="footer-logo">
+                <a href="index.html"><img src="images/woowa_logo.png" class="img-fluid" alt="logo"></a>
+              </div>
+              <div class="footer-text">
+                <p>Woowa Adex là công ty về lĩnh vực quảng cáo tích hợp công nghệ hiện đại. Kết hợp giữa quảng cáo
+                  Online và Offline</p>
+              </div>
+              <div class="footer-social-icon">
+                <span>Theo dõi chúng tôi</span>
+                <a href="#"><i class="follow-icons fab fa-facebook-f facebook-bg"></i></a>
+                <a href="#"><i class="follow-icons fab fa-twitter twitter-bg"></i></a>
+                <a href="#"><i class="follow-icons fab fa-google-plus-g google-bg"></i></a>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-4 col-md-6 mb-30">
+            <div class="footer-widget">
+              <div class="footer-widget-heading">
+                <h3>Về Woowa Adex</h3>
+              </div>
+              <ul>
+                <li><a href="#">Trang chủ</a></li>
+                <li><a href="#">Về chúng tôi</a></li>
+                <li><a href="#">Sự kiện</a></li>
+                <li><a href="#">Liên hệ</a></li>
+                <!-- <li><a href="#">Contact</a></li>
+                <li><a href="#">About us</a></li>
+                <li><a href="#">Our Services</a></li>
+                <li><a href="#">Expert Team</a></li>
+                <li><a href="#">Contact us</a></li>
+                <li><a href="#">Latest News</a></li> -->
+              </ul>
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-4 col-md-6 mb-50">
+            <div class="footer-widget">
+              <div>
+                <div class="footer-widget-heading">
+                  <h3>Tải ứng dụng trên điện thoại</h3>
+                </div>
+                <div class="mb-3">
+                  <img src="images/downloadappstore.png" height="50px" alt="">
+                  <img src="images/android-download.png" height="50px" alt="">
+                </div>
+                <!-- <div class="footer-text mb-25">
+                  <p>Đăng ký để được nhận thông tin sự kiện, chương trình hấp dẫn qua mail</p>
+                </div> -->
+              </div>
+              <div>
+                <div class="footer-widget-heading">
+                  <h3>Đăng ký để nhận thông tin</h3>
+                </div>
+                <!-- <div class="footer-text mb-25">
+                  <p>Đăng ký để được nhận thông tin sự kiện, chương trình hấp dẫn qua mail</p>
+                </div> -->
+                <div class="subscribe-form">
+                  <form action="#">
+                    <input type="text" placeholder="Địa chỉ Email">
+                    <button><i class="subscribe-icon fab fa-telegram-plane"></i></button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="copyright-area">
+      <div class="container">
+        <div class="row">
+          <div class="col-xl-6 col-lg-6 text-center text-lg-left">
+            <div class="copyright-text">
+              <p>Copyright &copy; 2023, Bản quyền thuộc về <b>Woowa Adex</b></p>
+            </div>
+          </div>
+          <div class="col-xl-6 col-lg-6 d-none d-lg-block text-right">
+            <div class="footer-menu">
+              <ul>
+                <li><a href="#">Trang Chủ</a></li>
+                <li><a href="#">Điều Khoản</a></li>
+                <li><a href="#">Bảo Mật</a></li>
+                <li><a href="#">Chính Sách</a></li>
+                <li><a href="#">Liên Hệ</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script defer src="https://use.fontawesome.com/releases/v5.1.1/js/all.js"
+    integrity="sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a"
+    crossorigin="anonymous"></script>
+  <script src="js/jquery-3.3.1.min.js"></script>
+  <script src="js/jquery.sticky.js"></script>
+  <script src="js/main.js"></script>
+  <script src="homepage.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+    crossorigin="anonymous"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.1.1/js/all.js"
+    integrity="sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+    integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
+    crossorigin="anonymous"></script>
+  <script type="text/javascript">
+    $(".clients-carousel").owlCarousel({
+      autoplay: true,
+      loop: true,
+      margin: 5,
+      dots: false,
+      slideTransition: 'linear',
+      autoplayTimeout: 4500,
+      autoplayHoverPause: true,
+      autoplaySpeed: 4500,
+      autoWidth: true,
+      margin: 70,
+      responsive: {
 
-        const dropdown = document.querySelector(".user-info-dropdown");
-        const dropdownWindow = document.querySelector(".dropdown-user-window");
+        1: {
+          item: 1
+        },
+        0: {
+          item: 2
+        },
 
-        dropdown.addEventListener("click", (event) => {
-            dropdownWindow.classList.toggle("active");
-        });
+        500: {
+          items: 3
+        },
 
-        dropdown.addEventListener("blur", (event) => {
-            dropdownWindow.classList.remove("active");
-        });
-
-      // function opendropdown() {
-
-      //     let display_dropdown = document.getElementById("dropdown-user").style;
-      //     console.log(display_dropdown);
-      //     if (document.getElementById("dropdown-user").style.display === "none") {
-      //         document.getElementById("dropdown-user").style.display = "block";
-      //     } else document.getElementById("dropdown-user").style.display = "none";
-      // }
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
-        crossorigin="anonymous"></script>
-    <script defer src="https://use.fontawesome.com/releases/v5.1.1/js/all.js"
-        integrity="sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
-        integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
-        crossorigin="anonymous"></script>
+        600: {
+          items: 4
+        },
+        800: {
+          items: 4
+        },
+        1200: {
+          items: 4
+        },
+      }
+    });
+  </script>
 </body>
 
 </html>

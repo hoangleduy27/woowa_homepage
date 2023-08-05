@@ -100,25 +100,24 @@ body {
     cursor: pointer;
 }
 
-.banner-intro {
+/* .banner-intro {
     height: 400px;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: #0044ab2d;
-}
-
+} */
+/* 
 .cover-banner {
     position: absolute;
     background: #f0f8ffa2;
     height: 400px;
     width: 100%;
-}
+} */
 
 .above-banner {
     z-index: 1;
-    position: absolute;
-    height: 400px;
+    background-color: #0044ab2d;
     width: 100%;
     display: flex;
     align-items: center;
@@ -156,10 +155,7 @@ body {
 }
 
 .business-cores .core-item {
-    margin: 0px 25px
-}
-
-.core-item {
+    margin: 0px 25px;
     width: 150px;
     height: 150px;
     border-radius: 50%;
@@ -366,9 +362,6 @@ body {
 
     .above-banner {
         z-index: 1;
-        position: absolute;
-        /* height: 400px; */
-        width: 100%;
         display: flex;
         flex-direction: column;
         text-align: center;
@@ -411,6 +404,23 @@ body {
 }
 
 @media screen and (max-width:576px) {
+
+    .business-cores .core-item {
+        margin: 0px 5px;
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        background-color: orange;
+        color: white;
+        font-weight: bold;
+        font-size: 13px;
+        padding: 0 8px;
+        justify-content: center;
+    }
+
 
     .main-timeline .timeline,
     .main-timeline .timeline:nth-child(even) {
