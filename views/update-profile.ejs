@@ -58,22 +58,24 @@
                 <label class="non-empty">Birthday*</label>
 
             </div>
+
             <div class="text_field">
-                <label class="non-empty">Gender*</label>
                 <div class="select-box">
-                    <select id="gender" name="gender">
+                    <select id="gender" name="gender" class="remove-after-selected">
                         <option value="" <%= user.gender === '' ? 'selected' : '' %>>Select Gender</option>
-                        <option value="male" <%= user.gender === 'male' ? 'selected' : '' %>>Male</option>
-                        <option value="female" <%= user.gender === 'female' ? 'selected' : '' %>>Female</option>
-                        <option value="other" <%= user.gender === 'other' ? 'selected' : '' %>>Other</option>
+                        <option value="male" class="remove-after-selected" <%= user.gender === 'male' ? 'selected' : '' %>>Male</option>
+                        <option value="female" class="remove-after-selected" <%= user.gender === 'female' ? 'selected' : '' %>>Female</option>
+                        <option value="other" class="remove-after-selected" <%= user.gender === 'other' ? 'selected' : '' %>>Other</option>
                     </select>
+                    <label class="non-empty">Gender*</label>
+                    <span></span>
                 </div>
             </div>
             <div class="form-group">
                 <label class="non-empty">Profile Image*</label>
                 <% if (typeof profileImage !== 'undefined' && profileImage) { %>
                     <!-- Display user's uploaded image from the uploads folder -->
-                  <img class="rounded-circle" src="/uploads/<%= profileImage %>" alt="Member Avatar" height="150" width="150">
+                  <img class="rounded-circle" src="/uploads/<%= profileImage %>" alt="Member Avatar" height="150" width="150" border:1 so>
                 <% } else { %>
                   <!-- Display default avatar image -->
                   <img class="rounded-circle" src="/image/istockphoto-1371797889-612x612.jpg" alt="Member Avatar" height="150" width="150">
@@ -106,4 +108,25 @@
         });
     });
 
+
+
+
+    const selects = document.querySelectorAll('.remove-after-selected');
+
+    selects.forEach(select => {
+        select.addEventListener('change', () => {
+            selects.forEach(option => {
+                const label = option.nextElementSibling;
+                const span = option.nextElementSibling.nextElementSibling;
+
+                if (option.value === '') {
+                    label.classList.remove('selected');
+                    span.style.transform = 'scaleX(0)';
+                } else {
+                    label.classList.add('selected');
+                    span.style.transform = 'scaleX(1)';
+                }
+            });
+        });
+    });
 </script>

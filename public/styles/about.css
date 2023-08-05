@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
 
 body {
-    background-image: url(images/background.jpg);
+    background-image: url(/image/background.jpg);
     background-repeat: repeat;
     background-size: contain;
     font-family: 'Josefin Sans', sans-serif;
@@ -68,7 +68,7 @@ body {
     z-index: 5;
 }
 
-.dropdown-user-window a {
+.dropdown-user-window div {
     padding: 7px 0px;
     cursor: pointer;
     display: flex;
@@ -100,26 +100,24 @@ body {
     cursor: pointer;
 }
 
-.banner-intro {
+/* .banner-intro {
     height: 400px;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: #0044ab2d;
-    
-}
-
+} */
+/* 
 .cover-banner {
     position: absolute;
     background: #f0f8ffa2;
     height: 400px;
     width: 100%;
-}
+} */
 
 .above-banner {
     z-index: 1;
-    position: absolute;
-    height: 400px;
+    background-color: #0044ab2d;
     width: 100%;
     display: flex;
     align-items: center;
@@ -157,10 +155,7 @@ body {
 }
 
 .business-cores .core-item {
-    margin: 0px 25px
-}
-
-.core-item {
+    margin: 0px 25px;
     width: 150px;
     height: 150px;
     border-radius: 50%;
@@ -367,9 +362,6 @@ body {
 
     .above-banner {
         z-index: 1;
-        position: absolute;
-        /* height: 400px; */
-        width: 100%;
         display: flex;
         flex-direction: column;
         text-align: center;
@@ -412,6 +404,23 @@ body {
 }
 
 @media screen and (max-width:576px) {
+
+    .business-cores .core-item {
+        margin: 0px 5px;
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        background-color: orange;
+        color: white;
+        font-weight: bold;
+        font-size: 13px;
+        padding: 0 8px;
+        justify-content: center;
+    }
+
 
     .main-timeline .timeline,
     .main-timeline .timeline:nth-child(even) {

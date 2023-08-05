@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Ticket Ranking</title>
+</head>
+<body>
+    <h1>Hello <%= user.username %>!</h1>
+    <p>Your current ticket ranking is: <%= user.user_level || 'Unranked' %></p>
+    <p>Your referral code count: <%= user.referral_code_count || 0 %></p>
+
+    <button onclick="selectTicket('D'); showRedeemConfirmation();" <%= user.referral_code_count >= 10 ? '' : 'disabled' %>>Get Ticket D</button>
+    <button onclick="selectTicket('C'); showRedeemConfirmation();" <%= user.referral_code_count >= 20 ? '' : 'disabled' %>>Get Ticket C</button>
+    <button onclick="selectTicket('B'); showRedeemConfirmation();" <%= user.referral_code_count >= 30 ? '' : 'disabled' %>>Get Ticket B</button>
+    <button onclick="selectTicket('A'); showRedeemConfirmation();" <%= user.referral_code_count >= 40 ? '' : 'disabled' %>>Get Ticket A</button>
+    <button onclick="selectTicket('VIP'); showRedeemConfirmation();" <%= user.referral_code_count >= 50 ? '' : 'disabled' %>>Get VIP Ticket</button>
+
+</body>
+</html>
+<script>
+    function selectTicket(ticket) {
+        // Gửi thông tin về vé đã chọn lên server bằng AJAX
+        fetch('/select-ticket', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ ticket: ticket })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Xử lý kết quả trả về từ server nếu cần thiết
+            console.log(data.message);
+        })
+        .catch(error => {
+            // Xử lý lỗi nếu cần thiết
+            console.error(error);
+        });
+    }
+</script>
+
+<script>
+    function showRedeemConfirmation() {
+        // Use SweetAlert2 to show the confirmation dialog
+        console.log('ok')
+        Swal.fire({
+            title: 'Xác nhận đăng ký',
+            text: 'Bạn chắc chắn muốn tham gia chứ ?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Đăng ký',
+            cancelButtonText: 'Hủy bỏ',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // User clicked Đổi quà button, proceed with redemption
+                window.location.href = "/redeem-gift";
+            } else {
+                return false;
+            }
+        });
+    }
+</script>

@@ -60,7 +60,7 @@ app.use(
 
 // Khởi tạo Twilio Client với các thông tin tài khoản Twilio của bạn
 const accountSid = 'ACd522933544b3c3f3f2add765c5a98c7d';
-const authToken = '7465e03b4426577188687369acebf098';
+const authToken = '2e8871a0b92c30aa2af8adcb1387146e';
 const twilioPhoneNumber = '+1 470 613 4992'; // Số điện thoại Twilio gửi SMS
 
 const client = twilio(accountSid, authToken);
@@ -98,20 +98,6 @@ const storage = multer.diskStorage({
 
 
 
-app.get('/', function (req, res) {
-    const userId = req.query.userId;
-
-    if (userId) {
-        req.session.userId = userId;
-    }
-
-    // Check if the user is logged in (user ID exists in the session)
-
-    const user = req.session.userId ? { id: req.session.userId } : null;
-
-    res.render('homepage', { user , errorMessage: null, errorMessageSignup: null});
-});
-
 // app.get('/', function (req, res) {
 //     const userId = req.query.userId;
 
@@ -120,31 +106,54 @@ app.get('/', function (req, res) {
 //     }
 
 //     // Check if the user is logged in (user ID exists in the session)
+
 //     const user = req.session.userId ? { id: req.session.userId } : null;
 
-//     // Fetch the user data from the database based on the user ID
-//     connection.query('SELECT * FROM users WHERE id = ?', [userId], (err, rows) => {
-//         if (err) {
-//             return res.status(500).json({ error: 'Error fetching user data' });
-//         }
-
-//         // If the user is found, pass the data to the view
-//         if (rows.length > 0) {
-//             const profileImage = rows[0].profile_image_path || null;
-//             res.render('homepage', { user, user: rows[0], profileImage: profileImage });
-//         } else {
-//             // If the user is not found, render the view without user data
-//             res.render('homepage', { user, profileImage: null });
-//         }
-//     });
+//     res.render('homepage', { user , errorMessage: null, errorMessageSignup: null});
 // });
+app.get('/', function (req, res) {
+    const userId = req.session.userId;
+
+    connection.query('SELECT * FROM users WHERE id = ?', [userId], (err, rows) => {
+        if (err) {
+            console.error('Error fetching user:', err);
+            return res.status(500).json({ error: 'Error fetching user' });
+        }
+
+        if (rows.length === 0) {
+            // Nếu không tìm thấy người dùng, vẫn hiển thị trang homepage nhưng không có dữ liệu người dùng
+            const profileImage = null;
+            return res.render('homepage', { user: null, profileImage: profileImage });
+        }
+
+        const profileImage = rows[0].profile_image_path || null;
+        res.render('homepage', { user: rows[0], profileImage: profileImage });
+    });
+});
+
+
+
 
 
 app.get('/about', function (req, res) {
-    return res.render('about');
+    const userId = req.session.userId;
 
+    connection.query('SELECT * FROM users WHERE id = ?', [userId], (err, rows) => {
+        if (err) {
+            console.error('Error fetching user:', err);
+            return res.status(500).json({ error: 'Error fetching user' });
+        }
+
+        if (rows.length === 0) {
+            // Nếu không tìm thấy người dùng, vẫn hiển thị trang about nhưng không có dữ liệu người dùng
+            const profileImage = null;
+            return res.render('about', { user: null, profileImage: profileImage });
+        }
+
+        const profileImage = rows[0].profile_image_path || null;
+        res.render('about', { user: rows[0], profileImage: profileImage });
+    });
 });
-
 
 app.get('/events', (req, res) => {
     const userId = req.query.userId;
@@ -173,11 +182,37 @@ app.get('/events', (req, res) => {
 
             const user = userRows.length === 1 ? userRows[0] : null;
             const redeemmessage = req.query.redeemmessage;
+            const profileImage = user ? user.profile_image_path : null;
 
-            res.render('events', { user, events, ticket: user ? user.ticket : null, redeemmessage });
+            res.render('events', { user, events, ticket: user ? user.ticket : null, redeemmessage, profileImage });
         });
     });
 });
+
+app.get('/ticket', (req, res) =>{
+    const userId = req.session.userId;
+
+    if (!userId) {
+        return res.redirect('/login');
+    }
+
+    connection.query('SELECT * FROM users WHERE id = ?', [userId], (err, rows) => {
+        if (err) {
+            return res.status(500).json({ error: 'Error fetching user' });
+        }
+
+        if (rows.length === 0) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        const user = rows[0];
+        const referralCodeCount = user.referral_code_count || 0;
+
+ 
+        res.render('ticket', { user });
+    });
+});
+
 
 /// set event = point (không xoá)
 
@@ -264,82 +299,7 @@ app.get('/events', (req, res) => {
 
 
 
-// app.get('/redeem-gift', (req, res) => {
-//     const userId = req.session.userId;
 
-//     if (!userId) {
-//         return res.redirect('/login');
-//     }
-
-//     // Check if the user has enough referral_code_count to redeem the gift (minimum 10 referral_code_count)
-//     const getUserReferralCountQuery = 'SELECT referral_code_count FROM users WHERE id = ?';
-//     connection.query(getUserReferralCountQuery, [userId], (err, userRows) => {
-//         if (err) {
-//             console.error('Error getting user referral code count:', err);
-//             return res.status(500).json({ message: 'Lỗi khi lấy số lượng mã giới thiệu của người dùng' });
-//         }
-
-//         if (userRows.length !== 1) {
-//             return res.status(500).json({ message: 'Người dùng không tồn tại hoặc có nhiều bản ghi trùng lặp' });
-//         }
-
-//         const referralCodeCount = userRows[0].referral_code_count;
-
-//         if (referralCodeCount < 10) {
-//             // User does not have enough referral_code_count to redeem the gift
-//             return res.redirect('/events?redeemmessage=not_enough_referral_codes');
-//         }
-
-//         // Update the ticket status to "yes"
-//         const updateUserQuery = 'UPDATE users SET ticket = "yes" WHERE id = ?';
-//         connection.query(updateUserQuery, [userId], (err, updateUserResult) => {
-//             if (err) {
-//                 console.error('Error updating user ticket status:', err);
-//                 return res.status(500).json({ message: 'Lỗi khi cập nhật trạng thái vé' });
-//             }
-
-//             // Send email upon successful registration
-//             const getUserEmailQuery = 'SELECT email, username FROM users WHERE id = ?';
-//             connection.query(getUserEmailQuery, [userId], (err, userEmailRows) => {
-//                 if (err) {
-//                     console.error('Error getting user email:', err);
-//                     return res.status(500).json({ message: 'Lỗi khi lấy email người dùng' });
-//                 }
-
-//                 if (userEmailRows.length !== 1) {
-//                     console.error('User with id ' + userId + ' not found or multiple records with the same id exist.');
-//                     return res.status(500).json({ message: 'Người dùng không tồn tại hoặc có nhiều bản ghi trùng lặp' });
-//                 }
-
-//                 const userEmail = userEmailRows[0].email;
-//                 const userName = userEmailRows[0].username;
-
-//                 // Email information
-//                 const mailOptions = {
-//                     from: 'hlduy01dn@gmail.com', // Your email address
-//                     to: userEmail, // Receiver's email address from the database
-//                     subject: 'Ticket Confirmation', // Email subject
-//                     html: `<p>Dear ${userName},</p>
-//                     <p>Your ticket has been confirmed.</p>
-//                     <p>Thank you for using our service!</p>
-//                     <p>Best regards,</p>
-//                     <p>The Admin Team</p>`,
-//                 };
-
-//                 // Send email
-//                 transporter.sendMail(mailOptions, (error, info) => {
-//                     if (error) {
-//                         console.log('Error sending email:', error);
-//                     } else {
-//                         console.log('Email sent to:', userEmail);
-//                     }
-//                 });
-//             });
-
-//             res.redirect(`/events?redeemmessage=success`);
-//         });
-//     });
-// });
 app.get('/redeem-gift', async (req, res) => {
     const userId = req.session.userId;
 
@@ -517,10 +477,10 @@ app.post('/signup', async (req, res) => {
             return res.status(500).json({ error: 'Error fetching user' });
         }
 
-        if (rows.length > 0) {
-            // An account with this email already exists
-            return res.render('signup', { errorMessageSignup: 'Email is already registered', user: null });
-        }
+        // if (rows.length > 0) {
+        //     // An account with this email already exists
+        //     return res.render('signup', { errorMessageSignup: 'Email is already registered', user: null });
+        // }
 
         // Check if the phone number already exists in the database
         connection.query('SELECT * FROM users WHERE phonenumber = ?', [modifiedPhoneNumber], async (err, rows) => {
@@ -529,10 +489,10 @@ app.post('/signup', async (req, res) => {
                 return res.status(500).json({ error: 'Error fetching user' });
             }
 
-            if (rows.length > 0) {
-                // An account with this phone number already exists
-                return res.render('signup', { errorMessageSignup: 'Phone number is already registered', user: null });
-            }
+            // if (rows.length > 0) {
+            //     // An account with this phone number already exists
+            //     return res.render('signup', { errorMessageSignup: 'Phone number is already registered', user: null });
+            // }
 
             if (referralCodeType) {
                 connection.query('SELECT * FROM users WHERE referral_code = ?', [referralCodeType], async (err, rows) => {
@@ -656,8 +616,8 @@ app.post('/confirmotp', (req, res) => {
             if (rows.length > 0) {
                 // Referral code is valid, increase the referral points for both the referrer and the referred user
                 const referredUserId = rows[0].id;
-                referrerReferralPoint = 1000; // Set the referral points for the referrer to 1000
-                referredUserReferralPoint = 500; // Set the referral points for the referred user to 500
+                referrerReferralPoint = 10; // Set the referral points for the referrer to 1000
+                referredUserReferralPoint = 5; // Set the referral points for the referred user to 500
 
                 connection.query('UPDATE users SET referral_code_count = referral_code_count + 1, user_point = user_point + ? WHERE id = ?', [referrerReferralPoint, referredUserId], (err, updateResult) => {
                     if (err) {
@@ -897,6 +857,31 @@ app.post('/forgotpassword', (req, res) => {
 
 
   
+// app.get('/profile', function (req, res) {
+//     const userId = req.session.userId;
+
+//     if (!userId) {
+//         return res.redirect('/login');
+//     }
+
+//     connection.query('SELECT * FROM users WHERE id = ?', [userId], (err, rows) => {
+//         if (err) {
+//             return res.status(500).json({ error: 'Error fetching user' });
+//         }
+
+//         if (rows.length === 0) {
+//             return res.status(404).json({ error: 'User not found' });
+//         }
+
+//         // const user = rows[0];
+//         const profileImage = rows[0].profile_image_path || null;
+
+//         res.render('profile', { user: rows[0], profileImage: profileImage  });
+
+//     });
+// });
+
+
 app.get('/profile', function (req, res) {
     const userId = req.session.userId;
 
@@ -913,11 +898,36 @@ app.get('/profile', function (req, res) {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        // const user = rows[0];
-        const profileImage = rows[0].profile_image_path || null;
+        const user = rows[0];
+        const referralCodeCount = user.referral_code_count || 0;
 
-        res.render('profile', { user: rows[0], profileImage: profileImage  });
+        // Set user_level based on referral_code_count
+        if (referralCodeCount >= 10 && referralCodeCount < 20) {
+            user.user_level = 'D';
+        } else if (referralCodeCount >= 20 && referralCodeCount < 30) {
+            user.user_level = 'C';
+        } else if (referralCodeCount >= 30 && referralCodeCount < 40) {
+            user.user_level = 'B';
+        } else if (referralCodeCount >= 40 && referralCodeCount < 50) {
+            user.user_level = 'A';
+        } else if (referralCodeCount >= 50) {
+            user.user_level = 'VIP';
+        } else {
+            user.user_level = null;
+        }
 
+        // Update user level in the database
+        connection.query('UPDATE users SET user_level = ? WHERE id = ?', [user.user_level, userId], (err, updateResult) => {
+            if (err) {
+                console.error('Error updating user level:', err);
+            }
+
+            // Get the profile image path from the user data, or set it to null if not available
+            const profileImage = user.profile_image_path || null;
+
+            // Pass the user information including profileImage to the template when rendering
+            res.render('profile', { user: user, profileImage: profileImage });
+        });
     });
 });
 

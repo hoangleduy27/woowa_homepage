@@ -14,19 +14,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Mali" rel="stylesheet" />
-  <link rel="stylesheet" href="/styles/events.css" />
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
     integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous" />
     <link rel="stylesheet" href="node_modules/sweetalert2/dist/sweetalert2.min.css">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Mali" rel="stylesheet">
     <link rel="stylesheet" href="/styles/events.css">
     <link rel="stylesheet" href="/src/scss/custom-boostrap.scss">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
-        integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+
 </head>
 
 <body>
@@ -106,8 +101,19 @@
                           </small>
                         </div>
                       </div>
+                      <div class="mt-2 mt-lg-0 d-md-none d-block">
+                        <div class="d-flex justify-content-between">
+                          <small>Cần giới thiệu <%= 10 - user.referral_code_count %> người để nhận được vé</small>
+                          <span class="text-maincolor fw-bold"><%= user.referral_code_count %>/10</span>
+                        </div>
+                        <div class="progress">
+                          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                            aria-label="Animated striped example" aria-valuenow="6" aria-valuemin="0" aria-valuemax="10"
+                            style="width: <%= user.referral_code_count * 10 %>%;"></div>
+                        </div>
+                      </div>
 
-                      <div class="d-none d-md-flex align-items-end">
+                      <div class="d-flex align-items-end">  
                         <% if (user) { %>
                           <% if (ticket==='yes' ) { %>
                             <button class="btn btn-lg btn-outline-primary btn-maincolor"
@@ -123,7 +129,7 @@
 
                           <% } else { %>
 
-                            <div class="position-relative">
+                            <div class="position-relative d-none d-md-block">
                                 <div class="pie position-absolute end-0"
                                   data-pie='{"unit": "<%= user.referral_code_count%>/10", "percent": <%= user.referral_code_count * 10 %> ,"strokeBottom": 5, "colorSlice": "#0043AB", "colorCircle": "#f1f1f1", "round": true, "size": 80, "fontSize": "1.6rem"}'
                                   data-pie-index="1">
@@ -182,17 +188,17 @@
                         </div>
                       </div>
                       <div class="mt-2 mt-lg-0 d-md-none d-block">
-                        <!-- <div class="d-flex justify-content-between">
-                          <small>Cần giới thiệu 6 người để nhận được vé</small>
-                          <span class="text-maincolor fw-bold">4/10</span>
-                        </div> -->
+                        <div class="d-flex justify-content-between">
+                          <small>Cần giới thiệu <%= 10 - user.referral_code_count %> người để nhận được vé</small>
+                          <span class="text-maincolor fw-bold"><%= user.referral_code_count %>/10</span>
+                        </div>
                         <div class="progress">
                           <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-                            aria-label="Animated striped example" aria-valuenow="4" aria-valuemin="0" aria-valuemax="10"
-                            style="width: 40%"></div>
+                            aria-label="Animated striped example" aria-valuenow="6" aria-valuemin="0" aria-valuemax="10"
+                            style="width: <%= user.referral_code_count * 10 %>%;"></div>
                         </div>
                       </div>
-                      <div class="d-none d-md-flex align-items-end">
+                      <div class="d-flex align-items-end">  
                         <% if (user) { %>
                           <% if (ticket==='yes' ) { %>
                             <button class="btn btn-lg btn-outline-primary btn-maincolor"
@@ -208,7 +214,7 @@
 
                           <% } else { %>
 
-                            <div class="position-relative">
+                            <div class="position-relative d-none d-md-block">
                                 <div class="pie position-absolute end-0"
                                   data-pie='{"unit": "<%= user.referral_code_count%>/10", "percent": <%= user.referral_code_count * 10 %> ,"strokeBottom": 5, "colorSlice": "#0043AB", "colorCircle": "#f1f1f1", "round": true, "size": 80, "fontSize": "1.6rem"}'
                                   data-pie-index="1">
@@ -235,6 +241,8 @@
       </div>
     </div>
   </main>
+  <%- include('footerPartial') %>
+
   <!-- Circular Progress Bar JS -->
   <!-- <script src="https://cdn.jsdelivr.net/gh/AngeloFaella/CircularProgressBar@1.0/circularProgressBar.min.js"></script> -->
   <script

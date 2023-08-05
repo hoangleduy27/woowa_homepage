@@ -44,7 +44,8 @@ body {
     transform: translateY(-50%);
     font-size: 16px;
     pointer-events: none;
-    transition: .5s;
+    transition: .5s; 
+
 }
 .text_field span::before {
     content: '';
@@ -54,7 +55,8 @@ body {
     width: 0%;
     height: 2px;
     background: #2691d9;
-    transition: .5s;
+    transition: .5s;  
+
 }
 
 .text_field input:focus~label,
@@ -62,6 +64,18 @@ body {
     top: -20px;
     font-size: 14px;
     color: #2691d9;
+}
+input[readonly] {
+    color: #808080; /* Màu văn bản xám nhạt */
+
+    padding: 8px; /* Khoảng cách bên trong */
+    cursor: not-allowed; /* Đổi con trỏ chuột thành "not-allowed" */
+    transition: background-color 0.2s ease-in-out; /* Hiệu ứng chuyển đổi màu nền */
+}
+
+/* Hiệu ứng chuyển đổi màu nền khi hover */
+input[readonly]:hover {
+    background-color: #e0e0e0; /* Màu nền xám nhạt khi hover */
 }
 
 .text_field input:focus~span::before,
@@ -79,6 +93,8 @@ button[type="submit"] {
     font-weight: 700;
     cursor: pointer;
     outline: none;
+        cursor: pointer;
+
 }
 
 button[type="submit"]:hover {
@@ -86,11 +102,13 @@ button[type="submit"]:hover {
     transition: .5s;
 }
 .select-box {
+    padding-top: 5px;
     display: inline-block;
     position: relative;
-  }
-  
-  .select-box select {
+    width: 100%;
+}
+
+.select-box select {
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
@@ -98,11 +116,12 @@ button[type="submit"]:hover {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    background: url("path/to/arrow-down-icon.png") no-repeat right center;
+    background: url("/image/dropdown.png") no-repeat right center;
     background-size: 20px;
-  }
-  
-  .select-box::before {
+    width: 100%;
+}
+
+.select-box::before {
     content: '\f0d7';
     font-family: 'Font Awesome 5 Free';
     position: absolute;
@@ -110,4 +129,61 @@ button[type="submit"]:hover {
     right: 15px;
     transform: translateY(-50%);
     color: #888;
-  }
+}
+
+.select-box label {
+    position: absolute;
+    top: 1%;
+    left: 5px;
+    color: #adadad;
+    transform: translateY(-50%);
+    font-size: 16px;
+    pointer-events: none;
+    transition: .5s;
+    padding-bottom: 10px;
+    transition: .5s;
+}
+
+.select-box span {
+    position: absolute;
+    padding-bottom: 5px;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #2691d9;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .5s;
+}
+
+.select-box span::before {
+    width: 0%;
+    transition: .5s;
+}
+
+/* Hiệu ứng khi select box được chọn */
+.select-box.selected label {
+    color: #2691d9;
+}
+
+.select-box.selected span::before {
+    width: 100%;
+}
+
+/* Hiệu ứng khi select box không được chọn */
+.select-box label.non-empty {
+    top: -5px;
+    font-size: 14px;
+    color: #adadad;
+}
+
+.select-box select.non-empty + label {
+    top: -20px;
+    font-size: 14px;
+    color: #2691d9;
+}
+
+.select-box select.non-empty ~ span {
+    transform: scaleX(1);
+}
