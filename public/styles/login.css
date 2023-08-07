@@ -211,7 +211,6 @@ body {
 .error-message {
     display: block;
     height: 14px;
-/* <<<<<<< HEAD */
 }
 
 .carousel-item {
@@ -225,5 +224,3 @@ body {
     border-radius: 20px;
 }
 
-
-/* >>>>>>> 3d79e3d1bfa904c59208b288ba99db000dfdcb60 */

@@ -14,7 +14,8 @@
         integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
     <link rel="stylesheet" href="/styles/register.css">
     <!-- Fontawesome CSS -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
+        integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
 </head>
 
 <body>
@@ -39,7 +40,7 @@
                             <input type="email" id="email" name="email" class="form-control">
                             <small class="error-message" id="error_email"></small>
                         </div>
-                        
+
                         <div class="row">
                             <div class="form-group col-12 col-lg-6">
                                 <label>Số điện thoại</label>
@@ -64,7 +65,8 @@
                         </div>
                         <div class="form-group position-relative">
                             <label>Xác nhận mật khẩu</label>
-                            <input type="password" id="confirmpassword" name="confirmpassword" class="form-control ps-5">
+                            <input type="password" id="confirmpassword" name="confirmpassword"
+                                class="form-control ps-5">
                             <i class="fas fa-eye showpass" onclick="togglePassword(this,'confirm')"></i>
                             <small class="error-message" id="error_confirmpassword"></small>
                         </div>
@@ -73,17 +75,22 @@
                                 <%= errorMessageSignup %>
                             </p>
                             <% } %>
-                            
-                        <button type="submit" class="btn signin" id="btn-register">Đăng Ký</button>
+
+                                <button type="submit" class="btn signin" id="btn-register">Đăng Ký</button>
                     </form>
-                    <div class="mb-2 text-center">Hoặc</div>
+                    <!-- <div class="mb-2 text-center">Hoặc</div>
                     <div class="socialmedias mb-3">
                         <button class="btn"><img src="/image/zalo.png" alt="" srcset=""></button>
                         <button class="btn"><img src="/image/google.png" alt="" srcset=""></button>
                         <button class="btn"><img src="/image/facebook.png" alt="" srcset=""></button>
-                    </div>
-                    <div class="text-center">Bạn đã có tài khoản? <a href="/login" class="text-decoration-none">Đăng nhập
+                    </div> -->
+                    <div class="text-center">Bạn đã có tài khoản? <a href="/login" class="text-decoration-none">Đăng
+                            nhập
                             ngay</a></div>
+                    <div class="text-center">
+                        <img src="/image/downloadappstore.png" height="50px" alt="">
+                        <img src="/image/android-download.png" height="50px" alt="">
+                    </div>
                 </div>
             </div>
             <div class="d-none d-lg-flex justify-content-center align-items-center col-lg-7 side-background">
@@ -104,15 +111,13 @@
                                 <p>Some representative placeholder content for the first slide.</p>
                             </div> -->
                         </div>
-                        <div class="carousel-item"
-                            style="background-image: url('/image/samsungeventbanner.jpg')">
+                        <div class="carousel-item" style="background-image: url('/image/samsungeventbanner.jpg')">
                             <!-- <div class="carousel-caption">
                                 <h5>Second slide label</h5>
                                 <p>Some representative placeholder content for the second slide.</p>
                             </div> -->
                         </div>
-                        <div class="carousel-item"
-                            style="background-image: url('/image/LGgramEventBanner.jpg')">
+                        <div class="carousel-item" style="background-image: url('/image/LGgramEventBanner.jpg')">
                             <!-- <div class="carousel-caption">
                                 <h5>Third slide label</h5>
                                 <p>Some representative placeholder content for the third slide.</p>
@@ -137,7 +142,7 @@
 
 
     <script type="text/javascript">
-        function togglePassword(e,type) {
+        function togglePassword(e, type) {
             if (type === "pass") {
                 const type = document.getElementById("password").getAttribute('type') === 'password' ? 'text' : 'password';
                 document.getElementById("password").setAttribute('type', type);
@@ -145,7 +150,7 @@
                 const type = document.getElementById("confirm-password").getAttribute('type') === 'password' ? 'text' : 'password';
                 document.getElementById("confirm-password").setAttribute('type', type);
             }
-           
+
             // toggle the eye / eye slash icon  
             if (e.classList.contains("fa-eye-slash")) e.classList.toggle('fa-eye');
             else e.classList.toggle('fa-eye-slash');
@@ -162,7 +167,9 @@
         integrity="sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a"
         crossorigin="anonymous"></script>
     <!-- Fontawesome Javascript Library -->
-    <script defer src="https://use.fontawesome.com/releases/v5.1.1/js/all.js" integrity="sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.1.1/js/all.js"
+        integrity="sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a"
+        crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="/validate_register.js"></script>
 
@@ -173,7 +180,7 @@
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get('inviteCode');
         }
-    
+
         // Function to automatically fill the invite code into the referral code input field
         function autoFillInviteCode() {
             const referralCodeInput = document.getElementById('referralCodeType');
@@ -182,7 +189,7 @@
                 referralCodeInput.value = inviteCode;
             }
         }
-    
+
         // Call the autoFillInviteCode function when the page loads
         document.addEventListener('DOMContentLoaded', autoFillInviteCode);
     </script>

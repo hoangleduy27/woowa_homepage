@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
         integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
     <link rel="stylesheet" href="/styles/login.css">
+    <link rel="stylesheet" href="/styles/loadingscreen.css">
+
     <!-- Fontawesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
@@ -31,7 +33,7 @@
                         <div>Chào mừng đến với <span class="text-maincolor">Woowa Adex</span>. Ứng dụng quảng cáo và
                             tiếp thị kỹ thuật số hàng đầu Việt Nam</div>
                     </div>
-                    <form class="form-horizontal" action="/login" method="post">
+                    <form class="form-horizontal" id="login-form" action="/login" method="post">
                         <div class="form-group">
                             <label>Phone number/Email</label>
                             <input type="text" id="phonenumberOrEmail" name="phonenumberOrEmail" class="form-control"
@@ -59,18 +61,23 @@
                                     <div class="cursor-pointer"><a href="/forgotpassword"
                                             class="text-decoration-none">Quên mật khẩu?</a></div>
                                 </div>
-                                <button type="submit" class="btn signin" id="login_btn">Đăng Nhập</button>
+                                <button type="button" class="btn signin" id="login_btn">Đăng Nhập</button>
                     </form>
-                    <div class="mb-2 text-center">Hoặc</div>
+                    <!-- <div class="mb-2 text-center">Hoặc</div>
                     <div class="socialmedias mb-3">
                         <button class="btn"><img src="/image/zalo.png" alt="" srcset=""></button>
                         <button class="btn"><img src="/image/google.png" alt="" srcset=""></button>
                         <button class="btn"><img src="/image/facebook.png" alt="" srcset=""></button>
+                    </div> -->
+                    <div class="text-center mb-3">Bạn chưa có tài khoản? <a href="/signup"  class="text-decoration-none">Đăng ký ngay</a></div>
+                    <div class="text-center">
+                        <img src="/image/downloadappstore.png" height="50px" alt="">
+                        <img src="/image/android-download.png" height="50px" alt="">
                     </div>
-                    <div class="text-center">Bạn chưa có tài khoản? <a href="/signup" class="text-decoration-none">Đăng
-                            ký
-                            ngay</a></div>
                 </div>
+
+
+
             </div>
             <div class="d-none d-lg-flex justify-content-center align-items-center col-lg-7 side-background">
                 <div id="carouselExampleCaptions" class="carousel slide w-100" data-bs-ride="carousel">
@@ -120,6 +127,8 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
     <script src="/js/sweetalert2.all.min.js"></script>
+    <script src="/js/loadingscreen.js"></script>
+
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
         integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
@@ -150,23 +159,69 @@
                 if (e.classList.contains("fa-eye-slash")) e.classList.toggle('fa-eye');
                 else e.classList.toggle('fa-eye-slash');
             }
+
+            $("#login_btn").on("click", () => {
+                const loading = new loadingScreen().show({
+                    "timer": 2000
+                });
+                setTimeout(function() {
+                    
+                    console.log("submit");
+                    $('#login-form').submit();
+                }, 2000)
+            });
+
+       
+ 
         </script>
-        <!-- Add this script to your HTML file -->
+      
+    
 
-                <script>
-                    function convertPhoneNumber() {
-                        let inputElement = document.getElementById('phonenumberOrEmail');
-                        let phoneNumber = inputElement.value.trim();
+        <script>
+            function convertPhoneNumber() {
+                let inputElement = document.getElementById('phonenumberOrEmail');
+                let phoneNumber = inputElement.value.trim();
 
-                        if (phoneNumber.startsWith('0')) {
-                            phoneNumber = "+84" + phoneNumber.substring(1);
-                        }
+                if (phoneNumber.startsWith('0')) {
+                    phoneNumber = "+84" + phoneNumber.substring(1);
+                }
 
-                        inputElement.value = phoneNumber;
-                    }
-                </script>
+                inputElement.value = phoneNumber;
+            }
+        </script>
+        
+<!-- <script>
+    $("#login_btn").on("click", () => {
+        // Show the loading screen
+        loadingScreen().show({
+                "timer": 2000
+            });
+        // Get the form data
+        const formData = $("#login_form").serialize();
 
-                <!-- Bootstrap JavaScript Libraries -->
+        // Send the login request to the server using AJAX
+        $.ajax({
+            type: "POST",
+            url: "/login",
+            data: formData,
+            success: function (response) {
+                // Handle the response from the server if needed
+                // For example, redirect to the homepage after successful login
+                window.location.href = "/homepage";
+            },
+            error: function (xhr, status, error) {
+                // Handle errors if needed
+                console.error(error);
+            },
+            complete: function () {
+                // Hide the loading screen after the request is complete
+                $("#loadingContainer").hide();
+            }
+        });
+    });
+</script> -->
+
+        <!-- Bootstrap JavaScript Libraries -->
 
 
 </body>

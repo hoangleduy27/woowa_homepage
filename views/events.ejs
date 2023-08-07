@@ -141,13 +141,16 @@
                                   data-pie='{"unit": "<%= user.referral_code_count%>/10", "percent": <%= user.referral_code_count * 10 %> ,"strokeBottom": 5, "colorSlice": "#0043AB", "colorCircle": "#f1f1f1", "round": true, "size": 80, "fontSize": "1.6rem"}'
                                   data-pie-index="1">
                                 </div>
-                                <small>Cần giới thiệu <%= 10 - user.referral_code_count %>  người để nhận vé</small>
-                              </div>
+                                <% if (user.referral_code_count > 10) { %>
+                                  <% } else { %>
+                                    <small>Cần giới thiệu <%= 10 - user.referral_code_count %> người để nhận vé</small>
+                                  <% } %>                                     
+                                </div>
   
                               </div>
                             <% } %>
                           <% } else { %>
-                            <a href="/"><button
+                            <a href="/login"><button
                                     class="btn btn-lg btn-outline-primary btn-maincolor">Đăng
                                     nhập để tham gia</button></a>
                             <% } %>
@@ -234,13 +237,16 @@
                                   data-pie='{"unit": "<%= user.referral_code_count%>/10", "percent": <%= user.referral_code_count * 10 %> ,"strokeBottom": 5, "colorSlice": "#0043AB", "colorCircle": "#f1f1f1", "round": true, "size": 80, "fontSize": "1.6rem"}'
                                   data-pie-index="1">
                                 </div>
-                                <small>Cần giới thiệu <%= 10 - user.referral_code_count %>  người để nhận vé</small>
+                                <% if (user.referral_code_count > 10) { %>
+                                <% } else { %>
+                                  <small>Cần giới thiệu <%= 10 - user.referral_code_count %> người để nhận vé</small>
+                                <% } %>                              
                               </div>
   
                               </div>
                             <% } %>
                           <% } else { %>
-                            <a href="/"><button
+                            <a href="/login"><button
                                     class="btn btn-lg btn-outline-primary btn-maincolor">Đăng
                                     nhập để tham gia</button></a>
                             <% } %>

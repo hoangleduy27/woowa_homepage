@@ -19,7 +19,8 @@ const uuid = require("uuid");
 const qr = require("qr-image");
 const multer = require("multer");
 
-const port = 3000;
+const port = 8080; 
+const host= "192.168.0.103";
 
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
@@ -27,7 +28,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const connection = mysql.createConnection({
-  host: "localhost",
+ 
   user: "root",
   password: "",
   database: "da_1",
@@ -803,7 +804,6 @@ app.get("/login", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  // const { phonenumber, email , password } = req.body;
 
   const { phonenumberOrEmail, password } = req.body;
 
@@ -1314,5 +1314,5 @@ app.get("/logout", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log("listening on http://localhost:" + port);
+  console.log("listening on http://192.168.0.103:" + port);
 });
