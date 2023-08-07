@@ -60,7 +60,7 @@ app.use(
 
 // Khởi tạo Twilio Client với các thông tin tài khoản Twilio của bạn
 const accountSid = 'ACd522933544b3c3f3f2add765c5a98c7d';
-const authToken = '2e8871a0b92c30aa2af8adcb1387146e';
+const authToken = '65a3ca2b5fa211b67a88e6db8879bada';
 const twilioPhoneNumber = '+1 470 613 4992'; // Số điện thoại Twilio gửi SMS
 
 const client = twilio(accountSid, authToken);
