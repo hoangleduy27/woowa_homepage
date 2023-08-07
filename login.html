@@ -30,7 +30,7 @@
                         <div>Chào mừng đến với <span class="text-maincolor">Woowa Adex</span>. Ứng dụng quảng cáo và
                             tiếp thị kỹ thuật số hàng đầu Việt Nam</div>
                     </div>
-                    <form class="form-horizontal">
+                    <form id="login-form" class="form-horizontal">
                         <div class="form-group">
                             <label>Phone number/Email</label>
                             <input type="email" id="phone_email" name="email" class="form-control">
@@ -141,11 +141,15 @@
         }
 
         $("#login_btn").on("click", () => {
-            console.log("In login");
             const loading = new loadingScreen().show({
                 "timer": 2000
             });
-        })
+
+            setTimeout(function() {
+                $('#login-form').submit();
+            }, 2000);
+            // $('#login-form').delay(3000).submit();
+        });
     </script>
 </body>
 

@@ -77,23 +77,26 @@
             <li><a href="#services-section" class="nav-link">Sự kiện</a></li>
             <li><a href="#services-section" class="nav-link">Về chúng tôi</a></li>
             
-            <li class="ps-md-5">
+            <!-- <li class="ps-md-5">
               <a href="#services-section" class="nav-link fs-6">Đăng nhập</a> / 
               <a href="#services-section" class="nav-link fs-6">Đăng ký</a>
-            </li>
+            </li> -->
             <!-- <li></li> -->
             <li class="has-children ps-3 nav-item dropdown">
-              <img class="rounded-circle ms-md-5 nav-link dropdown-toggle"
-                src="images/istockphoto-1371797889-612x612.jpg" height="46px" srcset="" role="button"
-                data-bs-toggle="dropdown" aria-expanded="false">
-
+              
+              <div class="d-flex align-items-center nav-link dropdown-toggle"  role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+                <img class="rounded-circle ms-md-5"
+                src="images/istockphoto-1371797889-612x612.jpg" height="46px" srcset="">
+                <span class="ps-3 w-100">Johny Nguyen</span>
+              </div>
               <ul class="dropdown-menu">
-                <li><a href="#team-section" class="dropdown-item"><i class="fas fa-user"></i>Thông tin cá nhân</a></li>
-                <li><a href="#pricing-section" class="dropdown-item"><i class="fas fa-lock"></i> Đổi mật khẩu</a></li>
+                <li><a href="#team-section" class="dropdown-item"><i class="fas fa-user"></i>&nbsp;Thông tin cá nhân</a></li>
+                <li><a href="#pricing-section" class="dropdown-item"><i class="fas fa-lock"></i>&nbsp;Đổi mật khẩu</a></li>
                 <li>
                   <hr class="dropdown-divider">
                 </li>
-                <li><a href="#faq-section" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+                <li><a href="#faq-section" class="dropdown-item"><i class="fas fa-sign-out-alt"></i>&nbsp;Đăng xuất</a></li>
 
               </ul>
             </li>
@@ -143,7 +146,7 @@
             biển với người dùng nhiều hơn
           </p>
         </div>
-        <video class="video-play" controls autoplay loop>
+        <video class="video-play" playsinline autoplay muted loop>
           <source src="video/intro-video.mp4" type="video/mp4">
           <source src="mov_bbb.ogg" type="video/ogg">
           Trình duyệt của bạn không được hỗ trợ
@@ -326,7 +329,7 @@
     crossorigin="anonymous"></script>
   <script src="js/jquery-3.3.1.min.js"></script>
   <script src="js/jquery.sticky.js"></script>
-  <!-- <script src="js/main.js"></script> -->
+  <script src="js/main.js"></script>
   <script src="homepage.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
