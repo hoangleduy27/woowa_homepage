@@ -101,7 +101,10 @@
                           </small>
                         </div>
                       </div>
+                      <% if (user) { %>
+
                       <div class="mt-2 mt-lg-0 d-md-none d-block">
+
                         <div class="d-flex justify-content-between">
                           <small>Cần giới thiệu <%= 10 - user.referral_code_count %> người để nhận được vé</small>
                           <span class="text-maincolor fw-bold"><%= user.referral_code_count %>/10</span>
@@ -112,6 +115,10 @@
                             style="width: <%= user.referral_code_count * 10 %>%;"></div>
                         </div>
                       </div>
+                      <% } else { %>
+
+                        <% } %>
+
 
                       <div class="d-flex align-items-end">  
                         <% if (user) { %>
@@ -187,6 +194,8 @@
                           </small>
                         </div>
                       </div>
+                      <% if (user) { %>
+
                       <div class="mt-2 mt-lg-0 d-md-none d-block">
                         <div class="d-flex justify-content-between">
                           <small>Cần giới thiệu <%= 10 - user.referral_code_count %> người để nhận được vé</small>
@@ -198,6 +207,12 @@
                             style="width: <%= user.referral_code_count * 10 %>%;"></div>
                         </div>
                       </div>
+
+                      <% } else { %>
+
+                        <% } %>
+
+
                       <div class="d-flex align-items-end">  
                         <% if (user) { %>
                           <% if (ticket==='yes' ) { %>
