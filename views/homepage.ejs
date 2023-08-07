@@ -83,17 +83,23 @@
                                 <% if (typeof profileImage !=='undefined' && profileImage) { %>
                                     <!-- Display user's uploaded image from the uploads folder -->
                                     <!-- <img class="rounded-circle" src="/uploads/<%= profileImage %>" alt="Member Avatar" height="50" width="50"> -->
-                                    <img class="rounded-circle ms-md-5 nav-link dropdown-toggle"
-                                        src="/uploads/<%= profileImage %>" height="50px" srcset="" role="button"
+
+
+                                        <div class="d-flex align-items-center nav-link dropdown-toggle"  role="button"
                                         data-bs-toggle="dropdown" aria-expanded="false">
-                                        <span class="ps-3 w-100"><%= user.username%></span>
+                                          <img class="rounded-circle ms-md-5"
+                                          src="/uploads/<%= profileImage %>" height="46px" srcset="">
+                                          <span class="ps-3 w-100"><%= user.username%></span>
+                                        </div>
 
                                     <% } else { %>
                                         <!-- Display default avatar image -->
-                                        <img class="rounded-circle ms-md-5 nav-link dropdown-toggle"
-                                            src="/image/istockphoto-1371797889-612x612.jpg" height="50px" srcset=""
-                                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <span class="ps-3 w-100"><%= user.username%></span>
+                                            <div class="d-flex align-items-center nav-link dropdown-toggle"  role="button"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                              <img class="rounded-circle ms-md-5"
+                                              src="images/istockphoto-1371797889-612x612.jpg" height="46px" srcset="">
+                                              <span class="ps-3 w-100"><%= user.username%></span>
+                                            </div>
 
                                         <% } %>
                                             <ul class="dropdown-menu">
