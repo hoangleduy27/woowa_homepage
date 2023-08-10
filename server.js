@@ -548,10 +548,10 @@ app.post("/signup", async (req, res) => {
         return res.status(500).json({ error: "Error fetching user" });
       }
 
-      // if (rows.length > 0) {
-      //     // An account with this email already exists
-      //     return res.render('signup', { errorMessageSignup: 'Email is already registered', user: null });
-      // }
+      if (rows.length > 0) {
+          // An account with this email already exists
+          return res.render('signup', { errorMessageSignup: 'Email is already registered', user: null });
+      }
 
       // Check if the phone number already exists in the database
       connection.query(
@@ -563,10 +563,10 @@ app.post("/signup", async (req, res) => {
             return res.status(500).json({ error: "Error fetching user" });
           }
 
-          // if (rows.length > 0) {
-          //     // An account with this phone number already exists
-          //     return res.render('signup', { errorMessageSignup: 'Phone number is already registered', user: null });
-          // }
+          if (rows.length > 0) {
+              // An account with this phone number already exists
+              return res.render('signup', { errorMessageSignup: 'Phone number is already registered', user: null });
+          }
 
           if (referralCodeType) {
             connection.query(
