@@ -19,8 +19,7 @@ const uuid = require("uuid");
 const qr = require("qr-image");
 const multer = require("multer");
 
-const port = 8080;
-const host = "192.168.0.103";
+const port = 3000;
 
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
@@ -1180,6 +1179,7 @@ app.get("/profile", function (req, res) {
 app.get("/update-profile", function (req, res) {
   // Check if the user is logged in (user ID exists in the session)
   const userId = req.session.userId;
+
   if (!userId) {
     return res.redirect("/");
   }
@@ -1196,13 +1196,11 @@ app.get("/update-profile", function (req, res) {
       if (rows.length === 0) {
         return res.status(404).json({ error: "User not found" });
       }
-      const userBirthday = new Date(rows[0].birthday);
       const profileImage = rows[0].profile_image_path || null;
 
       // Render the profile update form using the 'update-profile.ejs' template
       res.render("update-profile", {
         user: rows[0],
-        userBirthday: userBirthday,
         profileImage: profileImage,
       });
     }
@@ -1377,5 +1375,5 @@ app.get("/logout", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log("listening on http://192.168.0.103:" + port);
+  console.log("listening on http://localhost:" + port);
 });

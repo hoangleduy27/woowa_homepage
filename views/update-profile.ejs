@@ -12,13 +12,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous" />
     <link rel="stylesheet" href="/styles/update-profile.css" />
 
-    <% function formatDate(date) {
-        if (!date) return '';
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    } %>
+
 </head>
 <section class="register_form" id="register_form">
     <div class="">
@@ -48,12 +42,11 @@
                 <label class="non-empty">Phone Numeber*</label>
             </div>
             <div class="text_field">
-                <% if (typeof userBirthday !== 'undefined' && userBirthday) { %>
-
-                    <input type="date" id="birthday" value="<%= formatDate(user.birthday) %>" name="birthday">
+                <% if (typeof user.birthday !== 'undefined' && user.birthday) { %>
+                    <input type="date" id="birthday" value="<%= user.birthday.toISOString().substring(0, 10) %>" name="birthday">
                     <% } else { %>
                     <input type="date" id="birthday" name="birthday">
-                <% } %>                <!-- <input type="date" id="birthday" value="<%= user.birthday instanceof Date ? user.birthday.toISOString().substr(0, 10) : user.birthday %>" name="birthday"> -->
+                <% } %>             <!-- <input type="date" id="birthday" value="<%= user.birthday instanceof Date ? user.birthday.toISOString().substr(0, 10) : user.birthday %>" name="birthday"> -->
 
                 <label class="non-empty">Birthday*</label>
 
@@ -130,3 +123,13 @@
         });
     });
 </script>
+
+
+
+<% function formatDate(date) { %>
+    <% if (!date || isNaN(date)) return ''; %>
+    <% const year = date.getFullYear(); %>
+    <% const month = String(date.getMonth() + 1).padStart(2, '0'); %>
+    <% const day = String(date.getDate()).padStart(2, '0'); %>
+    <%= `${year}-${month}-${day}` %>
+<% } %>
