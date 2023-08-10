@@ -19,8 +19,8 @@ const uuid = require("uuid");
 const qr = require("qr-image");
 const multer = require("multer");
 
-const port = 8080; 
-const host= "192.168.0.103";
+const port = 8080;
+const host = "192.168.0.103";
 
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
@@ -28,7 +28,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const connection = mysql.createConnection({
- 
+
   user: "root",
   password: "",
   database: "da_1",
@@ -361,8 +361,8 @@ app.get("/redeem-gift", async (req, res) => {
               if (userEmailRows.length !== 1) {
                 console.error(
                   "User with id " +
-                    userId +
-                    " not found or multiple records with the same id exist."
+                  userId +
+                  " not found or multiple records with the same id exist."
                 );
                 return res.status(500).json({
                   message:
@@ -908,13 +908,76 @@ app.post("/forgotpassword", (req, res) => {
           }
 
           // Gửi email chứa liên kết để reset mật khẩu
-          const resetLink = `http://localhost:3000/resetpassword/${token}`;
+          const resetLink = `http://192.168.0.103:8080/resetpassword/${token}`;
 
           const mailOptions = {
-            from: "your-email-username",
+            from: "DUY",
             to: email,
             subject: "Reset Password",
-            html: `<p>Click on the link below to reset your password:</p><a href="${resetLink}">${resetLink}</a>`,
+            // html: `<p>Click on the link below to reset your password:</p><a href="${resetLink}">${resetLink}</a>`,
+            html: `<!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Password Reset Email</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        background-color: #ececec;
+                        margin: 0;
+                        padding: 0;
+                    }
+                    .container {
+                        max-width: 600px;
+                        margin: 0 auto;
+                        padding: 20px;
+                        background-color: #ececec;
+                        border-radius: 10px;
+                        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+                    }
+                    .logo {
+                        text-align: center;
+                        margin-bottom: 20px;
+                    }
+                    .logo img {
+                        max-width: 100px;
+                        height: auto;
+                    }
+                    .content {
+                        text-align: center;
+                        color: black;
+
+                    }
+                    .reset-link {
+                        display: block;
+                        margin-top: 20px;
+                        color: #007bff;
+                        text-decoration: none;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="logo">
+                    <img src="cid:logo" alt="Logo">
+                    </div>
+                    <div class="content">
+                        <p>Click on the link below to reset your password:</p>
+                        <a class="reset-link" href="${resetLink}">${resetLink}</a>
+                    </div>
+                </div>
+            </body>
+            </html>`,
+            
+            attachments: [
+              {
+                filename: "woowa_logo.png",
+                path: "public/image/woowa_logo.png", // Đường dẫn tương đối đến hình ảnh
+                cid: "logo", // Thay "logo" bằng cid tương ứng với hình ảnh
+              },
+            ],
           };
 
           transporter.sendMail(mailOptions, (error, info) => {
