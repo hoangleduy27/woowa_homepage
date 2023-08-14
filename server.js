@@ -19,7 +19,7 @@ const uuid = require("uuid");
 const qr = require("qr-image");
 const multer = require("multer");
 
-const port = 3000;
+const port = 8080;
 
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
@@ -1375,5 +1375,5 @@ app.get("/logout", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log("listening on http://localhost:" + port);
+  console.log("listening on http://192.168.0.103:" + port);
 });
