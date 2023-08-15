@@ -134,13 +134,17 @@
                     thiệu</span>
                 </div>
                 <div class="input-group mb-3">
-                  <input type="text" class="form-control"
+                  <!-- <input type="text" class="form-control"
                     value="http://192.168.0.103:8080/signup?inviteCode=<%= user.referral_code %>" placeholder="Invite Link"
                     aria-describedby="basic-addon3" required readonly>
                   <span class="input-group-text cursor-pointer" id="basic-addon3"
                     onclick="copyToClipboard(document.querySelectorAll('.form-control')[1])">
                     <i class="fas fa-clone p-0" style="font-size: 18px !important;"></i>
-                  </span>
+                  </span> -->
+                  <a href="http://192.168.0.127:8000/signup?inviteCode=<%= user.referral_code %>">
+                    <img src="data:image/png;base64, <%= qrCodeImage.toString("base64") %>" alt="QR Code">
+
+                  </a>
                 </div>
               </div>
 

@@ -1,0 +1,250 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+body {
+    /* background-image: url(images/background.jpg);
+    background-repeat: repeat;
+    background-size: cover; */
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+.row {
+  display: flex;
+}
+
+.screen {
+  background-color: #555555;
+  height: 70px;
+  width: 80%;
+  /* margin: 15px 0; */
+  /* transform: rotateX(-45deg);
+  box-shadow: 0 3px 10px rgba(255, 255, 255, 0.7); */
+  color: white;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+/* p.text {
+  margin: 5px 0;
+}
+
+p.text span {
+  color: #6feaf6;
+} */
+
+.noted .noted-item {
+  border: 1px solid rgb(195 195 195);
+  padding: 10px;
+  background-color: #eeeeee;
+  border-radius: 5px;
+}
+
+.noted .noted-text {
+  font-weight: bold;
+}
+
+.noted-colorbox {
+  height: 45px;
+  width: 45px;
+}
+
+.vvip-color {
+  background-color: rgb(128, 0, 128);
+  border-radius: 5px;
+}
+
+.vvip-text-color {
+  color: rgb(128, 0, 128);
+}
+
+.vip-color {
+  background-color: green;
+  border-radius: 5px;
+}
+
+.vip-text-color {
+  color: green;
+}
+
+.standard-color {
+  background-color: rgb(170, 1, 1);
+  border-radius: 5px;
+}
+
+.standard-text-color {
+  color: rgb(170, 1, 1);
+}
+
+.zone1-color {
+  background-color: #0043AB;
+  border-radius: 5px;
+}
+
+.zone1-text-color {
+  color: #0043AB;
+}
+
+.zone2-color {
+  background-color: palevioletred;
+  border-radius: 5px;
+}
+
+.zone2-text-color {
+  color: palevioletred;
+}
+
+.zone3-color {
+  background-color: orange;
+  border-radius: 5px;
+}
+
+.seat-colorbox {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.empty-seat {
+  background-color: white;
+}
+
+.selected-seat {
+  background-color: green;
+}
+
+.occupied-seat {
+  background-color: red;
+}
+
+.disabled-seat {
+  background-color: #777;
+}
+
+.seats-map {
+  padding: 20px 0px;
+  background-color: #eeeeee;
+  border-radius: 10px;
+}
+
+.seats-map .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.seats-map .seats-l-zone3 {
+  width: 18%;
+  /* padding: 10px 5px; */
+  justify-content: center;
+  height: 200px;
+  border-radius: 10px;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+}
+
+.seats-map .seats-l-vip {
+  width: 10%;
+  padding: 10px 5px;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.seats-map .seats-l-zone3:hover:not(.disabled) {
+  box-shadow: 0 0 0 3px rgba(255, 166, 0, 1), 8px 8px 0 0 rgba(255, 166, 0, 0.6);
+  transform: scale(1.07);
+  /* background-color: #567cb4; */
+}
+
+.seats-map .seats-l-zone3.selected {
+  box-shadow: 0 0 0 3px rgba(255, 166, 0, 1), 8px 8px 0 0 rgba(255, 166, 0, 0.6);
+  transform: scale(1.07);
+}
+
+.seats-map .seats-l-zone3.disabled {
+  cursor: not-allowed;
+  filter: blur(2px);
+  border: 1px solid red;
+}
+
+.seats-map .seats-l-zone3.selected .marquee-text {
+  display: block;
+}
+
+.seats-map .seats-l-zone3:hover:not(.disabled) .marquee-text {
+  display: block;
+}
+
+.seats-map .seats-l-zone3 .marquee-text {
+  display: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rotate-marquee-text {
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.3);
+  /* padding: 10px; */
+  font-size: 24px;
+  letter-spacing: 1px;
+  display: flex;
+  width: 100%;
+  text-wrap: nowrap;
+  word-wrap: normal;
+}
+
+.rotate-text{
+  font-size: 70px;
+  font-weight: bolder;
+  animation: move 3s linear infinite;
+  text-transform: uppercase;
+}
+
+@keyframes move {
+  to { transform: translateX(-100%); }
+}
+
+.info-area {
+  background-color: #eeeeee;
+  padding: 20px 15px;
+  border-radius: 10px;
+}
+
+.info-area .info-area-title {
+  font-weight: bold;
+  font-size: 18px;
+  text-transform: uppercase;
+  padding-bottom: 5px;
+  border-bottom: 3px solid #777;
+}
+
+.info-area-subtitle {
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0px;
+  border-bottom: 1px solid #cccccc;
+}
+
+.area-sum-info {
+  background-color: #555555;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 0px 0px 10px 10px;
+  padding: 20px 15px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+@media screen and (max-width:576px) {
+  .fs-xs-6 {
+    font-size: 18px !important;
+  }
+
+  /* .seats-map .seats-l-zone3:not(.disabled) .marquee-text {
+    display: block;
+  } */
+
+}

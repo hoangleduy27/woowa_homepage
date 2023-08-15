@@ -19,7 +19,7 @@ const uuid = require("uuid");
 const qr = require("qr-image");
 const multer = require("multer");
 
-const port = 8080;
+const port = 3000;
 
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
@@ -27,7 +27,6 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const connection = mysql.createConnection({
-
   user: "root",
   password: "",
   database: "da_1",
@@ -175,14 +174,13 @@ app.get("/events", (req, res) => {
       }
 
       const user = userRows.length === 1 ? userRows[0] : null;
-      const redeemmessage = req.query.redeemmessage;
       const profileImage = user ? user.profile_image_path : null;
 
       res.render("events", {
         user,
         events,
         ticket: user ? user.ticket : null,
-        redeemmessage,
+
         profileImage,
       });
     });
@@ -191,6 +189,8 @@ app.get("/events", (req, res) => {
 
 app.get("/ticket", (req, res) => {
   const userId = req.session.userId;
+  const redeemmessage = req.query.redeemmessage;
+  const errorR = req.query.error; // Lấy parameter query error
 
   if (!userId) {
     return res.redirect("/login");
@@ -210,108 +210,54 @@ app.get("/ticket", (req, res) => {
 
       const user = rows[0];
       const referralCodeCount = user.referral_code_count || 0;
+      const profileImage = user ? user.profile_image_path : null;
 
-      res.render("ticket", { user });
+      // Fetch user's ticket information
+      connection.query(
+        "SELECT area FROM tickets WHERE user_id = ?",
+        [userId],
+        (ticketErr, ticketRows) => {
+          if (ticketErr) {
+            return res
+              .status(500)
+              .json({ error: "Error fetching user ticket" });
+          }
+
+          let selectedAreas = [];
+          if (ticketRows.length > 0) {
+            selectedAreas = ticketRows[0].area;
+
+          }
+
+          res.render("ticket", { user, redeemmessage,profileImage ,errorR, selectedAreas });
+        }
+      );
     }
   );
 });
 
-/// set event = point (không xoá)
 
-// app.get('/redeem-gift', (req, res) => {
-//     const userId = req.session.userId;
 
-//     if (!userId) {
-//       return res.redirect('/login');
-//     }
+const areas = {
+  A: { shared: 30, name: "Khu A", color: "vvip-text-color" },
+  B: { shared: 25, name: "Khu B", color: "vip-text-color" },
+  C: { shared: 20, name: "Khu C", color: "standard-text-color" },
+  D: { shared: 17, name: "Khu D", color: "zone1-text-color" },
+  E: { shared: 13, name: "Khu E", color: "zone2-text-color" },
+};
 
-//     // Check if the user has enough points to redeem the gift (minimum 5000 points)
-//     const getUserPointQuery = 'SELECT user_point FROM users WHERE id = ?';
-//     connection.query(getUserPointQuery, [userId], (err, userRows) => {
-//       if (err) {
-//         console.error('Error getting user point:', err);
-//         return res.status(500).json({ message: 'Lỗi khi lấy điểm người dùng' });
-//       }
-
-//       if (userRows.length !== 1) {
-//         return res.status(500).json({ message: 'Người dùng không tồn tại hoặc có nhiều bản ghi trùng lặp' });
-//       }
-
-//       const userPoint = userRows[0].user_point;
-
-//       if (userPoint < 5000) {
-//         // User does not have enough points to redeem the gift
-//         return res.redirect('/events?redeemmessage=not_enough_points');
-//       }
-
-//       // Deduct 5000 points from the user's point and update the ticket status to "yes"
-//       const newUserPoint = userPoint - 5000;
-//       const updateUserQuery = 'UPDATE users SET user_point = ?, ticket = "yes" WHERE id = ?';
-//       connection.query(updateUserQuery, [newUserPoint, userId], (err, updateUserResult) => {
-//         if (err) {
-//           console.error('Error updating user point and ticket status:', err);
-//           return res.status(500).json({ message: 'Lỗi khi cập nhật điểm người dùng và trạng thái vé' });
-//         }
-
-//         // Gửi email khi đăng ký thành công
-//         const getUserEmailQuery = 'SELECT email, username FROM users WHERE id = ?';
-//         connection.query(getUserEmailQuery, [userId], (err, userEmailRows) => {
-//           if (err) {
-//             console.error('Error getting user email:', err);
-//             return res.status(500).json({ message: 'Lỗi khi lấy email người dùng' });
-//           }
-
-//           if (userEmailRows.length !== 1) {
-//             console.error('User with id ' + userId + ' not found or multiple records with the same id exist.');
-//             return res.status(500).json({ message: 'Người dùng không tồn tại hoặc có nhiều bản ghi trùng lặp' });
-//           }
-
-//           const userEmail = userEmailRows[0].email;
-//           const userName = userEmailRows[0].username;
-
-//           // Thông tin email
-//           const mailOptions = {
-//             from: 'hlduy01dn@gmail.com', // Email của bạn
-//             to: userEmail, // Địa chỉ email người nhận từ CSDL
-//             subject: 'Ticket Confirmation', // Tiêu đề email
-//             html: `<p>Dear ${userName},</p>
-//                     <p>Your ticket has been confirmed.</p>
-//                     <p>Thank you for using our service!</p>
-//                     <p>Best regards,</p>
-//                     <p>The Admin Team</p>`,
-//           };
-
-//           // Gửi email
-//           transporter.sendMail(mailOptions, (error, info) => {
-//             if (error) {
-//               console.log('Error sending email:', error);
-//             } else {
-//               console.log('Email sent to:', userEmail);
-//             }
-//           });
-//         });
-
-//         res.redirect(`/events?redeemmessage=success`);
-//       });
-//     });
-//   });
-
-app.get("/redeem-gift", async (req, res) => {
+app.post("/redeem-gift", async (req, res) => {
   const userId = req.session.userId;
+  const selectedAreas = req.body;
 
-  if (!userId) {
-    return res.redirect("/login");
-  }
-
-  // Check if the user has enough referral_code_count to redeem the gift (minimum 10 referral_code_count)
   const getUserReferralCountQuery =
-    "SELECT referral_code_count FROM users WHERE id = ?";
+    "SELECT referral_code_count, ticket FROM users WHERE id = ?";
   connection.query(
     getUserReferralCountQuery,
     [userId],
-    async (err, userRows) => {
-      if (err) {
-        console.error("Error getting user referral code count:", err);
+    async (error, userRows) => {
+      if (error) {
+        console.error("Error getting user referral code count:", error);
         return res.status(500).json({
           message: "Lỗi khi lấy số lượng mã giới thiệu của người dùng",
         });
@@ -324,88 +270,239 @@ app.get("/redeem-gift", async (req, res) => {
       }
 
       const referralCodeCount = userRows[0].referral_code_count;
+      const userTicketStatus = userRows[0].ticket;
+      if (userTicketStatus === "yes") {
+        return res.redirect(
+          "/ticket?errorR=" + encodeURIComponent("Bạn đã có vé rồi.")
+        );
+      }
+      // Xác định tổng số referral code count cần trừ dựa trên từng khu vực đã chọn
 
-      if (referralCodeCount < 10) {
-        // User does not have enough referral_code_count to redeem the gift
-        return res.redirect("/events?redeemmessage=not_enough_referral_codes");
+      const totalReferralCodeCountToSubtract = selectedAreas.reduce(
+        (total, selectedArea) => total + areas[selectedArea].shared,
+        0
+      );
+
+      if (referralCodeCount < totalReferralCodeCountToSubtract) {
+        return res.status(400).json({
+          message: "Không đủ mã giới thiệu để đổi vé cho các khu vực đã chọn.",
+        });
       }
 
-      // Update the ticket status to "yes"
-      const updateUserQuery = 'UPDATE users SET ticket = "yes" WHERE id = ?';
-      connection.query(
-        updateUserQuery,
-        [userId],
-        async (err, updateUserResult) => {
-          if (err) {
-            console.error("Error updating user ticket status:", err);
-            return res
-              .status(500)
-              .json({ message: "Lỗi khi cập nhật trạng thái vé" });
-          }
 
-          // Send email upon successful registration
-          const getUserEmailQuery =
-            "SELECT email, username FROM users WHERE id = ?";
-          connection.query(
-            getUserEmailQuery,
-            [userId],
-            async (err, userEmailRows) => {
-              if (err) {
-                console.error("Error getting user email:", err);
-                return res
-                  .status(500)
-                  .json({ message: "Lỗi khi lấy email người dùng" });
+
+      async function getNextSeatNumber(selectedAreas, connection) {
+        return new Promise((resolve, reject) => {
+          const areaList = selectedAreas.map(area => `'${area}'`).join(',');
+      
+          const query = `
+          SELECT user_id, seat_number
+          FROM tickets
+            WHERE area IN (${areaList});
+          `;
+          connection.query(query, (err, results) => {
+            if (err) {
+              reject(err);
+            } else {
+              
+              console.log("="+areaList);
+              const usedSeatNumbers = results.map(row => row.seat_number);
+              console.log('Used Seat Numbers:', usedSeatNumbers);
+
+              for (const selectedArea of selectedAreas) {
+                let seatNumber = 1;
+      
+                while (seatNumber <= areas[selectedArea].shared) {
+                  const candidateSeatNumber = `${selectedArea}${seatNumber.toString().padStart(2, '0')}`;
+      
+                  if (!usedSeatNumbers.includes(candidateSeatNumber)) {
+                    resolve(candidateSeatNumber);
+                    return;
+                  }
+      
+                  seatNumber++;
+                }
               }
+      
+              reject(new Error("Không tìm thấy vị trí ghế trống."));
+            }
+          });
+        });
+      }
+      
+      
+      
+      
+      
+      
+      
 
-              if (userEmailRows.length !== 1) {
-                console.error(
-                  "User with id " +
-                  userId +
-                  " not found or multiple records with the same id exist."
+      const nextSeatNumber = await getNextSeatNumber(selectedAreas, connection);
+      console.log('Next Seat Number:', nextSeatNumber);
+
+      const insertTicketQuery =
+        "INSERT INTO tickets (user_id, area, seat_number) VALUES (?, ?, ?)";
+      try {
+        
+        console.log(selectedAreas,selectedAreas[0], JSON.stringify(selectedAreas));
+        connection.query(
+          insertTicketQuery,
+          [userId, selectedAreas[0], nextSeatNumber],
+          async (error, results) => {
+            if (error) {
+              console.error("Error:", error);
+              return res
+                .status(500)
+                .json({ error: "Đã xảy ra lỗi khi lưu vào cơ sở dữ liệu." });
+            }
+
+            const newReferralCodeCount =
+              referralCodeCount - totalReferralCodeCountToSubtract;
+            const updateUserQuery =
+              "UPDATE users SET referral_code_count = ?, ticket = ? WHERE id = ?";
+            connection.query(
+              updateUserQuery,
+              [newReferralCodeCount, "yes", userId],
+              async (error, updateResult) => {
+                if (error) {
+                  console.error(
+                    "Error updating user referral code count:",
+                    error
+                  );
+                  return res.status(500).json({
+                    error:
+                      "Đã xảy ra lỗi khi cập nhật số lượng mã giới thiệu của người dùng.",
+                  });
+                }
+                // Update user's ticket status to 'yes'
+                const updateUserTicketQuery =
+                  "UPDATE users SET ticket = ? WHERE id = ?";
+                connection.query(
+                  updateUserTicketQuery,
+                  ["yes", userId],
+                  async (error, updateTicketResult) => {
+                    if (error) {
+                      console.error(
+                        "Error updating user ticket status:",
+                        error
+                      );
+                      return res.status(500).json({
+                        error:
+                          "Đã xảy ra lỗi khi cập nhật trạng thái vé của người dùng.",
+                      });
+                    }
+
+                    // Gửi email sau khi tất cả c ác hoạt động hoàn tất
+                    sendConfirmationEmail(userId, res);
+                    return res.status(200).json({
+                      message: "Đổi vé thành công và đã gửi email xác nhận.",
+                    });
+                  }
                 );
-                return res.status(500).json({
-                  message:
-                    "Người dùng không tồn tại hoặc có nhiều bản ghi trùng lặp",
-                });
               }
+            );
+          }
+        );
+      } catch (error) {
+        console.error("Error:", error);
+        return res
+          .status(500)
+          .json({ error: "Đã xảy ra lỗi khi lưu vào cơ sở dữ liệu." });
+      }
+    }
+  );
+});
 
-              const userEmail = userEmailRows[0].email;
-              const userName = userEmailRows[0].username;
+// Function to send confirmation email
+function sendConfirmationEmail(userId, res) {
+  const getUserEmailAndTicketDataQuery =
+    "SELECT users.email, users.username, tickets.area, tickets.seat_number FROM users INNER JOIN tickets ON users.id = tickets.user_id WHERE users.id = ?";
+  connection.query(
+    getUserEmailAndTicketDataQuery,
+    [userId],
+    async (err, userEmailAndTicketRows) => {
+      if (err) {
+        console.error("Error getting user email and ticket data:", err);
+        return res.status(500).json({
+          message: "Lỗi khi lấy thông tin email và vé của người dùng",
+        });
+      }
 
-              // Kiểm tra và tạo thư mục nếu nó chưa tồn tại
-              // const qrCodeDir = 'qr_codes';
-              // if (!fs.existsSync(qrCodeDir)) {
-              //     fs.mkdirSync(qrCodeDir);
-              // }
-              // Generate the QR code with all user data
-              const userData = {
-                username: userName,
-                email: userEmail,
-                referral_code_count: referralCodeCount,
-                ticket: "yes",
-              };
-              const qrCodeData = JSON.stringify(userData);
-              const qrCodeImage = qr.imageSync(qrCodeData, { type: "png" });
+      if (userEmailAndTicketRows.length !== 1) {
+        console.error(
+          "User with id " +
+            userId +
+            " not found or multiple records with the same id exist."
+        );
+        return res.status(500).json({
+          message: "Người dùng không tồn tại hoặc có nhiều bản ghi trùng lặp",
+        });
+      }
 
-              const qrCodeDataURL = `data:image/png;base64,${qrCodeImage.toString(
-                "base64"
-              )}`;
+      const userEmail = userEmailAndTicketRows[0].email;
+      const userName = userEmailAndTicketRows[0].username;
+      const selectedArea = userEmailAndTicketRows[0].area;
+      const seatNumber = userEmailAndTicketRows[0].seat_number;
 
-              (async () => {
-                try {
-                  // Generate the QR code as SVG data
 
-                  // Email information
-                  const mailOptions = {
-                    from: "hlduy01dn@gmail.com", // Your email address
-                    to: userEmail, // Receiver's email address from the database
-                    subject: "Ticket Confirmation", // Email subject
-                    html: `<!DOCTYPE html>
-                            <html>
-                            <head>
-                              <meta charset="UTF-8">
-                              <title>XÁC NHẬN VÉ CONCERT</title>
-                              <style>
+      const encryptionKey =
+        "50c023426b4d6fbcd1a2ed0157e7ece6dce90265219da96a14ac6becc6c08e1c";
+
+      // Generate the QR code with all user data
+      const userData = {
+        username: userName,
+        email: userEmail,
+        ticket: "yes",
+        // referral_code_count: referralCodeCount,
+        area: selectedArea,
+        seat_number:seatNumber,
+      };
+
+      // const qrCodeData = JSON.stringify(userData);
+      // const qrCodeImage = qr.imageSync(qrCodeData, { type: "png" });
+      const userDataString = JSON.stringify(userData);
+
+      const cipher = crypto.createCipher("aes-256-cbc", encryptionKey);
+      let encryptedUserData = cipher.update(userDataString, "utf-8", "hex");
+      encryptedUserData += cipher.final("hex");
+
+      console.log("Encrypted User Data:", encryptedUserData);
+
+      // Generate QR code with encrypted user data
+      const qrCodeData = qr.imageSync(encryptedUserData, {
+        type: "png",
+      });
+
+      // Decryption process
+
+      const decipher = crypto.createDecipher("aes-256-cbc", encryptionKey);
+      let decryptedUserData = decipher.update(
+        encryptedUserData,
+        "hex",
+        "utf-8"
+      );
+      decryptedUserData += decipher.final("utf-8");
+
+      const decryptedData = JSON.parse(decryptedUserData);
+
+      console.log("Decrypted User Data:", decryptedData);
+
+      (async () => {
+        try {
+          // Generate the QR code as SVG data
+
+          // Email information
+
+          const mailOptions = {
+            from: "hlduy01dn@gmail.com", // Your email address
+            to: userEmail, // Receiver's email address from the database
+            subject: "Ticket Confirmation", // Email subject
+            html: `<!DOCTYPE html>
+                        <html>
+                          <head>
+                            <meta charset="UTF-8" />
+                            <title>XÁC NHẬN VÉ CONCERT</title>
+                            <style>
                               body {
                                 font-family: Arial, sans-serif;
                                 background-color: #2d2d2d;
@@ -437,58 +534,320 @@ app.get("/redeem-gift", async (req, res) => {
                                 margin-top: 20px;
                                 color: #ffffff;
                               }
-                              </style>
-                            </head>
-                            <body>
-                              <div class="container">
-                                <p>Dear ${userName},</p>
-                                <p>Your ticket has been confirmed.</p>
-                                <p>Here is your user information ticket:</p>
-                                <!-- Thêm ảnh QR code vào email -->
-                                <img src="cid:qrcode" alt="QR Code" style="display: block; margin: 0 auto;">
-                                <p>Thank you for using our service!</p>
-                                <p>Please bring this email or take a screenshot of the QR code to pass through the gate.</p>
-                                <div class="footer">
-                                  <p>Best regards,</p>
-                                  <p>The Admin Team</p>
-                                </div>
+                            </style>
+                          </head>
+                          <body>
+                            <div class="container">
+                              <p>Dear ${userName},</p>
+                              <p>Your ticket has been confirmed.</p>
+                              <p>Here is your user information ticket:</p>
+                              <p> Seat level: ${selectedArea} </p>
+                              <p> Your seat: ${seatNumber} </p>
+      
+                              <!-- Thêm ảnh QR code vào email -->
+                              <img
+                                src="cid:qrcode"
+                                alt="QR Code"
+                                style="display: block; margin: 0 auto"
+                              />
+                              <p>Thank you for using our service!</p>
+                              <p>
+                                Please bring this email or take a screenshot of the QR code to pass
+                                through the gate.
+                              </p>
+                              <div class="footer">
+                                <p>Best regards,</p>
+                                <p>The Admin Team</p>
                               </div>
-                            </body>
-                            </html>`, // Nhúng mã QR code trong email bằng data URL
+                            </div>
+                          </body>
+                        </html>
+                        `, // Nhúng mã QR code trong email bằng data URL
 
-                    attachments: [
-                      {
-                        filename: "qrcode.png",
-                        content: qrCodeImage, // Replace qrCodeImage with the generated PNG data
-                        encoding: "base64",
-                        cid: "qrcode",
-                      },
-                    ],
-                  };
-                  // Send email
-                  transporter.sendMail(mailOptions, (error, info) => {
-                    if (error) {
-                      console.log("Error sending email:", error);
-                    } else {
-                      console.log("Email sent to:", userEmail);
-                    }
-                    // fs.unlinkSync(qrCodeFilePath);
-                  });
-                } catch (error) {
-                  console.log("Error generating QR code:", error);
-                  return res
-                    .status(500)
-                    .json({ message: "Lỗi khi tạo mã QR code" });
-                }
-              })();
-              res.redirect(`/events?redeemmessage=success`);
+            attachments: [
+              {
+                filename: "qrcode.png",
+                content: qrCodeData, // Replace qrCodeImage with the generated PNG data
+                encoding: "base64",
+                cid: "qrcode",
+              },
+            ],
+          };
+
+          // Send email
+          transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+              console.log("Error sending email:", error);
+            } else {
+              console.log("Email sent to:", userEmail);
             }
-          );
+            // fs.unlinkSync(qrCodeFilePath);
+          });
+        } catch (error) {
+          console.log("Error generating QR code:", error);
+          return res.status(500).json({ message: "Lỗi khi tạo mã QR code" });
         }
-      );
+      })();
     }
   );
-});
+}
+
+// // Check if the user has enough referral_code_count to redeem the gift (minimum 10 referral_code_count)
+// const getUserReferralCountQuery =
+//   "SELECT referral_code_count FROM users WHERE id = ?";
+// connection.query(
+//   getUserReferralCountQuery,
+//   [userId],
+//   async (err, userRows) => {
+//     if (err) {
+//       console.error("Error getting user referral code count:", err);
+//       return res.status(500).json({
+//         message: "Lỗi khi lấy số lượng mã giới thiệu của người dùng",
+//       });
+//     }
+
+//     if (userRows.length !== 1) {
+//       return res.status(500).json({
+//         message: "Người dùng không tồn tại hoặc có nhiều bản ghi trùng lặp",
+//       });
+//     }
+//     const referralCodeCount = userRows[0].referral_code_count;
+
+//     if (referralCodeCount < 10) {
+//       // User does not have enough referral_code_count to redeem the gift
+//       return res.redirect("/events?redeemmessage=not_enough_referral_codes");
+//     }
+
+//     let tierReferralCodeCount = 0; // Số referral_code_count tương ứng với tầng đã chọn
+
+//     // Kiểm tra tầng mà người dùng đã chọn và đặt giá trị referral_code_count tương ứng
+//     if (selectedTier === "A") {
+//       tierReferralCodeCount = 50;
+//     } else if (selectedTier === "B") {
+//       tierReferralCodeCount = 40;
+//     } else if (selectedTier === "C") {
+//       tierReferralCodeCount = 30;
+//     } else if (selectedTier === "D") {
+//       tierReferralCodeCount = 20;
+//     } else if (selectedTier === "E") {
+//       tierReferralCodeCount = 10;
+//     }
+
+//     // Kiểm tra xem người dùng có đủ referral_code_count để đổi tầng không
+//     if (referralCodeCount >= tierReferralCodeCount) {
+//       const nextSeat = await getNextAvailableSeat(selectedTier);
+
+//       // Update the ticket status to "yes" and decrement the referral_code_count
+//       const updateUserQuery =
+//         'UPDATE users SET ticket = "yes", ticket_tier = ?, seat_number = ?, referral_code_count = ? WHERE id = ?';
+//       connection.query(
+//         updateUserQuery,
+//         [
+//           selectedTier,
+//           nextSeat,
+//           referralCodeCount - tierReferralCodeCount,
+//           userId,
+//         ],
+//         async (err, updateUserResult) => {
+//           if (err) {
+//             console.error("Error updating user ticket status:", err);
+//             return res
+//               .status(500)
+//               .json({ message: "Lỗi khi cập nhật trạng thái vé" });
+//           }
+//           // Handle successful update here
+//         }
+//       );
+
+//       // Send email upon successful registration
+//       const getUserEmailQuery =
+//         "SELECT email, username FROM users WHERE id = ?";
+//       connection.query(
+//         getUserEmailQuery,
+//         [userId],
+//         async (err, userEmailRows) => {
+//           if (err) {
+//             console.error("Error getting user email:", err);
+//             return res
+//               .status(500)
+//               .json({ message: "Lỗi khi lấy email người dùng" });
+//           }
+
+//           if (userEmailRows.length !== 1) {
+//             console.error(
+//               "User with id " +
+//                 userId +
+//                 " not found or multiple records with the same id exist."
+//             );
+//             return res.status(500).json({
+//               message:
+//                 "Người dùng không tồn tại hoặc có nhiều bản ghi trùng lặp",
+//             });
+//           }
+
+//           const userEmail = userEmailRows[0].email;
+//           const userName = userEmailRows[0].username;
+//           // const encryptionKey = crypto.randomBytes(32).toString("hex"); // Generates a 256-bit key
+//           // console.log("Encryption Key:", encryptionKey);
+//           const encryptionKey =
+//             "50c023426b4d6fbcd1a2ed0157e7ece6dce90265219da96a14ac6becc6c08e1c";
+
+//           // Generate the QR code with all user data
+//           const userData = {
+//             username: userName,
+//             email: userEmail,
+//             ticket: "yes",
+//             // referral_code_count: referralCodeCount,
+//             ticket_tier: selectedTier,
+//             seat_number: nextSeat,
+//           };
+
+//           // const qrCodeData = JSON.stringify(userData);
+//           // const qrCodeImage = qr.imageSync(qrCodeData, { type: "png" });
+//           const userDataString = JSON.stringify(userData);
+
+//           const cipher = crypto.createCipher("aes-256-cbc", encryptionKey);
+//           let encryptedUserData = cipher.update(
+//             userDataString,
+//             "utf-8",
+//             "hex"
+//           );
+//           encryptedUserData += cipher.final("hex");
+
+//           console.log("Encrypted User Data:", encryptedUserData);
+
+//           // Generate QR code with encrypted user data
+//           const qrCodeData = qr.imageSync(encryptedUserData, {
+//             type: "png",
+//           });
+
+//           // Decryption process
+
+//           const decipher = crypto.createDecipher(
+//             "aes-256-cbc",
+//             encryptionKey
+//           );
+//           let decryptedUserData = decipher.update(
+//             encryptedUserData,
+//             "hex",
+//             "utf-8"
+//           );
+//           decryptedUserData += decipher.final("utf-8");
+
+//           const decryptedData = JSON.parse(decryptedUserData);
+
+//           console.log("Decrypted User Data:", decryptedData);
+
+//           (async () => {
+//             try {
+//               // Generate the QR code as SVG data
+
+//               // Email information
+
+//               const mailOptions = {
+//                 from: "hlduy01dn@gmail.com", // Your email address
+//                 to: userEmail, // Receiver's email address from the database
+//                 subject: "Ticket Confirmation", // Email subject
+//                 html: `<!DOCTYPE html>
+//                   <html>
+//                     <head>
+//                       <meta charset="UTF-8" />
+//                       <title>XÁC NHẬN VÉ CONCERT</title>
+//                       <style>
+//                         body {
+//                           font-family: Arial, sans-serif;
+//                           background-color: #2d2d2d;
+//                           margin: 0;
+//                           padding: 0;
+//                           color: white;
+//                         }
+//                         .container {
+//                           max-width: 600px;
+//                           margin: 0 auto;
+//                           background-color: #232323;
+//                           border-radius: 5px;
+//                           box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+//                           padding: 20px;
+//                         }
+//                         h2 {
+//                           text-align: center;
+//                           color: #ff6600;
+//                         }
+//                         p {
+//                           margin: 10px 0;
+//                           color: #ffffff;
+//                         }
+//                         strong {
+//                           color: #ff6600;
+//                         }
+//                         .footer {
+//                           text-align: center;
+//                           margin-top: 20px;
+//                           color: #ffffff;
+//                         }
+//                       </style>
+//                     </head>
+//                     <body>
+//                       <div class="container">
+//                         <p>Dear ${userName},</p>
+//                         <p>Your ticket has been confirmed.</p>
+//                         <p>Here is your user information ticket:</p>
+//                         <p> Seat level: ${selectedTier} </p>
+//                         <p> Seat Number: ${nextSeat}   </p>
+
+//                         <!-- Thêm ảnh QR code vào email -->
+//                         <img
+//                           src="cid:qrcode"
+//                           alt="QR Code"
+//                           style="display: block; margin: 0 auto"
+//                         />
+//                         <p>Thank you for using our service!</p>
+//                         <p>
+//                           Please bring this email or take a screenshot of the QR code to pass
+//                           through the gate.
+//                         </p>
+//                         <div class="footer">
+//                           <p>Best regards,</p>
+//                           <p>The Admin Team</p>
+//                         </div>
+//                       </div>
+//                     </body>
+//                   </html>
+//                   `, // Nhúng mã QR code trong email bằng data URL
+
+//                 attachments: [
+//                   {
+//                     filename: "qrcode.png",
+//                     content: qrCodeData, // Replace qrCodeImage with the generated PNG data
+//                     encoding: "base64",
+//                     cid: "qrcode",
+//                   },
+//                 ],
+//               };
+
+//               // Send email
+//               transporter.sendMail(mailOptions, (error, info) => {
+//                 if (error) {
+//                   console.log("Error sending email:", error);
+//                 } else {
+//                   console.log("Email sent to:", userEmail);
+//                 }
+//                 // fs.unlinkSync(qrCodeFilePath);
+//               });
+//             } catch (error) {
+//               console.log("Error generating QR code:", error);
+//               return res
+//                 .status(500)
+//                 .json({ message: "Lỗi khi tạo mã QR code" });
+//             }
+//           })();
+//           res.redirect(`/events?redeemmessage=success`);
+//         }
+//       );
+//     }
+//   }
+// );
+// });
 
 // Cấu hình dịch vụ Gmail
 const transporter = nodemailer.createTransport({
@@ -499,15 +858,13 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-app.get("/giftshop", (req, res) => {
-  return res.render("giftshop");
-});
-
 app.get("/signup", (req, res) => {
+  const inviteCode = req.query.inviteCode;
+
   // Check if the user is logged in (user ID exists in the session)
   const user = req.session.userId ? { id: req.session.userId } : null;
 
-  return res.render("signup", { user });
+  return res.render("signup", { user, inviteCode: inviteCode });
 });
 
 // Signup route
@@ -548,8 +905,11 @@ app.post("/signup", async (req, res) => {
       }
 
       if (rows.length > 0) {
-          // An account with this email already exists
-          return res.render('signup', { errorMessageSignup: 'Email is already registered', user: null });
+        // An account with this email already exists
+        return res.render("signup", {
+          errorMessageSignup: "Email is already registered",
+          user: null,
+        });
       }
 
       // Check if the phone number already exists in the database
@@ -563,8 +923,11 @@ app.post("/signup", async (req, res) => {
           }
 
           if (rows.length > 0) {
-              // An account with this phone number already exists
-              return res.render('signup', { errorMessageSignup: 'Phone number is already registered', user: null });
+            // An account with this phone number already exists
+            return res.render("signup", {
+              errorMessageSignup: "Phone number is already registered",
+              user: null,
+            });
           }
 
           if (referralCodeType) {
@@ -803,7 +1166,6 @@ app.get("/login", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-
   const { phonenumberOrEmail, password } = req.body;
 
   // if (!phonenumberOrEmail) {
@@ -969,7 +1331,7 @@ app.post("/forgotpassword", (req, res) => {
                 </div>
             </body>
             </html>`,
-            
+
             attachments: [
               {
                 filename: "woowa_logo.png",
@@ -1095,30 +1457,6 @@ app.post("/resetpassword", (req, res) => {
   );
 });
 
-// app.get('/profile', function (req, res) {
-//     const userId = req.session.userId;
-
-//     if (!userId) {
-//         return res.redirect('/login');
-//     }
-
-//     connection.query('SELECT * FROM users WHERE id = ?', [userId], (err, rows) => {
-//         if (err) {
-//             return res.status(500).json({ error: 'Error fetching user' });
-//         }
-
-//         if (rows.length === 0) {
-//             return res.status(404).json({ error: 'User not found' });
-//         }
-
-//         // const user = rows[0];
-//         const profileImage = rows[0].profile_image_path || null;
-
-//         res.render('profile', { user: rows[0], profileImage: profileImage  });
-
-//     });
-// });
-
 app.get("/profile", function (req, res) {
   const userId = req.session.userId;
 
@@ -1156,6 +1494,9 @@ app.get("/profile", function (req, res) {
         user.user_level = null;
       }
 
+      const qrCodeData = `http://192.168.0.127:8000/signup?inviteCode=${user.referral_code}`;
+      const qrCodeImage = qr.imageSync(qrCodeData, { type: "png" });
+
       // Update user level in the database
       connection.query(
         "UPDATE users SET user_level = ? WHERE id = ?",
@@ -1169,7 +1510,12 @@ app.get("/profile", function (req, res) {
           const profileImage = user.profile_image_path || null;
 
           // Pass the user information including profileImage to the template when rendering
-          res.render("profile", { user: user, profileImage: profileImage });
+          res.render("profile", {
+            user: user,
+            profileImage: profileImage,
+            qrCodeImage: qrCodeImage,
+            inviteCode: user.referral_code,
+          });
         }
       );
     }
@@ -1375,5 +1721,5 @@ app.get("/logout", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log("listening on http://192.168.0.103:" + port);
+  console.log("listening on http://localhost:" + port);
 });

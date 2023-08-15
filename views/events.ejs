@@ -104,23 +104,23 @@
                             </div>
                           </div>
                           <% if (user) { %>
+                            <% } else if (user.referral_code_count>= 10) { %>  
 
-                            <div class="mt-2 mt-lg-0 d-md-none d-block">
-
-                              <div class="d-flex justify-content-between">
-                                <small>Cần giới thiệu <%= 10 - user.referral_code_count %> người để nhận được vé</small>
-                                <span class="text-maincolor fw-bold">
-                                  <%= user.referral_code_count %>/10
-                                </span>
-                              </div>
-                              <div class="progress">
-                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-                                  aria-label="Animated striped example" aria-valuenow="6" aria-valuemin="0"
-                                  aria-valuemax="10" style="width: <%= user.referral_code_count * 10 %>%;"></div>
-                              </div>
-                            </div>
                             <% } else { %>
 
+                              <div class="mt-2 mt-lg-0 d-md-none d-block">
+                                <div class="d-flex justify-content-between">
+                                  <small>Cần giới thiệu <%= 10 - user.referral_code_count %> người để nhận được vé</small>
+                                  <span class="text-maincolor fw-bold">
+                                    <%= user.referral_code_count %>/10
+                                  </span>
+                                </div>
+                                <div class="progress">
+                                  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                                    aria-label="Animated striped example" aria-valuenow="6" aria-valuemin="0"
+                                    aria-valuemax="10" style="width: <%= user.referral_code_count * 10 %>%;"></div>
+                                </div>
+                              </div>
                               <% } %>
 
 
@@ -132,10 +132,9 @@
                                       </button>
                                       <% } else if (user.referral_code_count>= 10) { %>
                                         <div class="d-flex align-items-end mt-2 mt-lg-0">
-                                          <button class="btn btn-lg btn-outline-primary btn-maincolor w-100 w-md-auto"
-                                            onclick="return showRedeemConfirmation()">
+                                          <a href="/ticket"><button class="btn btn-lg btn-outline-primary btn-maincolor w-100 w-md-auto">
                                             Nhận vé
-                                          </button>
+                                          </button></a>
                                         </div>
 
                                         <% } else { %>
@@ -146,6 +145,11 @@
                                               data-pie-index="1">
                                             </div>
                                             <% if (user.referral_code_count> 10) { %>
+                                              <div class="d-flex align-items-end mt-2 mt-lg-0">
+                                                <a href="/ticket"><button class="btn btn-lg btn-outline-primary btn-maincolor w-100 w-md-auto">
+                                                  Nhận vé
+                                                </button></a>
+                                              </div>
                                               <% } else { %>
                                                 <small>Cần giới thiệu <%= 10 - user.referral_code_count %> người để nhận
                                                     vé</small>
@@ -204,22 +208,27 @@
                         </div>
                       </div>
                       <% if (user) { %>
-
-                        <div class="mt-2 mt-lg-0 d-md-none d-block">
-                          <div class="d-flex justify-content-between">
-                            <small>Cần giới thiệu <%= 10 - user.referral_code_count %> người để nhận được vé</small>
-                            <span class="text-maincolor fw-bold">
-                              <%= user.referral_code_count %>/10
-                            </span>
+                        <% } else if (user.referral_code_count>= 10) { %>
+                          <div class="d-flex align-items-end mt-2 mt-lg-0">
+                            <a href="/ticket"><button class="btn btn-lg btn-outline-primary btn-maincolor w-100 w-md-auto">
+                              Nhận vé
+                            </button></a>
                           </div>
-                          <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-                              aria-label="Animated striped example" aria-valuenow="6" aria-valuemin="0"
-                              aria-valuemax="10" style="width: <%= user.referral_code_count * 10 %>%;"></div>
-                          </div>
-                        </div>
 
                         <% } else { %>
+                          <div class="mt-2 mt-lg-0 d-md-none d-block">
+                            <div class="d-flex justify-content-between">
+                              <small>Cần giới thiệu <%= 10 - user.referral_code_count %> người để nhận được vé</small>
+                              <span class="text-maincolor fw-bold">
+                                <%= user.referral_code_count %>/10
+                              </span>
+                            </div>
+                            <div class="progress">
+                              <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                                aria-label="Animated striped example" aria-valuenow="6" aria-valuemin="0"
+                                aria-valuemax="10" style="width: <%= user.referral_code_count * 10 %>%;"></div>
+                            </div>
+                          </div>
 
                           <% } %>
 
@@ -232,10 +241,9 @@
                                   </button>
                                   <% } else if (user.referral_code_count>= 10) { %>
                                     <div class="d-flex align-items-end mt-2 mt-lg-0">
-                                      <button class="btn btn-lg btn-outline-primary btn-maincolor w-100 w-md-auto"
-                                        onclick="return showRedeemConfirmation()">
+                                      <a href="/ticket"><button class="btn btn-lg btn-outline-primary btn-maincolor w-100 w-md-auto">
                                         Nhận vé
-                                      </button>
+                                      </button></a>
                                     </div>
 
                                     <% } else { %>
@@ -246,6 +254,11 @@
                                           data-pie-index="1">
                                         </div>
                                         <% if (user.referral_code_count> 10) { %>
+                                          <div class="d-flex align-items-end mt-2 mt-lg-0">
+                                            <a href="/ticket"><button class="btn btn-lg btn-outline-primary btn-maincolor w-100 w-md-auto">
+                                              Nhận vé
+                                            </button></a>
+                                          </div>
                                           <% } else { %>
                                             <small>Cần giới thiệu <%= 10 - user.referral_code_count %> người để nhận
                                                 vé</small>
@@ -294,29 +307,7 @@
       <!-- Include SweetAlert library -->
       <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
 
-      <script>
-        function showRedeemConfirmation() {
-          // Use SweetAlert2 to show the confirmation dialog
-          console.log('ok')
-          Swal.fire({
-            title: 'Confirm Registration',
-            text: 'Do you want to receive this ticket?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Register',
-            cancelButtonText: 'Cancel',
-          }).then((result) => {
-            if (result.isConfirmed) {
-              // User clicked Đổi quà button, proceed with redemption
-              window.location.href = "/redeem-gift";
-            } else {
-              return false;
-            }
-          });
-        }
-
-
-      </script>
+      
       <script type="text/JavaScript">
      window.addEventListener("DOMContentLoaded", () => {
   // update circle when range change
@@ -385,38 +376,7 @@
 });
 
   </script>
-      <script>
-        // Phần mã JavaScript khai báo trước
-        function registerForEvent(eventId) {
-          const registerButton = document.getElementById(`registerButton_${eventId}`);
-          // Gửi yêu cầu POST để đăng ký tham gia sự kiện
-          fetch('/register', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ eventId })
-          })
-            .then(response => response.json())
-            .then(data => {
-              // Log the success message from the server (optional)
-              console.log(data.message);
-              // If the registration was successful, update the button text and disable it
-              if (data.message === 'Đăng ký tham gia sự kiện thành công') {
-                registerButton.textContent = 'Đã đăng ký';
-                registerButton.disabled = true;
-              } else if (data.message === 'Người dùng đã đăng ký sự kiện này trước đó') {
-                // Nếu người dùng đã đăng ký trước đó, không làm gì cả
-                registerButton.textContent = 'Đã đăng ký';
-                registerButton.disabled = true;
-              }
-            })
-            .catch(error => {
-              // Xử lý lỗi (nếu cần)
-              console.error(error);
-            });
-        }
-      </script>
+     
 
 
 
