@@ -17,7 +17,6 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
     integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous" />
   <link rel="stylesheet" href="node_modules/sweetalert2/dist/sweetalert2.min.css">
-
   <link rel="stylesheet" href="/styles/events.css">
   <link rel="stylesheet" href="/src/scss/custom-boostrap.scss">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -105,33 +104,39 @@
                             </div>
                           </div>
                           <% if (user) { %>
-                            <% if (ticket === 'yes') { %>
+                            <% if (ticket==='yes' ) { %>
                               <button class="btn btn-lg btn-outline-primary btn-maincolor" disabled>
                                 <i class="fas fa-check"></i> Đã nhận vé
                               </button>
-                              <% } else if (user.referral_code_count >= 10) { %>
+                              <% } else if (user.referral_code_count>= 10) { %>
                                 <div class="d-flex align-items-end mt-2 mt-lg-0">
-                                  <a href="/ticket"><button class="btn btn-lg btn-outline-primary btn-maincolor w-100 w-md-auto">
-                                    Nhận vé
-                                  </button></a>
+                                  <a href="/ticket"><button
+                                      class="btn btn-lg btn-outline-primary btn-maincolor w-100 w-md-auto">
+                                      Nhận vé
+                                    </button></a>
                                 </div>
                                 <% } else { %>
                                   <div class="mt-2 mt-lg-0 d-md-none d-block">
                                     <div class="d-flex justify-content-between">
-                                      <small>Cần giới thiệu <%= 10 - user.referral_code_count %> người để nhận được vé</small>
-                                      <span class="text-maincolor fw-bold"><%= user.referral_code_count %>/10</span>
+                                      <small>Cần giới thiệu <%= 10 - user.referral_code_count %> người để nhận được
+                                          vé</small>
+                                      <span class="text-maincolor fw-bold">
+                                        <%= user.referral_code_count %>/10
+                                      </span>
                                     </div>
                                     <div class="progress">
-                                      <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-                                        aria-label="Animated striped example" aria-valuenow="4" aria-valuemin="0"
-                                        aria-valuemax="10" style="width: <%= user.referral_code_count * 10 %>%;"></div>
-                                      </div>
+                                      <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                        role="progressbar" aria-label="Animated striped example" aria-valuenow="4"
+                                        aria-valuemin="0" aria-valuemax="10"
+                                        style="width: <%= user.referral_code_count * 10 %>%;"></div>
+                                    </div>
                                   </div>
-                                  <% if (user.referral_code_count >= 10) { %>
+                                  <% if (user.referral_code_count>= 10) { %>
                                     <div class="d-flex align-items-end mt-2 mt-lg-0">
-                                      <a href="/ticket"><button class="btn btn-lg btn-outline-primary btn-maincolor w-100 w-md-auto">
-                                        Nhận vé
-                                      </button></a>
+                                      <a href="/ticket"><button
+                                          class="btn btn-lg btn-outline-primary btn-maincolor w-100 w-md-auto">
+                                          Nhận vé
+                                        </button></a>
                                     </div>
                                     <% } else { %>
                                       <div class="d-none d-md-flex align-items-end">
@@ -140,25 +145,27 @@
                                             data-pie='{"unit": "<%= user.referral_code_count%>/10", "percent": <%= user.referral_code_count * 10 %>,"strokeBottom": 5, "colorSlice": "#0043AB", "colorCircle": "#f1f1f1", "round": true, "size": 80, "fontSize": "1.6rem"}'
                                             data-pie-index="1">
                                           </div>
-                                          <small>Cần giới thiệu <%= 10 - user.referral_code_count %> người để nhận vé</small>
+                                          <small>Cần giới thiệu <%= 10 - user.referral_code_count %> người để nhận
+                                              vé</small>
                                         </div>
                                       </div>
 
                                       <% } %>
 
 
-                                  <% } %>
-
-
-                                   
+                                        <% } %>
 
 
 
-                          <% } else { %>
-                            <a href="/login">
-                              <button class="btn btn-lg btn-outline-primary btn-maincolor">Đăng nhập để tham gia</button>
-                            </a>
-                          <% } %>
+
+
+
+                                          <% } else { %>
+                                            <a href="/login">
+                                              <button class="btn btn-lg btn-outline-primary btn-maincolor">Đăng nhập để
+                                                tham gia</button>
+                                            </a>
+                                            <% } %>
 
                         </div>
                       </div>
@@ -210,33 +217,39 @@
                             </div>
                           </div>
                           <% if (user) { %>
-                            <% if (ticket === 'yes') { %>
+                            <% if (ticket==='yes' ) { %>
                               <button class="btn btn-lg btn-outline-primary btn-maincolor" disabled>
                                 <i class="fas fa-check"></i> Đã nhận vé
                               </button>
-                              <% } else if (user.referral_code_count >= 10) { %>
+                              <% } else if (user.referral_code_count>= 10) { %>
                                 <div class="d-flex align-items-end mt-2 mt-lg-0">
-                                  <a href="/ticket"><button class="btn btn-lg btn-outline-primary btn-maincolor w-100 w-md-auto">
-                                    Nhận vé
-                                  </button></a>
+                                  <a href="/ticket"><button
+                                      class="btn btn-lg btn-outline-primary btn-maincolor w-100 w-md-auto">
+                                      Nhận vé
+                                    </button></a>
                                 </div>
                                 <% } else { %>
                                   <div class="mt-2 mt-lg-0 d-md-none d-block">
                                     <div class="d-flex justify-content-between">
-                                      <small>Cần giới thiệu <%= 10 - user.referral_code_count %> người để nhận vé</small>
-                                      <span class="text-maincolor fw-bold"><%= user.referral_code_count %>/10</span>
+                                      <small>Cần giới thiệu <%= 10 - user.referral_code_count %> người để nhận
+                                          vé</small>
+                                      <span class="text-maincolor fw-bold">
+                                        <%= user.referral_code_count %>/10
+                                      </span>
                                     </div>
                                     <div class="progress">
-                                      <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-                                        aria-label="Animated striped example" aria-valuenow="4" aria-valuemin="0"
-                                        aria-valuemax="10" style="width: <%= user.referral_code_count * 10 %>%;"></div>
+                                      <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                        role="progressbar" aria-label="Animated striped example" aria-valuenow="4"
+                                        aria-valuemin="0" aria-valuemax="10"
+                                        style="width: <%= user.referral_code_count * 10 %>%;"></div>
                                     </div>
                                   </div>
-                                  <% if (user.referral_code_count >= 10) { %>
+                                  <% if (user.referral_code_count>= 10) { %>
                                     <div class="d-flex align-items-end mt-2 mt-lg-0">
-                                      <a href="/ticket"><button class="btn btn-lg btn-outline-primary btn-maincolor w-100 w-md-auto">
-                                        Nhận vé
-                                      </button></a>
+                                      <a href="/ticket"><button
+                                          class="btn btn-lg btn-outline-primary btn-maincolor w-100 w-md-auto">
+                                          Nhận vé
+                                        </button></a>
                                     </div>
                                     <% } else { %>
                                       <div class="d-none d-md-flex align-items-end">
@@ -245,25 +258,27 @@
                                             data-pie='{"unit": "<%= user.referral_code_count%>/10", "percent": <%= user.referral_code_count * 10 %>,"strokeBottom": 5, "colorSlice": "#0043AB", "colorCircle": "#f1f1f1", "round": true, "size": 80, "fontSize": "1.6rem"}'
                                             data-pie-index="1">
                                           </div>
-                                          <small>Cần giới thiệu <%= 10 - user.referral_code_count %> người để nhận vé</small>
+                                          <small>Cần giới thiệu <%= 10 - user.referral_code_count %> người để nhận
+                                              vé</small>
                                         </div>
                                       </div>
 
                                       <% } %>
 
 
-                                  <% } %>
-
-
-                                   
+                                        <% } %>
 
 
 
-                          <% } else { %>
-                            <a href="/login">
-                              <button class="btn btn-lg btn-outline-primary btn-maincolor">Đăng nhập để tham gia</button>
-                            </a>
-                          <% } %>
+
+
+
+                                          <% } else { %>
+                                            <a href="/login">
+                                              <button class="btn btn-lg btn-outline-primary btn-maincolor">Đăng nhập để
+                                                tham gia</button>
+                                            </a>
+                                            <% } %>
                         </div>
                       </div>
                     </div>
@@ -281,7 +296,6 @@
       <!-- <script src="https://cdn.jsdelivr.net/gh/AngeloFaella/CircularProgressBar@1.0/circularProgressBar.min.js"></script> -->
       <script
         src="https://cdn.jsdelivr.net/gh/tomik23/circular-progress-bar@latest/docs/circularProgressBar.min.js"></script>
-      <script src="node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
         integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
         crossorigin="anonymous"></script>
@@ -297,8 +311,7 @@
         integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
         </script>
       <!-- Include SweetAlert library -->
-      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
-
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
       <script type="text/JavaScript">
      window.addEventListener("DOMContentLoaded", () => {
@@ -371,33 +384,38 @@
 
 
 
-
-      <% if (typeof redeemmessage !=='undefined' && redeemmessage==='success' ) { %>
-        <script>
-          document.addEventListener("DOMContentLoaded", function () {
-            setTimeout(function () {
-              // Thay thế modal bằng thông báo SweetAlert2
-              Swal.fire({
-                imageUrl: '/image/rocket.png', // Change the path to your success ticket image
-                imageWidth: 100,
-                imageHeight: 100,
-                imageAlt: 'Success Icon',
-                title: 'Success Ticket', // Change the title to "Success Ticket"
-                text: 'Congratulations! You have successfully received your E-Ticket.', // Change the content to "Congratulations! You have successfully received your ticket."
-                confirmButtonText: 'OK',
-                customClass: {
-                  title: 'custom-title-class', // Custom CSS class for the title (if needed)
-                }
-              });
-            }, 500);
-          });
-        </script>
-        <% } %>
-          <!-- Bootstrap JavaScript Libraries -->
-
+      <!-- Bootstrap JavaScript Libraries -->
 </body>
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const redeemmessage = urlParams.get('redeemmessage');
+  console.log("Redeem Message Value:", redeemmessage);
+</script>
 
 
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (typeof redeemmessage !== 'undefined' && redeemmessage === 'success') {
+
+      setTimeout(function () {
+        // Thay thế modal bằng thông báo SweetAlert2
+        Swal.fire({
+          imageUrl:'/image/rocket1.png', // Change the path to your success ticket image
+          imageWidth: 100,
+          imageHeight: 100,
+          imageAlt: 'Success Icon',
+          title: 'Success Ticket', // Change the title to "Success Ticket"
+          text: 'Congratulations! You have successfully received your E-Ticket.', // Change the content to "Congratulations! You have successfully received your ticket."
+          confirmButtonText: 'OK',
+          customClass: {
+            title: 'custom-title-class', // Custom CSS class for the title (if needed)
+          }
+        });
+      }, 500);
+    }
+
+  });
+</script>
 
 
 </html>

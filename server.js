@@ -227,8 +227,12 @@ app.get("/ticket", (req, res) => {
             selectedAreas = ticketRows[0].area;
 
           }
+          if (user.ticket === "yes") {
+            return res.redirect("/"); // Thay thế "/homepage" bằng đường dẫn bạn muốn chuyển hướng đến
+          }
 
-          res.render("ticket", { user, redeemmessage,profileImage ,errorR, selectedAreas });
+
+          res.render("ticket", { user, redeemmessage, profileImage, errorR, selectedAreas });
         }
       );
     }
@@ -293,7 +297,7 @@ app.post("/redeem-gift", async (req, res) => {
       async function getNextSeatNumber(selectedAreas, connection) {
         return new Promise((resolve, reject) => {
           const areaList = selectedAreas.map(area => `'${area}'`).join(',');
-      
+
           const query = `
           SELECT user_id, seat_number
           FROM tickets
@@ -303,38 +307,38 @@ app.post("/redeem-gift", async (req, res) => {
             if (err) {
               reject(err);
             } else {
-              
-              console.log("="+areaList);
+
+              console.log("=" + areaList);
               const usedSeatNumbers = results.map(row => row.seat_number);
               console.log('Used Seat Numbers:', usedSeatNumbers);
 
               for (const selectedArea of selectedAreas) {
                 let seatNumber = 1;
-      
+
                 while (seatNumber <= areas[selectedArea].shared) {
                   const candidateSeatNumber = `${selectedArea}${seatNumber.toString().padStart(2, '0')}`;
-      
+
                   if (!usedSeatNumbers.includes(candidateSeatNumber)) {
                     resolve(candidateSeatNumber);
                     return;
                   }
-      
+
                   seatNumber++;
                 }
               }
-      
+
               reject(new Error("Không tìm thấy vị trí ghế trống."));
             }
           });
         });
       }
-      
-      
-      
-      
-      
-      
-      
+
+
+
+
+
+
+
 
       const nextSeatNumber = await getNextSeatNumber(selectedAreas, connection);
       console.log('Next Seat Number:', nextSeatNumber);
@@ -342,8 +346,8 @@ app.post("/redeem-gift", async (req, res) => {
       const insertTicketQuery =
         "INSERT INTO tickets (user_id, area, seat_number) VALUES (?, ?, ?)";
       try {
-        
-        console.log(selectedAreas,selectedAreas[0], JSON.stringify(selectedAreas));
+
+        console.log(selectedAreas, selectedAreas[0], JSON.stringify(selectedAreas));
         connection.query(
           insertTicketQuery,
           [userId, selectedAreas[0], nextSeatNumber],
@@ -396,6 +400,7 @@ app.post("/redeem-gift", async (req, res) => {
                     return res.status(200).json({
                       message: "Đổi vé thành công và đã gửi email xác nhận.",
                     });
+                    // return res.redirect("/events");
                   }
                 );
               }
@@ -430,12 +435,10 @@ function sendConfirmationEmail(userId, res) {
       if (userEmailAndTicketRows.length !== 1) {
         console.error(
           "User with id " +
-            userId +
-            " not found or multiple records with the same id exist."
+          userId +
+          " not found or multiple records with the same id exist."
         );
-        return res.status(500).json({
-          message: "Người dùng không tồn tại hoặc có nhiều bản ghi trùng lặp",
-        });
+        return res.redirect('/logout');
       }
 
       const userEmail = userEmailAndTicketRows[0].email;
@@ -454,7 +457,7 @@ function sendConfirmationEmail(userId, res) {
         ticket: "yes",
         // referral_code_count: referralCodeCount,
         area: selectedArea,
-        seat_number:seatNumber,
+        seat_number: seatNumber,
       };
 
       // const qrCodeData = JSON.stringify(userData);
@@ -579,6 +582,8 @@ function sendConfirmationEmail(userId, res) {
               console.log("Error sending email:", error);
             } else {
               console.log("Email sent to:", userEmail);
+              return res.render("/events",{redeemmessage});
+
             }
             // fs.unlinkSync(qrCodeFilePath);
           });
@@ -591,262 +596,7 @@ function sendConfirmationEmail(userId, res) {
   );
 }
 
-// // Check if the user has enough referral_code_count to redeem the gift (minimum 10 referral_code_count)
-// const getUserReferralCountQuery =
-//   "SELECT referral_code_count FROM users WHERE id = ?";
-// connection.query(
-//   getUserReferralCountQuery,
-//   [userId],
-//   async (err, userRows) => {
-//     if (err) {
-//       console.error("Error getting user referral code count:", err);
-//       return res.status(500).json({
-//         message: "Lỗi khi lấy số lượng mã giới thiệu của người dùng",
-//       });
-//     }
 
-//     if (userRows.length !== 1) {
-//       return res.status(500).json({
-//         message: "Người dùng không tồn tại hoặc có nhiều bản ghi trùng lặp",
-//       });
-//     }
-//     const referralCodeCount = userRows[0].referral_code_count;
-
-//     if (referralCodeCount < 10) {
-//       // User does not have enough referral_code_count to redeem the gift
-//       return res.redirect("/events?redeemmessage=not_enough_referral_codes");
-//     }
-
-//     let tierReferralCodeCount = 0; // Số referral_code_count tương ứng với tầng đã chọn
-
-//     // Kiểm tra tầng mà người dùng đã chọn và đặt giá trị referral_code_count tương ứng
-//     if (selectedTier === "A") {
-//       tierReferralCodeCount = 50;
-//     } else if (selectedTier === "B") {
-//       tierReferralCodeCount = 40;
-//     } else if (selectedTier === "C") {
-//       tierReferralCodeCount = 30;
-//     } else if (selectedTier === "D") {
-//       tierReferralCodeCount = 20;
-//     } else if (selectedTier === "E") {
-//       tierReferralCodeCount = 10;
-//     }
-
-//     // Kiểm tra xem người dùng có đủ referral_code_count để đổi tầng không
-//     if (referralCodeCount >= tierReferralCodeCount) {
-//       const nextSeat = await getNextAvailableSeat(selectedTier);
-
-//       // Update the ticket status to "yes" and decrement the referral_code_count
-//       const updateUserQuery =
-//         'UPDATE users SET ticket = "yes", ticket_tier = ?, seat_number = ?, referral_code_count = ? WHERE id = ?';
-//       connection.query(
-//         updateUserQuery,
-//         [
-//           selectedTier,
-//           nextSeat,
-//           referralCodeCount - tierReferralCodeCount,
-//           userId,
-//         ],
-//         async (err, updateUserResult) => {
-//           if (err) {
-//             console.error("Error updating user ticket status:", err);
-//             return res
-//               .status(500)
-//               .json({ message: "Lỗi khi cập nhật trạng thái vé" });
-//           }
-//           // Handle successful update here
-//         }
-//       );
-
-//       // Send email upon successful registration
-//       const getUserEmailQuery =
-//         "SELECT email, username FROM users WHERE id = ?";
-//       connection.query(
-//         getUserEmailQuery,
-//         [userId],
-//         async (err, userEmailRows) => {
-//           if (err) {
-//             console.error("Error getting user email:", err);
-//             return res
-//               .status(500)
-//               .json({ message: "Lỗi khi lấy email người dùng" });
-//           }
-
-//           if (userEmailRows.length !== 1) {
-//             console.error(
-//               "User with id " +
-//                 userId +
-//                 " not found or multiple records with the same id exist."
-//             );
-//             return res.status(500).json({
-//               message:
-//                 "Người dùng không tồn tại hoặc có nhiều bản ghi trùng lặp",
-//             });
-//           }
-
-//           const userEmail = userEmailRows[0].email;
-//           const userName = userEmailRows[0].username;
-//           // const encryptionKey = crypto.randomBytes(32).toString("hex"); // Generates a 256-bit key
-//           // console.log("Encryption Key:", encryptionKey);
-//           const encryptionKey =
-//             "50c023426b4d6fbcd1a2ed0157e7ece6dce90265219da96a14ac6becc6c08e1c";
-
-//           // Generate the QR code with all user data
-//           const userData = {
-//             username: userName,
-//             email: userEmail,
-//             ticket: "yes",
-//             // referral_code_count: referralCodeCount,
-//             ticket_tier: selectedTier,
-//             seat_number: nextSeat,
-//           };
-
-//           // const qrCodeData = JSON.stringify(userData);
-//           // const qrCodeImage = qr.imageSync(qrCodeData, { type: "png" });
-//           const userDataString = JSON.stringify(userData);
-
-//           const cipher = crypto.createCipher("aes-256-cbc", encryptionKey);
-//           let encryptedUserData = cipher.update(
-//             userDataString,
-//             "utf-8",
-//             "hex"
-//           );
-//           encryptedUserData += cipher.final("hex");
-
-//           console.log("Encrypted User Data:", encryptedUserData);
-
-//           // Generate QR code with encrypted user data
-//           const qrCodeData = qr.imageSync(encryptedUserData, {
-//             type: "png",
-//           });
-
-//           // Decryption process
-
-//           const decipher = crypto.createDecipher(
-//             "aes-256-cbc",
-//             encryptionKey
-//           );
-//           let decryptedUserData = decipher.update(
-//             encryptedUserData,
-//             "hex",
-//             "utf-8"
-//           );
-//           decryptedUserData += decipher.final("utf-8");
-
-//           const decryptedData = JSON.parse(decryptedUserData);
-
-//           console.log("Decrypted User Data:", decryptedData);
-
-//           (async () => {
-//             try {
-//               // Generate the QR code as SVG data
-
-//               // Email information
-
-//               const mailOptions = {
-//                 from: "hlduy01dn@gmail.com", // Your email address
-//                 to: userEmail, // Receiver's email address from the database
-//                 subject: "Ticket Confirmation", // Email subject
-//                 html: `<!DOCTYPE html>
-//                   <html>
-//                     <head>
-//                       <meta charset="UTF-8" />
-//                       <title>XÁC NHẬN VÉ CONCERT</title>
-//                       <style>
-//                         body {
-//                           font-family: Arial, sans-serif;
-//                           background-color: #2d2d2d;
-//                           margin: 0;
-//                           padding: 0;
-//                           color: white;
-//                         }
-//                         .container {
-//                           max-width: 600px;
-//                           margin: 0 auto;
-//                           background-color: #232323;
-//                           border-radius: 5px;
-//                           box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-//                           padding: 20px;
-//                         }
-//                         h2 {
-//                           text-align: center;
-//                           color: #ff6600;
-//                         }
-//                         p {
-//                           margin: 10px 0;
-//                           color: #ffffff;
-//                         }
-//                         strong {
-//                           color: #ff6600;
-//                         }
-//                         .footer {
-//                           text-align: center;
-//                           margin-top: 20px;
-//                           color: #ffffff;
-//                         }
-//                       </style>
-//                     </head>
-//                     <body>
-//                       <div class="container">
-//                         <p>Dear ${userName},</p>
-//                         <p>Your ticket has been confirmed.</p>
-//                         <p>Here is your user information ticket:</p>
-//                         <p> Seat level: ${selectedTier} </p>
-//                         <p> Seat Number: ${nextSeat}   </p>
-
-//                         <!-- Thêm ảnh QR code vào email -->
-//                         <img
-//                           src="cid:qrcode"
-//                           alt="QR Code"
-//                           style="display: block; margin: 0 auto"
-//                         />
-//                         <p>Thank you for using our service!</p>
-//                         <p>
-//                           Please bring this email or take a screenshot of the QR code to pass
-//                           through the gate.
-//                         </p>
-//                         <div class="footer">
-//                           <p>Best regards,</p>
-//                           <p>The Admin Team</p>
-//                         </div>
-//                       </div>
-//                     </body>
-//                   </html>
-//                   `, // Nhúng mã QR code trong email bằng data URL
-
-//                 attachments: [
-//                   {
-//                     filename: "qrcode.png",
-//                     content: qrCodeData, // Replace qrCodeImage with the generated PNG data
-//                     encoding: "base64",
-//                     cid: "qrcode",
-//                   },
-//                 ],
-//               };
-
-//               // Send email
-//               transporter.sendMail(mailOptions, (error, info) => {
-//                 if (error) {
-//                   console.log("Error sending email:", error);
-//                 } else {
-//                   console.log("Email sent to:", userEmail);
-//                 }
-//                 // fs.unlinkSync(qrCodeFilePath);
-//               });
-//             } catch (error) {
-//               console.log("Error generating QR code:", error);
-//               return res
-//                 .status(500)
-//                 .json({ message: "Lỗi khi tạo mã QR code" });
-//             }
-//           })();
-//           res.redirect(`/events?redeemmessage=success`);
-//         }
-//       );
-//     }
-//   }
-// );
-// });
 
 // Cấu hình dịch vụ Gmail
 const transporter = nodemailer.createTransport({
