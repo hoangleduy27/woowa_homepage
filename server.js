@@ -4,7 +4,7 @@ const moment = require("moment");
 const async = require("async");
 const nodemailer = require("nodemailer");
 const path = require("path");
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const session = require("express-session");
@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 const connection = mysql.createConnection({
   user: "root",
-  password: "",
+  password: "123123",
   database: "da_1",
 });
 
