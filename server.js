@@ -180,7 +180,6 @@ app.get("/events", (req, res) => {
         user,
         events,
         ticket: user ? user.ticket : null,
-
         profileImage,
       });
     });
