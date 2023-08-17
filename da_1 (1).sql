@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th8 14, 2023 lúc 04:00 AM
--- Phiên bản máy phục vụ: 10.4.28-MariaDB
--- Phiên bản PHP: 8.0.28
+-- Host: 127.0.0.1
+-- Generation Time: Aug 15, 2023 at 10:35 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Cơ sở dữ liệu: `da_1`
+-- Database: `da_1`
 --
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `events`
+-- Table structure for table `events`
 --
 
 CREATE TABLE `events` (
@@ -41,7 +41,7 @@ CREATE TABLE `events` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `events`
+-- Dumping data for table `events`
 --
 
 INSERT INTO `events` (`event_id`, `event_name`, `event_date`, `event_location`, `title`, `content`, `image`, `status`, `event_point`, `hasRegistered`) VALUES
@@ -50,7 +50,7 @@ INSERT INTO `events` (`event_id`, `event_name`, `event_date`, `event_location`, 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `event_participants`
+-- Table structure for table `event_participants`
 --
 
 CREATE TABLE `event_participants` (
@@ -63,7 +63,7 @@ CREATE TABLE `event_participants` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `reset_tokens`
+-- Table structure for table `reset_tokens`
 --
 
 CREATE TABLE `reset_tokens` (
@@ -74,7 +74,7 @@ CREATE TABLE `reset_tokens` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `reset_tokens`
+-- Dumping data for table `reset_tokens`
 --
 
 INSERT INTO `reset_tokens` (`id`, `email`, `token`, `created_at`) VALUES
@@ -121,7 +121,31 @@ INSERT INTO `reset_tokens` (`id`, `email`, `token`, `created_at`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `users`
+-- Table structure for table `tickets`
+--
+
+CREATE TABLE `tickets` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `area` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `seat_number` varchar(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tickets`
+--
+
+INSERT INTO `tickets` (`id`, `user_id`, `area`, `seat_number`, `created_at`) VALUES
+(94, 96, 'A', 'A01', '2023-08-15 08:15:04'),
+(96, 71, 'A', 'A03', '2023-08-15 08:24:29'),
+(97, 70, 'A', 'A04', '2023-08-15 08:26:47'),
+(98, 90, 'A', 'A02', '2023-08-15 08:28:04');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -131,7 +155,6 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `referral_code` varchar(6) NOT NULL,
   `phonenumber` varchar(13) DEFAULT NULL,
-  `quyenhan` varchar(255) NOT NULL,
   `status` tinyint(1) DEFAULT 1,
   `birthday` date DEFAULT NULL,
   `user_point` decimal(10,2) NOT NULL DEFAULT 0.00,
@@ -141,38 +164,40 @@ CREATE TABLE `users` (
   `profile_image` mediumblob DEFAULT NULL,
   `profile_image_path` varchar(255) DEFAULT NULL,
   `gender` enum('male','female','other') DEFAULT NULL,
-  `user_level` varchar(10) DEFAULT NULL
+  `user_level` varchar(10) DEFAULT NULL,
+  `facebook_id` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `users`
+-- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `username`, `password`, `referral_code`, `phonenumber`, `quyenhan`, `status`, `birthday`, `user_point`, `referral_code_count`, `ticket`, `email_sent`, `profile_image`, `profile_image_path`, `gender`, `user_level`) VALUES
-(70, 'hoang1@gmail.com', 'Duy', '$2b$10$SN19tUiyvb0K2RMwcfKoz.4cLxd.S.mIvn30bAjBAhupCajmmJ8G6', 'F4ZQVY', '0963124155', '', 1, NULL, 1500.00, 11, '', 0, NULL, NULL, NULL, 'D'),
-(71, 'admin@gmail.com', 'admin', '$2b$10$ntcTfKzx3bbwFO/u6sa1PeE9YYpNzjzG2HqmVG.qtM2/sBh7zgXaW', 'R71KKY', '07845528241', '', 1, '2023-08-02', 10000.00, 0, '', 1, NULL, NULL, '', NULL),
-(72, 'minh1@gmail.com', 'acb', '$2b$10$4NeMz0JccU0vKjYh7UNRf.SzOMv7XT3xVdwiRhTyj5WV00Z2FJDyK', 'XUTOVF', '0919999999', '', 1, NULL, 1000.00, 1, '', 0, NULL, NULL, NULL, NULL),
-(73, 'minh2@gmail.com', 'minh2@gmail.com', '$2b$10$zy6JH7/iyDyUao4Cb3A87eoQ4AuuDZyhJoUhk8j4AmWTgswVi1EOW', '1XPK4E', '0919999991', '', 1, NULL, 2611.00, 0, '', 0, NULL, NULL, NULL, NULL),
-(75, 'hoang27@gmail.com', 'duydeptrai', '$2b$10$09c2WtaRZFmgDIX/GVoMHejYjE4mrXtz1ap3BVIVBIiSWn4wyxSzy', 'JQPIK2', '0985462157', '', 1, NULL, 6000.00, 1, 'yes', 1, NULL, NULL, NULL, NULL),
-(79, 'hoang123213@gmail.com', 'Duy', '$2b$10$8uf032esurJ3SxeZw1c49OCLQfuWAMT2O72yUqenDBCXEtxE9PSwG', 'LI09OK', '0964254222', '', 1, NULL, 1500.00, 1, '', 0, NULL, NULL, NULL, NULL),
-(80, 'hoang321321@gmail.com', 'Duy', '$2b$10$99wjSkA9.xAmpUNqdpaJ0uoM/a2bBZSumyUaJGAn3v6Qo1BKWWTvO', 'R1HGL7', '0963154611', '', 1, NULL, 500.00, 0, '', 0, NULL, NULL, NULL, NULL),
-(81, 'hoangaddg@gmail.com', 'duy123', '$2b$10$yKqqbjIsoVnaXtJJ6fJLdO1qDbTBn0pYVZs08ZrlvqhYdPtq.gLLy', 'HWLZX5', '0963963962', '', 1, NULL, 500.00, 0, '', 0, NULL, NULL, NULL, NULL),
-(90, 'hoangleduy27901@gmail.com', 'Hoàng Lê Duy', '$2b$10$J4bxlbEYsp6cVXmBxK8lfOEeG/ujWeYifiVhxoBxaxKdre7kQ.o1W', '14FXJ7', '+84387343389', '', 1, '2001-09-27', 40.00, 9, '', 0, NULL, '1691117743299-adidas.jpg', 'male', NULL),
-(95, 'hlduydn01@gmail.com', 'Justin', '$2b$10$HW5U20I9vpcVCJLxYND7BuWka1wJBC9wNJqPES8l9X0CjZvtyiMSq', '6QMM9G', '+84387343389', '', 1, NULL, 0.00, 0, '', 0, NULL, NULL, NULL, NULL),
-(96, 'hoang@gmail.com', 'Justin 2', '$2b$10$PyY13RHz3QGZDTKg0SgWTO2aAY5SIRjVUqyZwlHpS3HqrHFqF2Rxq', 'QBUGA0', '+84387343389', '', 1, NULL, 5.00, 0, '', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `users` (`id`, `email`, `username`, `password`, `referral_code`, `phonenumber`, `status`, `birthday`, `user_point`, `referral_code_count`, `ticket`, `email_sent`, `profile_image`, `profile_image_path`, `gender`, `user_level`, `facebook_id`) VALUES
+(70, 'hoang1@gmail.com', 'Duy', '$2b$10$SN19tUiyvb0K2RMwcfKoz.4cLxd.S.mIvn30bAjBAhupCajmmJ8G6', 'F4ZQVY', '0963124155', 1, NULL, 1500.00, 915, 'yes', 0, NULL, NULL, NULL, 'D', NULL),
+(71, 'admin@gmail.com', 'admin', '$2b$10$ntcTfKzx3bbwFO/u6sa1PeE9YYpNzjzG2HqmVG.qtM2/sBh7zgXaW', 'R71KKY', '07845528241', 1, '2023-08-02', 10000.00, 0, 'yes', 1, NULL, NULL, '', NULL, NULL),
+(72, 'minh1@gmail.com', 'acb', '$2b$10$4NeMz0JccU0vKjYh7UNRf.SzOMv7XT3xVdwiRhTyj5WV00Z2FJDyK', 'XUTOVF', '0919999999', 1, NULL, 1000.00, 1, '', 0, NULL, NULL, NULL, NULL, NULL),
+(73, 'minh2@gmail.com', 'minh2@gmail.com', '$2b$10$zy6JH7/iyDyUao4Cb3A87eoQ4AuuDZyhJoUhk8j4AmWTgswVi1EOW', '1XPK4E', '0919999991', 1, NULL, 2611.00, 0, '', 0, NULL, NULL, NULL, NULL, NULL),
+(75, 'hoang27@gmail.com', 'duydeptrai', '$2b$10$09c2WtaRZFmgDIX/GVoMHejYjE4mrXtz1ap3BVIVBIiSWn4wyxSzy', 'JQPIK2', '0985462157', 1, NULL, 6000.00, 1, 'yes', 1, NULL, NULL, NULL, NULL, NULL),
+(79, 'hoang123213@gmail.com', 'Duy', '$2b$10$8uf032esurJ3SxeZw1c49OCLQfuWAMT2O72yUqenDBCXEtxE9PSwG', 'LI09OK', '0964254222', 1, NULL, 1500.00, 1, '', 0, NULL, NULL, NULL, NULL, NULL),
+(80, 'hoang321321@gmail.com', 'Duy', '$2b$10$99wjSkA9.xAmpUNqdpaJ0uoM/a2bBZSumyUaJGAn3v6Qo1BKWWTvO', 'R1HGL7', '0963154611', 1, NULL, 500.00, 0, '', 0, NULL, NULL, NULL, NULL, NULL),
+(81, 'hoangaddg@gmail.com', 'duy123', '$2b$10$yKqqbjIsoVnaXtJJ6fJLdO1qDbTBn0pYVZs08ZrlvqhYdPtq.gLLy', 'HWLZX5', '0963963962', 1, NULL, 500.00, 0, '', 0, NULL, NULL, NULL, NULL, NULL),
+(90, 'hoangleduy27901@gmail.com', 'Hoàng Lê Duy', '$2b$10$J4bxlbEYsp6cVXmBxK8lfOEeG/ujWeYifiVhxoBxaxKdre7kQ.o1W', '14FXJ7', '+84387343389', 1, '2001-09-27', 40.00, 4054, 'yes', 0, NULL, '1691117743299-adidas.jpg', 'male', 'C', NULL),
+(95, 'hlduydn01@gmail.com', 'Justin', '$2b$10$HW5U20I9vpcVCJLxYND7BuWka1wJBC9wNJqPES8l9X0CjZvtyiMSq', '6QMM9G', '+84387343389', 1, NULL, 0.00, 0, '', 0, NULL, NULL, NULL, NULL, NULL),
+(96, 'hoang@gmail.com', 'Justin 2', '$2b$10$PyY13RHz3QGZDTKg0SgWTO2aAY5SIRjVUqyZwlHpS3HqrHFqF2Rxq', 'QBUGA0', '+84387343389', 1, NULL, 5.00, 700, 'yes', 0, NULL, NULL, NULL, NULL, NULL),
+(99, '', 'Hoàng Lê Duy', '', '', NULL, 1, NULL, 0.00, 0, '', 0, NULL, NULL, NULL, NULL, '821428202656793');
 
 --
--- Chỉ mục cho các bảng đã đổ
+-- Indexes for dumped tables
 --
 
 --
--- Chỉ mục cho bảng `events`
+-- Indexes for table `events`
 --
 ALTER TABLE `events`
   ADD PRIMARY KEY (`event_id`);
 
 --
--- Chỉ mục cho bảng `event_participants`
+-- Indexes for table `event_participants`
 --
 ALTER TABLE `event_participants`
   ADD PRIMARY KEY (`participant_id`),
@@ -180,51 +205,63 @@ ALTER TABLE `event_participants`
   ADD KEY `user_id` (`user_id`);
 
 --
--- Chỉ mục cho bảng `reset_tokens`
+-- Indexes for table `reset_tokens`
 --
 ALTER TABLE `reset_tokens`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `users`
+-- Indexes for table `tickets`
+--
+ALTER TABLE `tickets`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT cho các bảng đã đổ
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT cho bảng `events`
+-- AUTO_INCREMENT for table `events`
 --
 ALTER TABLE `events`
   MODIFY `event_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT cho bảng `event_participants`
+-- AUTO_INCREMENT for table `event_participants`
 --
 ALTER TABLE `event_participants`
   MODIFY `participant_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=224;
 
 --
--- AUTO_INCREMENT cho bảng `reset_tokens`
+-- AUTO_INCREMENT for table `reset_tokens`
 --
 ALTER TABLE `reset_tokens`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
--- AUTO_INCREMENT cho bảng `users`
+-- AUTO_INCREMENT for table `tickets`
+--
+ALTER TABLE `tickets`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
+
+--
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
+  MODIFY `id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
 
 --
--- Các ràng buộc cho các bảng đã đổ
+-- Constraints for dumped tables
 --
 
 --
--- Các ràng buộc cho bảng `event_participants`
+-- Constraints for table `event_participants`
 --
 ALTER TABLE `event_participants`
   ADD CONSTRAINT `event_participants_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `events` (`event_id`),
