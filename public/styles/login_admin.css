@@ -1,0 +1,227 @@
+/* Reset default margin and padding */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* Global styles */
+
+body {
+    font-family: 'Noto Sans', sans-serif;
+}
+
+
+/* Login styles */
+
+.login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #333333;
+    color: #000000;
+    /* background-image: url("/image/woowa_logo.png"); */
+    background-repeat: no-repeat;
+    background-position: top left;
+    background-size: contain;
+}
+
+.login-inner {
+    border-radius: 20px;
+    border: none;
+    background: linear-gradient(to bottom, #f0f0f0, #d1e0ee);
+    background-size: cover;
+    box-shadow: -8px 4px 5px rgba(0, 0, 0, 0.24);
+    backdrop-filter: blur(53px);
+    width: 480px;
+    padding: 40px;
+    margin-left: 500px;
+
+}
+
+.login-text {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.login1 {
+    font-weight: 600;
+    font-size: 22px;
+}
+
+.glad-youre-back {
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.login-form {
+    margin-bottom: 20px;
+}
+
+.login-form a {
+    text-align: left;
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: #999999;
+}
+
+.login-form a:hover {
+    color: #e7360a;
+    font-weight: bold;
+}
+
+.loginbox a:hover {
+    color: #ff5507;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+input[type="text"],
+input[type="password"] {
+    border: none;
+    width: 100%;
+    padding: 8px;
+    outline: none;
+    border-radius: 5px;
+    border-bottom: 1px solid #0f0f0f;
+    color: #000000;
+    background: transparent;
+    transition: background-color 0.3s ease;
+}
+
+input[type="text"]:focus {
+    border: none;
+    border-bottom: 2px solid #48b5f5;
+}
+
+input[type="password"]:focus {
+    border: none;
+    border-bottom: 2px solid #48b5f5;
+}
+
+input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.login-button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    border-radius: 4px;
+    background-color: #628eff;
+    color: #ffffff;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    /* Thêm hiệu ứng transition */
+}
+
+.login-button:hover {
+    background-color: #ff4d21;
+    transform: scale(1.1);
+}
+
+.or {
+    text-align: center;
+    margin-bottom: 16px;
+    font-weight: 500;
+}
+
+.other-logins {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.login-icon {
+    width: 32px;
+    height: 32px;
+}
+
+.dont-have-an-account {
+    text-align: center;
+    font-size: 14px;
+    color: #888787;
+}
+
+.signup-link {
+    color: #628eff;
+    text-decoration: underline;
+}
+
+.signup-link:hover {
+    color: #daf061;
+    text-decoration: underline;
+}
+
+.customer-care {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.terms-conditions-wrapper {
+    margin-right: 12px;
+}
+
+.terms-conditions {
+    color: #888787;
+    text-decoration: underline;
+}
+
+.glad-youre-back {
+    color: #666666;
+    /* Màu chữ */
+}
+
+.input-error {
+    color: red;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+
+/* Reset default margin and padding */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    line-height: normal;
+}
+
+:root {
+    /* Fonts */
+    --font-noto-sans: "Noto Sans", sans-serif;
+    /* Font sizes */
+    --font-size-base: 16px;
+    --font-size-xl: 20px;
+    /* Colors */
+    --color-white: #fff;
+    --color-dimgray: #4d4d4d;
+    /* Gaps */
+    --gap-xs: 12px;
+    /* Paddings */
+    --padding-sm: 14px;
+    --padding-base: 16px;
+    /* Border radiuses */
+    --br-xs: 4px;
+}

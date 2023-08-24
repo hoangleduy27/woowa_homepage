@@ -27,9 +27,13 @@
                     <div class="mb-4"><img src="/image/woowa_logo.png" alt="" width="150"></div>
                     <div class="mb-3">
                         <div class="fs-1 fw-bold text-maincolor">Xác thực tài khoản</div>
-                        <div>Mã OTP đã được gửi đến số điện thoại <b class="text-maincolor"><%= phoneNumber %></b>. Vui lòng
+                        <% if (typeof phoneNumber !== 'undefined') { %>
+                            <div>Mã OTP đã được gửi đến số điện thoại <b class="text-maincolor"><%= phoneNumber %></b>. Vui lòng
                             kiểm tra tin nhắn đến và nhập mã
                             xác thực</div>
+                            <% } else { %>
+                                <div><b class="text-maincolor"> Mã xác thực hết thời hạn </b></div>
+                            <%}%>
                     </div>
                     <form class="form-horizontal" action="/confirmotp" method="post">
                         <div class="position-relative">

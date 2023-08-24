@@ -18,6 +18,9 @@ const fs = require("fs");
 const uuid = require("uuid");
 const qr = require("qr-image");
 const multer = require("multer");
+const { log } = require("util");
+const { error } = require("console");
+
 
 const port = 3000;
 
@@ -25,6 +28,8 @@ app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 const connection = mysql.createConnection({
   user: "root",
@@ -48,10 +53,10 @@ app.use(
   })
 );
 
-// Khởi tạo Twilio Client với các thông tin tài khoản Twilio của bạn
-const accountSid = "ACd522933544b3c3f3f2add765c5a98c7d";
-const authToken = "4e4906dd295cc2f88bcb214fa1d90c74";
-const twilioPhoneNumber = "+1 470 613 4992"; // Số điện thoại Twilio gửi SMS
+// Khởi tạo    Client với các thông tin tài khoản Twilio của bạn
+const accountSid = "AC0c7087bf0b8346d436c8e7a3f0b0d4ee";
+const authToken = "941f224fa8856dd8b3dac3b25925487d";
+const twilioPhoneNumber = "+12193488491"; // Số điện thoại Twilio gửi SMS
 
 const client = twilio(accountSid, authToken);
 
@@ -225,21 +230,23 @@ app.get("/ticket", (req, res) => {
           let selectedAreas = [];
           if (ticketRows.length > 0) {
             selectedAreas = ticketRows[0].area;
-
           }
           if (user.ticket === "yes") {
             return res.redirect("/"); // Thay thế "/homepage" bằng đường dẫn bạn muốn chuyển hướng đến
           }
 
-
-          res.render("ticket", { user, redeemmessage, profileImage, errorR, selectedAreas });
+          res.render("ticket", {
+            user,
+            redeemmessage,
+            profileImage,
+            errorR,
+            selectedAreas,
+          });
         }
       );
     }
   );
 });
-
-
 
 const areas = {
   A: { shared: 30, name: "Khu A", color: "vvip-text-color" },
@@ -292,11 +299,9 @@ app.post("/redeem-gift", async (req, res) => {
         });
       }
 
-
-
       async function getNextSeatNumber(selectedAreas, connection) {
         return new Promise((resolve, reject) => {
-          const areaList = selectedAreas.map(area => `'${area}'`).join(',');
+          const areaList = selectedAreas.map((area) => `'${area}'`).join(",");
 
           const query = `
           SELECT user_id, seat_number
@@ -307,16 +312,17 @@ app.post("/redeem-gift", async (req, res) => {
             if (err) {
               reject(err);
             } else {
-
               console.log("=" + areaList);
-              const usedSeatNumbers = results.map(row => row.seat_number);
-              console.log('Used Seat Numbers:', usedSeatNumbers);
+              const usedSeatNumbers = results.map((row) => row.seat_number);
+              console.log("Used Seat Numbers:", usedSeatNumbers);
 
               for (const selectedArea of selectedAreas) {
                 let seatNumber = 1;
 
                 while (seatNumber <= areas[selectedArea].shared) {
-                  const candidateSeatNumber = `${selectedArea}${seatNumber.toString().padStart(2, '0')}`;
+                  const candidateSeatNumber = `${selectedArea}${seatNumber
+                    .toString()
+                    .padStart(2, "0")}`;
 
                   if (!usedSeatNumbers.includes(candidateSeatNumber)) {
                     resolve(candidateSeatNumber);
@@ -333,21 +339,17 @@ app.post("/redeem-gift", async (req, res) => {
         });
       }
 
-
-
-
-
-
-
-
       const nextSeatNumber = await getNextSeatNumber(selectedAreas, connection);
-      console.log('Next Seat Number:', nextSeatNumber);
+      console.log("Next Seat Number:", nextSeatNumber);
 
       const insertTicketQuery =
         "INSERT INTO tickets (user_id, area, seat_number) VALUES (?, ?, ?)";
       try {
-
-        console.log(selectedAreas, selectedAreas[0], JSON.stringify(selectedAreas));
+        console.log(
+          selectedAreas,
+          selectedAreas[0],
+          JSON.stringify(selectedAreas)
+        );
         connection.query(
           insertTicketQuery,
           [userId, selectedAreas[0], nextSeatNumber],
@@ -435,17 +437,16 @@ function sendConfirmationEmail(userId, res) {
       if (userEmailAndTicketRows.length !== 1) {
         console.error(
           "User with id " +
-          userId +
-          " not found or multiple records with the same id exist."
+            userId +
+            " not found or multiple records with the same id exist."
         );
-        return res.redirect('/logout');
+        return res.redirect("/logout");
       }
 
       const userEmail = userEmailAndTicketRows[0].email;
       const userName = userEmailAndTicketRows[0].username;
       const selectedArea = userEmailAndTicketRows[0].area;
       const seatNumber = userEmailAndTicketRows[0].seat_number;
-
 
       const encryptionKey =
         "50c023426b4d6fbcd1a2ed0157e7ece6dce90265219da96a14ac6becc6c08e1c";
@@ -582,8 +583,7 @@ function sendConfirmationEmail(userId, res) {
               console.log("Error sending email:", error);
             } else {
               console.log("Email sent to:", userEmail);
-              return res.render("/events",{redeemmessage});
-
+              return res.render("/events", { redeemmessage });
             }
             // fs.unlinkSync(qrCodeFilePath);
           });
@@ -595,8 +595,6 @@ function sendConfirmationEmail(userId, res) {
     }
   );
 }
-
-
 
 // Cấu hình dịch vụ Gmail
 const transporter = nodemailer.createTransport({
@@ -671,13 +669,13 @@ app.post("/signup", async (req, res) => {
             return res.status(500).json({ error: "Error fetching user" });
           }
 
-          if (rows.length > 0) {
-            // An account with this phone number already exists
-            return res.render("signup", {
-              errorMessageSignup: "Phone number is already registered",
-              user: null,
-            });
-          }
+          // if (rows.length > 0) {
+          //   // An account with this phone number already exists
+          //   return res.render("signup", {
+          //     errorMessageSignup: "Phone number is already registered",
+          //     user: null,
+          //   });
+          // }
 
           if (referralCodeType) {
             connection.query(
@@ -709,6 +707,7 @@ app.post("/signup", async (req, res) => {
                     from: twilioPhoneNumber,
                     to: modifiedPhoneNumber,
                   });
+                  console.log(otp);
 
                   // Save the user information in session for later use in the /confirmotp route
                   req.session.userData = {
@@ -743,6 +742,7 @@ app.post("/signup", async (req, res) => {
                 from: twilioPhoneNumber,
                 to: modifiedPhoneNumber,
               });
+              console.log(otp);
 
               // Save the user information in session for later use in the /confirmotp route
               req.session.userData = {
@@ -869,6 +869,7 @@ app.post("/confirmotp", (req, res) => {
                 user: null,
                 registrationSuccess: true,
                 showLoginForm: true,
+                phonenumber,
               });
             }
           );
@@ -881,7 +882,6 @@ app.post("/confirmotp", (req, res) => {
       if (err) {
         return res.status(500).json({ error: "Error hashing password" });
       }
-
       const user = {
         username,
         phonenumber,
@@ -890,18 +890,37 @@ app.post("/confirmotp", (req, res) => {
         referral_code: referralCode,
         user_point: 0,
       };
-      connection.query("INSERT INTO users SET ?", user, (err, result) => {
-        if (err) {
-          return res.status(500).json({ error: "Error registering user" });
-        }
+      console.log(user);
+      const insertUserQuery = `
+  INSERT INTO da_1.users (username, phonenumber, email, password, referral_code, user_point)
+  VALUES (?, ?, ?, ?, ?, ?, ?)
+`;
+      const userValues = [
+        user.username,
+        user.phonenumber,
+        user.email,
+        user.password,
+        user.referral_code,
+        user.user_point,
+      ];
 
-        // Once the user is registered, redirect to the homepage or login page
-        res.render("homepage", {
-          user: null,
-          registrationSuccess: true,
-          showLoginForm: true,
-        });
-      });
+      connection.query(
+        insertUserQuery, userValues, (err, result) => {
+          console.log(result);
+
+          if (err) {
+            return res.status(500).json({ error: "Error registering user" });
+          }
+          console.log("User inserted successfully!");
+ 
+          // Once the user is registered, redirect to the homepage or login page
+          res.render("homepage", {
+            user: null,
+            registrationSuccess: true,
+            showLoginForm: true,
+          });
+        }
+      );
     });
   }
 });
@@ -949,6 +968,12 @@ app.post("/login", (req, res) => {
       }
 
       const user = rows[0];
+      if (user.status === 0) {
+        return res.render("login", {
+          errorMessage: "User is disabled",
+          user: null,
+        });
+      }
       bcrypt.compare(password, user.password, (error, result) => {
         if (error) {
           return res.render("login", {
@@ -977,6 +1002,9 @@ app.post("/login", (req, res) => {
     }
   );
 });
+
+
+
 
 app.get("/forgotpassword", (req, res) => {
   return res.render("forgotpassword");
@@ -1007,7 +1035,7 @@ app.post("/forgotpassword", (req, res) => {
 
       // Lưu mã khôi phục vào cơ sở dữ liệu
       connection.query(
-        "INSERT INTO reset_tokens (email, token) VALUES (?, ?)",
+        "INSERT INTO reset_tokens (email, token) VALUES (?, ?) ",
         [email, token],
         (err, result) => {
           if (err) {
@@ -1016,9 +1044,10 @@ app.post("/forgotpassword", (req, res) => {
               .status(500)
               .json({ message: "Lỗi khi lưu mã khôi phục vào cơ sở dữ liệu" });
           }
+ 
 
           // Gửi email chứa liên kết để reset mật khẩu
-          const resetLink = `http://192.168.0.103:8080/resetpassword/${token}`;
+          const resetLink = `http://localhost:3000/resetpassword/${token}`;
 
           const mailOptions = {
             from: "DUY",
@@ -1243,7 +1272,7 @@ app.get("/profile", function (req, res) {
         user.user_level = null;
       }
 
-      const qrCodeData = `http://192.168.0.127:8000/signup?inviteCode=${user.referral_code}`;
+      const qrCodeData = `http://localhost:3000/signup?inviteCode=${user.referral_code}`;
       const qrCodeImage = qr.imageSync(qrCodeData, { type: "png" });
 
       // Update user level in the database
@@ -1468,6 +1497,206 @@ app.get("/logout", (req, res) => {
     res.redirect("/");
   });
 });
+
+
+
+
+//Admin//
+app.get("/admin/login", (req, res) => {
+  if (req.session.loggedIn) {
+    return res.redirect("/");
+  }
+
+  res.render("admin_login"); // Render the admin login form
+});
+
+app.post("/admin/login", (req, res) => {
+  const { phonenumberOrEmail, password } = req.body;
+
+  let fieldToCheck;
+  if (phonenumberOrEmail.includes("@")) {
+    fieldToCheck = "email";
+  } else {
+    fieldToCheck = "phonenumber";
+  }
+
+  connection.query(
+    `SELECT admins.*, users.password AS user_password 
+    FROM admins
+    JOIN users ON admins.user_id = users.id
+    WHERE users.${fieldToCheck} = ?`,
+    [phonenumberOrEmail],
+    (err, rows) => {
+      if (err) {
+        return res.render("admin_login", {
+          errorMessage: "Error fetching admin",
+          user: null,
+        });
+      }
+
+      if (rows.length === 0) {
+        return res.render("admin_login", {
+          errorMessage: "Wrong Email or PhoneNumber",
+          user: null,
+        });
+      }
+
+      const admin = rows[0];
+
+      bcrypt.compare(password, admin.user_password, (error, result) => {
+        if (error) {
+          return res.render("admin_login", {
+            errorMessage: "Error comparing passwords",
+            user: null,
+          });
+        }
+        if (!result) {
+          return res.render("admin_login", {
+            errorMessage: "Incorrect password",
+            user: null,
+          });
+        }
+
+        // Successful admin login, store adminId in session
+        req.session.adminId = admin.id;
+        req.session.adminUsername = admin.full_name;
+
+        // Redirect the admin to the admin dashboard after successful login
+        res.redirect("/admin/dashboard");
+      });
+    }
+  );
+});
+
+app.get("/admin/dashboard", (req, res) => {
+  if (!req.session.adminId) {
+    return res.redirect("/admin/login");
+  }
+  const adminId = req.session.adminId;
+  const adminUsername = req.session.adminUsername;
+
+
+  // Fetch user data from the database
+  connection.query("SELECT * FROM users", (err, users) => {
+    if (err) {
+      return res.status(500).json({ error: "Error fetching user data" });
+    }
+    // Render the admin dashboard view and pass user data
+    res.render("admin_dashboard", { users, adminUsername  });
+  });
+});
+app.get('/admin/search', (req, res) => {
+  const searchQuery = req.query.query;
+  const sortBy = req.query.sort; // New line to get sorting parameter
+
+  let searchSQL = `
+    SELECT id, username, phonenumber, email, referral_code_count, ticket
+    FROM users
+    WHERE phonenumber LIKE ? OR email LIKE ? OR username LIKE ?
+       OR referral_code_count = ? OR (ticket = ? OR ticket IS NULL)
+  `;
+
+  const query = '%' + searchQuery + '%';
+  const ticketValue = searchQuery === 'yes' ? 'yes' : '';
+
+  if (sortBy === 'referral_code_count') {
+    searchSQL += ' ORDER BY referral_code_count ASC'; // Sort by referral_code_count
+  }
+
+  connection.query(
+    searchSQL,
+    [query, query, query, searchQuery, ticketValue],
+    (err, users) => {
+      if (err) {
+        return res.status(500).json({ error: 'Error fetching search results' });
+      }
+
+      res.json({ users });
+    }
+  );
+});
+
+
+app.post('/admin/toggle-user-status/:userId', (req, res) => {
+  const userId = req.params.userId;
+  console.log('Attempting to toggle status for user ID:', userId);
+
+  // Fetch current user status from the database
+  connection.query(
+    'SELECT status FROM users WHERE id = ?',
+    [userId],
+    (err, rows) => {
+      if (err) {
+        return res.status(500).json({ error: 'Error fetching user status' });
+      }
+
+      if (rows.length === 0) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      console.log('User status fetched:', rows);
+
+      const currentStatus = rows[0].status;
+      const newStatus = currentStatus === 1 ? 0 : 1;
+
+      // Update user status in the database
+      const updateStatusSQL = 'UPDATE users SET status = ? WHERE id = ?';
+      connection.query(updateStatusSQL, [newStatus, userId], (err, result) => {
+        if (err) {
+          return res.status(500).json({ error: 'Error updating user status' });
+        }
+        console.log(newStatus);
+
+        // Redirect back to the admin dashboard after updating status
+        res.json({ success: true });
+
+      });
+    }
+  );
+});
+app.post('/admin/edit-user/:userId', (req, res) => {
+  const userId = req.params.userId;
+  const { username, email, phonenumber, codecount } = req.body;
+
+  // Perform a database query to update the user's info
+  const updateSQL = `
+    UPDATE users
+    SET username = ?, email = ?, phonenumber = ? , referral_code_count = ?
+    WHERE id = ?
+  `;
+
+  connection.query(updateSQL, [username, email, phonenumber, codecount ,userId], (err, result) => {
+    if (err) {
+      return res.status(500).json({ success: false, error: 'Error updating user info' });
+    }
+
+    res.json({ success: true });
+  });
+});
+
+app.delete('/admin/delete-user/:userId', (req, res) => {
+  const userId = req.params.userId;
+
+  // Perform a database query to delete the user by userId
+  const deleteSQL = `
+    DELETE FROM users
+    WHERE id = ?
+  `;
+  
+  connection.query(deleteSQL, [userId], (err, result) => {
+    if (err) {
+      return res.status(500).json({ success: false, error: 'Error deleting user' });
+    }
+
+    res.json({ success: true });
+  });
+});
+
+//end-admin//
+
+
+
+
+
 
 app.listen(port, () => {
   console.log("listening on http://localhost:" + port);

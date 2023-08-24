@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width" />
+    <link rel="stylesheet" href="./global.css" />
+    <link rel="stylesheet" href="/styles/login_admin.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600&display=swap" />
+</head>
+
+<body>
+    <div class="login">
+        <div class="login-inner">
+            <div class="login-text">
+                <div class="login1">Login</div>
+                <div class="glad-youre-back">Glad you’re back.!</div>
+            </div>
+            <form class="login-form" action="/admin/login" method="POST">
+                <div class="form-group">
+                    <label for="username">Admin</label>
+                    <input type="text" id="phonenumberOrEmail" name="phonenumberOrEmail" placeholder="Enter your Admin..." required>
+                    <div id="username-error" class="input-error"></div>
+
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" placeholder="Enter your password..." />
+                    <div id="password-error" class="input-error"></div>
+
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="remember" />
+                    <label for="remember">Remember me</label>
+                </div>
+                <button type="submit" class="login-button">Login</button>
+            </form>
+
+
+            <div class="customer-care">
+                <div class="terms-conditions-wrapper">
+                    <a href="#" class="terms-conditions">Terms & Conditions</a>
+                </div>
+                <div class="terms-conditions-wrapper">
+                    <a href="#" class="terms-conditions">Support</a>
+                </div>
+                <div class="terms-conditions-wrapper">
+                    <a href="#" class="terms-conditions">Customer Care</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+  <!-- <script>
+      document.querySelector('.login-form').addEventListener('submit', function(event) {
+          event.preventDefault();
+
+          const phonenumberOrEmail = document.getElementById('phonenumberOrEmail').value;
+          const password = document.getElementById('password').value;
+
+          const usernameError = document.getElementById('username-error');
+          const passwordError = document.getElementById('password-error');
+
+          // Xóa thông báo lỗi hiện tại
+          usernameError.textContent = '';
+          passwordError.textContent = '';
+
+          if (phonenumberOrEmail.trim() === '' && password.trim() === '') {
+              usernameError.textContent = 'Vui lòng nhập tên đăng nhập!';
+              passwordError.textContent = 'Vui lòng nhập mật khẩu!';
+              return;
+          }
+          if (phonenumberOrEmail.trim() === '') {
+              usernameError.textContent = 'Vui lòng nhập tên đăng nhập!';
+              return;
+          }
+
+          if (password.trim() === '') {
+              passwordError.textContent = 'Vui lòng nhập mật khẩu!';
+              return;
+          }
+
+        
+          // Mã hóa HTML entities trong username và password
+            // phonenumberOrEmail = htmlspecialchars(phonenumberOrEmail);
+            // password = htmlspecialchars(password);
+
+          // Xử lý đăng nhập nếu không có lỗi
+      });
+  </script> -->

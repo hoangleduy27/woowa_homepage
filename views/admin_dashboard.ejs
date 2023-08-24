@@ -1,0 +1,256 @@
+<!-- admin_dashboard.ejs -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/styles/admin.css" />
+    <link rel="stylesheet" href="/styles/owl.carousel.min.css" />
+    <!-- Bootstrap CSS -->
+    
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@latest/dist/sweetalert2.min.css"
+    />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
+      integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <header>
+        <h1>Welcome to the Dashboard.
+        </h1>
+      </header>
+
+      <main>
+        <div class="search-container">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search by email or phone number"
+          />
+          <button onclick="searchUsers()">Search</button>
+          <button onclick="sortUsersByReferralCodeCount()">Sort by Referral Code Count</button>
+
+        </div>
+        <br />
+        <table class="table user-table">
+            <thead class="text-center">
+                <tr>
+                <th>User ID</th>
+                <th>Username</th>
+                <th>Phone Number</th>
+                <th>Email</th>
+                <th>Birthday</th>
+                <th>Code Count</th>
+                <th>Ticket</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% users.forEach(user => { %>
+              <tr>
+                <td><%= user.id %></td>
+                <td><%= user.username%></td>
+                <td><%= user.phonenumber %></td>
+                <td><%= user.email %></td>
+                <td>
+                  <% if (user.birthday) { %> <%= new
+                  Date(user.birthday).toLocaleDateString() %> <% } else { %> N/A
+                  <% } %>
+                </td>
+                <td><%= user.referral_code_count %></td>
+                <td><%= user.ticket %></td>
+                <td>
+                    <div class="btn-group" role="group">
+                      <button class="btn btn-link" onclick="editUser('<%= user.id %>', <%= JSON.stringify(user) %>)">
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                      <% if (user.status === 1) { %>
+                        <button class="btn btn-link text-success" onclick="toggleUserStatus('<%= user.id %>')">
+                          <i class="bi bi-check-circle"></i>
+                        </button>
+                      <% } else if (user.status === 0) { %>
+                        <button class="btn btn-link text-danger" onclick="toggleUserStatus('<%= user.id %>')">
+                          <i class="bi bi-x-circle"></i>
+                        </button>
+                      <% } %>
+                      <button class="btn btn-link text-danger" onclick="deleteUser('<%= user.id %>')">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+              </tr>
+              <% }); %>
+            </tbody>
+          </table>
+          
+      </main>
+    </div>
+  </body>
+  <!-- admin_dashboard.ejs -->
+  <!-- ... rest of the HTML ... -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.9/dist/sweetalert2.all.min.js"></script>
+<script>
+  function sortUsersByReferralCodeCount() {
+  // Make an AJAX request to fetch sorted search results
+  fetch(`/admin/search?sort=referral_code_count`)
+    .then((response) => response.json())
+    .then((data) => {
+      const userTable = document.querySelector(".user-table tbody");
+      userTable.innerHTML = ""; // Clear existing table rows
+
+      data.users.forEach((user) => {
+        const row = `
+          <tr>
+            <td>${user.id}</td>
+            <td>${user.username}</td>
+            <td>${user.phonenumber}</td>
+            <td>${user.email}</td>
+            <td>${user.referral_code_count}</td>
+            <td>${user.ticket}</td>
+          </tr>`;
+        userTable.innerHTML += row;
+      });
+    })
+    .catch((error) =>
+      console.error("Error fetching sorted results:", error)
+    );
+}
+
+</script>
+  <script>
+    function searchUsers() {
+      const searchInput = document.getElementById("searchInput").value;
+
+      // Make an AJAX request to fetch search results
+      fetch(`/admin/search?query=${searchInput}`)
+        .then((response) => response.json())
+        .then((data) => {
+          const userTable = document.querySelector(".user-table tbody");
+          userTable.innerHTML = ""; // Clear existing table rows
+
+          data.users.forEach((user) => {
+            const row = `
+              <tr>
+                <td>${user.id}</td>
+                <td>${user.username}</td>
+                <td>${user.phonenumber}</td>
+                <td>${user.email}</td>
+                <td>${user.referral_code_count}</td>
+                <td>${user.ticket}</td>
+              </tr>`;
+            userTable.innerHTML += row;
+          });
+        })
+        .catch((error) =>
+          console.error("Error fetching search results:", error)
+        );
+    }
+  </script>
+
+  <script>
+    function toggleUserStatus(userId) {
+      // Make an AJAX request to toggle the user's status
+      fetch(`/admin/toggle-user-status/${userId}`, { method: "POST" })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            // Reload the page to reflect the updated status
+            window.location.reload();
+          } else {
+            console.error("Error toggling user status");
+          }
+          searchUsers();
+        })
+        .catch((error) => console.error("Error toggling user status:", error));
+    }
+  </script>
+  <script>
+    function editUser(userId, user) {
+      console.log(userId, user);
+      Swal.fire({
+        title: "Edit User",
+        html: `
+          <input type="text" id="username" class="swal2-input" value="${user.username}">
+          <input type="text" id="email" class="swal2-input" value="${user.email}">
+          <input type="text" id="phonenumber" class="swal2-input" value="${user.phonenumber}">
+          <input type="text" id="codecount" class="swal2-input" value="${user.referral_code_count}">
+        `,
+        confirmButtonText: "Save",
+        showCancelButton: true,
+        focusConfirm: false,
+        preConfirm: () => {
+          const username = Swal.getPopup().querySelector("#username").value;
+          const email = Swal.getPopup().querySelector("#email").value;
+          const phonenumber = Swal.getPopup().querySelector("#phonenumber").value;
+          const codecount = Swal.getPopup().querySelector("#codecount").value;
+    
+          // Make an AJAX request to update user's info
+          return fetch(`/admin/edit-user/${userId}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ username, email, phonenumber, codecount }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                // Reload the page to reflect the updated user list
+                window.location.reload();
+              } else {
+                Swal.showValidationMessage("Error updating user");
+              }
+            })
+            .catch((error) => {
+              Swal.showValidationMessage(`Error updating user: ${error}`);
+            });
+        },
+      })
+    }
+  </script>
+  
+  
+  
+  <script>
+    function deleteUser(userId) {
+      // Show a confirmation dialog
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "Cancel",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Make an AJAX request to delete the user
+          fetch(`/admin/delete-user/${userId}`, { method: "DELETE" })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                // Reload the page to reflect the updated user list
+                window.location.reload();
+              } else {
+                console.error("Error deleting user");
+              }
+            })
+            .catch((error) => console.error("Error deleting user:", error));
+        }
+      });
+    }
+  </script>
+  
+</html>
