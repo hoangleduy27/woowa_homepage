@@ -22,7 +22,7 @@ const { log } = require("util");
 const { error } = require("console");
 
 
-const port = 3000;
+const port = 8000;
 
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
@@ -55,7 +55,7 @@ app.use(
 
 // Khởi tạo    Client với các thông tin tài khoản Twilio của bạn
 const accountSid = "AC0c7087bf0b8346d436c8e7a3f0b0d4ee";
-const authToken = "941f224fa8856dd8b3dac3b25925487d";
+const authToken = "22d14b03a4c182da00ed0f18293ac403";
 const twilioPhoneNumber = "+12193488491"; // Số điện thoại Twilio gửi SMS
 
 const client = twilio(accountSid, authToken);
@@ -889,10 +889,11 @@ app.post("/confirmotp", (req, res) => {
         password: hashedPassword,
         referral_code: referralCode,
         user_point: 0,
+        ticket:'',
       };
       console.log(user);
       const insertUserQuery = `
-  INSERT INTO da_1.users (username, phonenumber, email, password, referral_code, user_point)
+  INSERT INTO da_1.users (username, phonenumber, email, password, referral_code, user_point, ticket)
   VALUES (?, ?, ?, ?, ?, ?, ?)
 `;
       const userValues = [
@@ -902,6 +903,7 @@ app.post("/confirmotp", (req, res) => {
         user.password,
         user.referral_code,
         user.user_point,
+        user.ticket,
       ];
 
       connection.query(
@@ -1047,7 +1049,7 @@ app.post("/forgotpassword", (req, res) => {
  
 
           // Gửi email chứa liên kết để reset mật khẩu
-          const resetLink = `http://localhost:3000/resetpassword/${token}`;
+          const resetLink = `http://172.20.10.4:8000/resetpassword/${token}`;
 
           const mailOptions = {
             from: "DUY",
@@ -1272,7 +1274,7 @@ app.get("/profile", function (req, res) {
         user.user_level = null;
       }
 
-      const qrCodeData = `http://localhost:3000/signup?inviteCode=${user.referral_code}`;
+      const qrCodeData = `http://172.20.10.4:8000/signup?inviteCode=${user.referral_code}`;
       const qrCodeImage = qr.imageSync(qrCodeData, { type: "png" });
 
       // Update user level in the database
@@ -1694,10 +1696,47 @@ app.delete('/admin/delete-user/:userId', (req, res) => {
 //end-admin//
 
 
+//Decrypted//
+app.get('/Decrypted', (req, res) => {
+  res.render('Decrypted', { decryptedContent: null });
+});
 
+app.post('/decrypted', (req, res) => {
+  const encryptedData = req.body.encryptedData;
+  const encryptionKey = req.body.encryptionKey;
 
+  try {
+      const decipher = crypto.createDecipher('aes-256-cbc', encryptionKey);
+      let decryptedContent = decipher.update(encryptedData, 'hex', 'utf-8');
+      decryptedContent += decipher.final('utf-8');
+      const decryptedJSON = JSON.parse(decryptedContent);
+
+      const query = `
+      SELECT users.email, users.username, users.ticket, tickets.area, tickets.seat_number
+      FROM users
+      INNER JOIN tickets ON users.id = tickets.user_id
+      WHERE users.username = ? AND users.email = ? AND users.ticket = ? AND tickets.area = ? AND tickets.seat_number = ?
+    `;        
+    connection.query(query, [decryptedJSON.username, decryptedJSON.email, decryptedJSON.ticket, decryptedJSON.area, decryptedJSON.seat_number], (error, results) => {
+      if (error) {
+              res.render('Decrypted', { decryptedContent: 'Lỗi truy vấn cơ sở dữ liệu: ' + error.message });
+          } else {
+              if (results.length > 0) {
+                  res.render('Decrypted', { decryptedContent, successMessage:'Nội dung đã giải mã khớp với dữ liệu trong cơ sở dữ liệu.' });
+                  console.log(decryptedContent)
+              } else {
+                  res.render('Decrypted', { decryptedContent, errorMessage: 'Nội dung đã giải mã không khớp với dữ liệu trong cơ sở dữ liệu.' });
+              }
+          }
+      });
+  } catch (error) {
+      res.render('Decrypted', { decryptedContent: 'Lỗi giải mã: ' + error.message });
+  }
+});
 
 
 app.listen(port, () => {
-  console.log("listening on http://localhost:" + port);
+  // console.log("listening on http://localhost:" + port);
+  console.log("172.20.10.4:" + port);
+
 });
